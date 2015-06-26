@@ -8,8 +8,8 @@ public class HelloWorldApp {
 		Person c = new Person();
 		
 		c.setName("Joshua");
-		c.setAge(12);
-		c.setGender('m');
+		c.setAge(17);
+		// c.setGender('m');
 		
 		// Check for any supplied arguments
 		if (args.length > 0) {
@@ -23,13 +23,26 @@ public class HelloWorldApp {
 				p.setName("Professor");
 			}
 		}
-		
+
 		System.out.println("Hello, "+p.getName());
 		
 		System.out.println("My name is "+c.getName()+".");
-		System.out.println("I am a "+c.getAge()+" year old "+c.getGenderFull()+".");
-		System.out.println("Would you like play a game?");
+		System.out.print("I am ");
 		
+		// Figure out whether to use "a" or "an"
+		System.out.print('a');
+		if (c.getAge()<10) {
+			if (c.getAge()==1) {
+				System.out.print("n");
+			}
+		} else if (c.getAge()<20) {
+			if (c.getAge()==11 || c.getAge()==18) {
+				System.out.print("n");
+			}
+		}
+
+		System.out.println(" "+c.getAge()+" year old "+c.getGenderFull()+".");
+		System.out.println("Would you like play a game?");
 		
 	}
 

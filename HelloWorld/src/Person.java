@@ -33,6 +33,6 @@ public class Person {
 			case 'm': if (age<16) return "boy"; else return "man";
 			case 'f': if (age<16) return "girl"; else return "woman";
 		}
-		return "null";
+		return "person";
 	}
 }
