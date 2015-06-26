@@ -30,8 +30,8 @@ public class Person {
 	}
 	public String getGenderFull() {
 		switch (gender) {
-			case 'm': return "male";
-			case 'f': return "female";
+			case 'm': if (age<16) return "boy"; else return "man";
+			case 'f': if (age<16) return "girl"; else return "woman";
 		}
 		return "null";
 	}
