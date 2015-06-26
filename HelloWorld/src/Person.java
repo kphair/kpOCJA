@@ -28,5 +28,11 @@ public class Person {
 	public void setGender(char gender) {
 		this.gender = gender;
 	}
-	
+	public String getGenderFull() {
+		switch (gender) {
+			case 'm': return "male";
+			case 'f': return "female";
+		}
+		return "null";
+	}
 }

@@ -1,10 +1,15 @@
-
+// "Hello, World" test app learning exercise
 public class HelloWorldApp {
 
 	public static void main(String[] args) {
 		
-		// Set up an identity for later
+		// Set up identities for later
 		Person p = new Person();
+		Person c = new Person();
+		
+		c.setName("Joshua");
+		c.setAge(12);
+		c.setGender('m');
 		
 		// Check for any supplied arguments
 		if (args.length > 0) {
@@ -20,7 +25,12 @@ public class HelloWorldApp {
 		}
 		
 		System.out.println("Hello, "+p.getName());
+		
+		System.out.println("My name is "+c.getName()+".");
+		System.out.println("I am a "+c.getAge()+" year old "+c.getGenderFull()+".");
 		System.out.println("Would you like play a game?");
+		
+		
 	}
 
 }
