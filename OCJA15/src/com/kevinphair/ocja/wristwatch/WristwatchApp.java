@@ -1,12 +1,24 @@
+/*
+ * %W% Kevin Phair
+ * This app is designed to test the Wristwatch class by exercising the
+ * various setters and getters
+ */
 package com.kevinphair.ocja.wristwatch;
 
 import com.kevinphair.ocja.wristwatch.Wristwatch.BatteryTypes;
 import com.kevinphair.ocja.wristwatch.Wristwatch.FaceTypes;
 
+/*
+ * WristwatchApp class will instantiate and test the Wristwatch class
+ * 
+ * @version		v1.0
+ * @author 		Kevin Phair
+ */
 public class WristwatchApp {
 
 	public static void main(String[] args) {
 
+		/* Create a new Wristwatch object */
 		Wristwatch myWatch = new Wristwatch();
 		
 		myWatch.setMaker("Casio");
@@ -14,7 +26,7 @@ public class WristwatchApp {
 		myWatch.setHours(15);
 		myWatch.setMinutes(45);
 		myWatch.setSeconds(0);
-		myWatch.setAnalogue(false);
+		myWatch.setAnalogue(true);
 		myWatch.setDigital(true);
 		myWatch.setBatteryType(BatteryTypes.COIN);
 		myWatch.setBatteryLevel(100);
@@ -22,13 +34,14 @@ public class WristwatchApp {
 		
 		System.out.println("My watch is a " + myWatch.getMaker() + " " + myWatch.getModel());
 		if (myWatch.isAnalogue()) {
-			System.out.println("The analogue face currently reads " + myWatch.getTime());
-			
+			System.out.println("The watch face reads " 
+								+ myWatch.getAnalogueTime());
 		}
 		if (myWatch.isDigital()) {
-			System.out.println("The digital readout current says " + myWatch.getTime());
+			System.out.println("The digital readout says " 
+								+ myWatch.getDigitalTime());
 		}
+		System.out.println("The level of the " + myWatch.getBatteryType() + " battery is " + myWatch.getBatteryLevel());
 	}
-	
 
 }
