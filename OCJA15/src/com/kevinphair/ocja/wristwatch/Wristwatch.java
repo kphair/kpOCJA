@@ -107,7 +107,58 @@ public class Wristwatch {
 		this.faceType = faceType;
 	}
 	
-	public String getTime() {
+	/* Returns a simple HH:MM:SS reading of the time */
+	public String getDigitalTime() {
 		return hours + ":" + minutes + ":" + seconds;
 	}
+	/* Returns a descriptive reading of the time */
+	public String getAnalogueTime() {
+		String verboseHours;
+		String verboseMinutes;
+		String verboseSeconds;
+		String AMPM;
+		int tempHours;
+		
+		if (minutes > 30) {
+			verboseMinutes = 60 - minutes + " minutes";
+			if (seconds > 0) {
+				verboseSeconds = " and " + (60 - seconds) + " seconds to";
+			} else {
+				verboseSeconds = " to";
+			}
+			/* advance to the next hour when saying "minutes to" */
+			tempHours = (hours + 1) % 24;
+		} else if (minutes > 0) {
+			verboseMinutes = minutes + " minutes";
+			/* if the seconds are 0 then don't give them */
+			if (seconds > 0) {
+				verboseSeconds = " and " + seconds + " seconds past";
+			} else {
+				verboseSeconds = " past";
+			}
+			tempHours = hours;
+		} else {
+			/* if the minutes are 0 then don't give them */
+			verboseMinutes = "";
+			if (seconds > 0) {
+				verboseSeconds = seconds + " seconds past";
+			} else {
+				verboseSeconds = "";
+			}
+			tempHours = hours;
+		}
+
+		if (tempHours >= 12) {
+			AMPM = "PM";
+		} else {
+			AMPM = "AM";
+		}
+		tempHours %= 12;
+		if (tempHours == 0) tempHours = 12;
+		verboseHours = tempHours + "";
+		
+		return verboseMinutes + verboseSeconds + " " 
+				+ verboseHours; 
+	}
 }
+	
