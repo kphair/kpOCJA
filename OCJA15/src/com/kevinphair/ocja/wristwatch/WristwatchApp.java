@@ -33,15 +33,23 @@ public class WristwatchApp {
 		myWatch.setFaceType(FaceTypes.STANDARD);
 		
 		System.out.println("My watch is a " + myWatch.getMaker() + " " + myWatch.getModel());
+		
 		if (myWatch.isAnalogue()) {
-			System.out.println("The watch face reads " 
+			System.out.print("The watch face reads " 
 								+ myWatch.getAnalogueTime());
 		}
+		if (myWatch.isAnalogue() && myWatch.isDigital()) {
+			System.out.print(" and the ");
+		} else {
+			System.out.print("The ");
+		}
 		if (myWatch.isDigital()) {
-			System.out.println("The digital readout says " 
+			System.out.println("digital readout says " 
 								+ myWatch.getDigitalTime());
 		}
-		System.out.println("The level of the " + myWatch.getBatteryType() + " battery is " + myWatch.getBatteryLevel());
+		
+		System.out.println("The " + myWatch.getBatteryType() 
+							+ " battery level is at " + myWatch.getBatteryLevel() + " percent");
 	}
 
 }
