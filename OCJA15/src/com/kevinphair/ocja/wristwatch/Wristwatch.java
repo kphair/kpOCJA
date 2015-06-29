@@ -1,3 +1,10 @@
+/*
+ * Define the Wristwatch class
+ * 
+ * v1.0 - Kevin Phair
+ * 
+ */
+
 package com.kevinphair.ocja.wristwatch;
 
 public class Wristwatch {
