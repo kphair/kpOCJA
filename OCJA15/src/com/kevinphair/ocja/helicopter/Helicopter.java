@@ -16,54 +16,86 @@ public class Helicopter {
 	private double tailRotorSpeed;
 	private static final double FEET_PER_METER = 3.28D;
 	
+	/**
+	 * Set the maker string in a helicopter object
+	 */
 	public void setMaker(String newMaker) {
 		this.maker = newMaker;
 	}
+	/**
+	 * Return the maker string in a helicopter object
+	 */
 	public String getMaker() {
 		return this.maker;
 	}
 	
+	/**
+	 * Set the model string in a helicopter object
+	 */
 	public void setModel(String newModel) {
 		this.model = newModel;
 	}
+	/**
+	 * Return the model string in a helicopter object
+	 */
 	public String getModel() {
 		return this.model;
 	}
 
+	/**
+	 * Set the number of crew in a helicopter object
+	 */
 	public void setNumCrew(int newCrew) {
 		this.numCrew = newCrew;
 	}
+	/**
+	 * Return the number of crew in a helicopter object
+	 */
 	public int getNumCrew() {
 		return this.numCrew;
 	}
 
+	/**
+	 * Set the number of passengers in a helicopter object
+	 */
 	public void setNumPassengers(int newPassengers) {
 		this.numPassengers = newPassengers;
 	}
+	/**
+	 * Return the number of passengers in a helicopter object
+	 */
 	public int getNumPassengers() {
 		return this.numPassengers;
 	}
 
-
-	/*
-	 * Engine control
+	/**
+	 * Return the boolean status of the engine in a helicopter object
 	 */
 	public boolean isEngineOn() {
 		return this.engineStatus;
 	}
+	/**
+	 * Start the engine in a helicopter object
+	 */
 	public void startEngine() {
 		this.engineStatus = true;
 	}
+	/**
+	 * Stop the engine in a helicopter object
+	 */
 	public void stopEngine() {
 		this.engineStatus = false;
 	}
 	
-	/*
-	 * Set the max altitude
+	/**
+	 * Set the maximum allowable altitude in feet of a helicopter object
 	 */
 	public void setMaxAltitudeInFeet(double newAltitude) {
 		this.maxAltitudeInFeet = newAltitude;
 	}
+	/**
+	 * Set the maximum allowable altitude in metres of a helicopter object
+	 */
 	public void setMaxAltitudeInMeters(double newAltitude) {
 		this.maxAltitudeInFeet = (newAltitude * FEET_PER_METER);
 	}
@@ -74,12 +106,15 @@ public class Helicopter {
 		setMaxAltitudeInFeet(newAltitude);
 	}
 
-	/*
-	 * Return the max altitude in feet
+	/**
+	 * Return the maximum allowable altitude in feet of a helicopter object
 	 */
 	public double getMaxAltitudeInFeet() {
 		return this.maxAltitudeInFeet;
 	}
+	/**
+	 * Return the maximum allowable altitude in metres of a helicopter object
+	 */
 	public double getMaxAltitudeInMeters() {
 		return (this.maxAltitudeInFeet / FEET_PER_METER);
 	}
@@ -90,12 +125,15 @@ public class Helicopter {
 		return getMaxAltitudeInFeet();
 	}
 
-	/*
-	 * Set the current altitude in feet
+	/**
+	 * Set the current altitude in feet of a helicopter object
 	 */
 	public void setAltitudeInFeet(double newAltitude) {
 		this.currentAltitudeInFeet = newAltitude;
 	}
+	/**
+	 * Set the current altitude in metres of a helicopter object
+	 */
 	public void setAltitudeInMeters(double newAltitude) {
 		this.currentAltitudeInFeet = (newAltitude / FEET_PER_METER);
 	}
@@ -106,16 +144,19 @@ public class Helicopter {
 		setAltitudeInFeet(newAltitude);
 	}
 
-	/*
-	 * Return the current altitude in feet
+	/**
+	 * Return the current altitude in feet of a helicopter object
 	 */
-	public double getAltitude() {
+	public double getAltitudeInFeet() {
 		return this.currentAltitudeInFeet;
 	}
 
-	public void printAltitude() {
-		System.out.println("Current altitude is currently " + getAltitude() + " feet " 
-				+ (getAltitude() >= 0 ? "above" : "below") + " sea level");
+	/**
+	 * Display the current altitude in feet of a helicopter object
+	 */
+	public void printAltitudeInFeet() {
+		System.out.println("Current altitude is currently " + getAltitudeInFeet() + " feet " 
+				+ (getAltitudeInFeet() >= 0 ? "above" : "below") + " sea level");
 	}
 	
 }

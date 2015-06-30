@@ -14,19 +14,16 @@ public class HelicopterApp {
 		myHeli.setNumCrew(2);
 
 		System.out.println("My helicopter is a " + myHeli.getMaker() + " " + myHeli.getModel());
-		System.out.println("Current crew: " + myHeli.getNumCrew());
-		System.out.println("Current passengers: " + myHeli.getNumPassengers());
+		System.out.println("Number of crew on board: " + myHeli.getNumCrew());
+		System.out.println("Number of passengers on board: " + myHeli.getNumPassengers());
 		
 		System.out.println("The Engine is currently " + (myHeli.isEngineOn() ? "ON" : "OFF"));
 		
-		System.out.println("Current altitude is currently " + myHeli.getAltitude() + " feet " 
-							+ (myHeli.getAltitude() >= 0 ? "above" : "below") + " sea level");
-
+		myHeli.printAltitudeInFeet();
+		
 		System.out.println("Switching on...");
 		myHeli.startEngine();
 		System.out.println("The Engine is currently " + (myHeli.isEngineOn() ? "ON" : "OFF"));
-		
-		
+
 	}
-		
 }
