@@ -5,8 +5,7 @@
  */
 package com.kevinphair.ocja.wristwatch;
 
-import com.kevinphair.ocja.wristwatch.Wristwatch.BatteryTypes;
-import com.kevinphair.ocja.wristwatch.Wristwatch.FaceTypes;
+import com.kevinphair.ocja.wristwatch.Wristwatch.*;
 
 /*
  * WristwatchApp class will instantiate and test the Wristwatch class
