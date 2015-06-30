@@ -1,13 +1,16 @@
+/*
+ * Person class
+ */
 package com.kevinphair.ocja.helloworld;
 
-//Set up a Person class
 public class Person {
 
 	int age;
 	String name;
 	char gender;
 	
-	// age getters and setters
+	
+	/* age getters and setters */
 	public int getAge() {
 		return age;
 	}
@@ -15,7 +18,7 @@ public class Person {
 		this.age = age;
 	}
 	
-	// name getters and setters
+	/* name getters and setters */
 	public String getName() {
 		return name;
 	}
@@ -23,7 +26,7 @@ public class Person {
 		this.name = name;
 	}
 	
-	// gender getters and setters
+	/* gender getters and setters */
 	public char getGender() {
 		return gender;
 	}
@@ -32,8 +35,10 @@ public class Person {
 	}
 	public String getGenderFull() {
 		switch (gender) {
-			case 'm': if (age<16) return "boy"; else return "man";
-			case 'f': if (age<16) return "girl"; else return "woman";
+			case 'm':
+				return (age < 16 ? "boy" : "man");
+			case 'f': 
+				return (age < 16 ? "girl" : "woman");
 		}
 		return "person";
 	}
