@@ -15,7 +15,23 @@ public class ArrayTest1 {
 		for (int i = 0; i < sequence.length; i++) {
 			sequence[i] = 1 + (int) (Math.random() * 100);
 		}
-
+		
+		// Sort the array
+		boolean intSwapped;
+		int tempInt = 0;
+		do {
+			intSwapped = false;
+			for (int i = 0; i < sequence.length - 1; ++i) {
+				if (sequence[i] > sequence[i + 1]) {
+					tempInt = sequence[i];
+					sequence[i] = sequence[i + 1];
+					sequence[i + 1] = tempInt;
+					intSwapped = true;
+				}
+			}
+		} while (intSwapped);
+		
+		
 		// Do some processing on the array to display each value and
 		// calculate the overall average, maximum and minimum values
 		for (int i = 0; i < sequence.length; ++i) {
@@ -44,7 +60,7 @@ public class ArrayTest1 {
 		System.out.println(" > Maximum " + sequenceMax);
 		System.out.println(" > Minimum " + sequenceMin);
 		System.out.println(" > Average " + (double) sequenceSum / sequence.length);
-		//System.out.println(" > Median  " + "TODO");
+		System.out.println(" > Median  " + sequence[5]);
 		System.out.print(" > Mode    ");
 		if (counts[modeResult] <= 1) {
 			System.out.println("No mode detected");
