@@ -1,24 +1,31 @@
+/**
+ * Array testing app 
+ * 
+ * @author Kevin Phair
+ * 
+ */
 package com.kevinphair.ocja.arraytests;
 
 public class ArrayTest1 {
 
 	public static void main(String[] args) {
 
-		// Initialise an array to hold a sequence of ints
-		int[] sequence = new int[10];
-		int[] counts = new int[100];
-		int sequenceMax = 0;
-		int sequenceMin = 100;
-		int sequenceSum = 0;
+		int[] sequence = new int[10];		// Will hold the number sequence
+		int[] counts = new int[100];		// Will hold the counts for each number
 		
-		// Go through each element of the array, assigning a value to each one
+		/*
+		 * Go through each element of the array, assigning a value to each one
+		 */
 		for (int i = 0; i < sequence.length; i++) {
 			sequence[i] = 1 + (int) (Math.random() * 100);
 		}
-		
-		// Sort the array
+
+		/*
+		 * A simple bubble sort of the array
+		 */
 		boolean intSwapped;
 		int tempInt = 0;
+		
 		do {
 			intSwapped = false;
 			for (int i = 0; i < sequence.length - 1; ++i) {
@@ -31,20 +38,32 @@ public class ArrayTest1 {
 			}
 		} while (intSwapped);
 		
+		/*
+		 *  Do some processing on the array to display each value and
+		 *  calculate the overall average, maximum and minimum values
+		 *  We will also keep a count of how many times each number turns
+		 *  up for later analysis.
+		 */
+		int sequenceSum = 0;
+		int sequenceMin = sequence[0];
+		int sequenceMax = sequence[0];
+		int currentNum = 0;
 		
-		// Do some processing on the array to display each value and
-		// calculate the overall average, maximum and minimum values
+		System.out.print("sequence[] contains: ");
 		for (int i = 0; i < sequence.length; ++i) {
-			System.out.println("sequence[" + i + "] contains " + sequence[i]);
-			sequenceSum += sequence[i];
-			// increment the counter for this particular number
-			counts[sequence[i] - 1]++;
-			if (sequence[i] > sequenceMax) sequenceMax = sequence[i];
-			if (sequence[i] < sequenceMin) sequenceMin = sequence[i];
+			currentNum = sequence[i];
+			System.out.print(currentNum + ((i < sequence.length - 1) ? "," : "\n"));
+			sequenceSum += currentNum;
+			if (currentNum > sequenceMax) sequenceMax = currentNum;
+			if (currentNum < sequenceMin) sequenceMin = currentNum;
+			counts[currentNum - 1]++;			// increment this number's appearance count
 		}
-
 		
-		// Calculate the mode numbers of the sequence
+		/*
+		 * Calculate the mode numbers of the sequence by scanning
+		 * through the array of counts for each number and selecting 
+		 * whichever has the highest count
+		 */
 		int modeMax = counts[0];
 		int modeResult = 0;
 		
@@ -55,8 +74,10 @@ public class ArrayTest1 {
 			}
 		}
 		
-		// Display some interesting properties of the elements in the array
-		System.out.println("The " + sequence.length + " elements of sequence array have the following numeric properties:");
+		/*
+		 * Now display some interesting properties of the elements in the array
+		 */
+		System.out.println("The " + sequence.length + " elements of sequence[] have the following numeric properties:");
 		System.out.println(" > Maximum " + sequenceMax);
 		System.out.println(" > Minimum " + sequenceMin);
 		System.out.println(" > Average " + (double) sequenceSum / sequence.length);
@@ -65,15 +86,21 @@ public class ArrayTest1 {
 		if (counts[modeResult] <= 1) {
 			System.out.println("No mode detected");
 		} else {
-			String modePadding = "";
+			/*
+			 * If there is more than one mode number, we'll need to pad the console output
+			 * after the first line to keep each count aligned.
+			 */
+			String modePadding = "";		
 			for (int i = 0; i < counts.length; ++i) {
 				if (counts[i] == counts[modeResult]) {
 						System.out.println(modePadding + "'" + (i + 1) + "' appeared " + counts[i] + " times");
 						modePadding = "           ";
 				}
-				
 			}
 		}
+	}
+	
+	public void sortArray(int[] myArray) {
 		
 	}
 
