@@ -19,10 +19,10 @@ public class CodeChallengeIf {
 		final double POUNDS_PER_KILO = 2.20462;
 
 		Scanner scan = new Scanner(System.in);
-
+		
 		mainloop:
 			while (true) {
-				System.out.println("Please select 1 or 2 from the options below");
+				System.out.println("Please select 1 or 2 from the options below\n");
 				System.out.println("1) Enter weight in kilos");
 				System.out.println("2) Enter weight in pounds");
 
@@ -31,7 +31,7 @@ public class CodeChallengeIf {
 
 				} catch (InputMismatchException e) {
 					System.out.println("Error in selection. Please only enter 1 or 2.");
-					scan.next();			// Empty the Scanner's buffer
+					scan.next();			// Empty the offending token from Scanner's buffer
 				}
 				
 				if (choice == 1 || choice == 2) {
