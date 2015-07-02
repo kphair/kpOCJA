@@ -3,6 +3,7 @@
  */
 package com.kevinphair.ocja.exercises;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Scanner;
  */
 
 public class CodeChallengeIf {
-	
+
 	public static void main(String[] args) {
 
 		int choice = 0;
@@ -18,18 +19,52 @@ public class CodeChallengeIf {
 		String division = "";
 		final double POUNDS_PER_KILO = 2.20462;
 
-		System.out.println("Please select from the options below");
-		System.out.println("1) Enter weight in kilos");
-		System.out.println("2) Enter weight in pounds");
 		Scanner scan = new Scanner(System.in);
-		choice = scan.nextInt();
-		if(choice==1){
-			System.out.println("Enter weight in kilos: ");
-			weightInKg = scan.nextInt();
-		} else if(choice == 2){
-			System.out.println("Enter weight in pounds: ");
-			weightInKg = scan.nextInt()/POUNDS_PER_KILO;
-		}
+
+		mainloop:
+			while (true) {
+				System.out.println("Please select 1 or 2 from the options below");
+				System.out.println("1) Enter weight in kilos");
+				System.out.println("2) Enter weight in pounds");
+				
+				while (! scan.hasNextInt()) {
+					scan.next();
+					System.out.println("Please enter a valid option");
+				}
+				choice = scan.nextInt();
+/*
+				try {
+					choice = scan.nextInt();
+
+				} catch (InputMismatchException e) {
+					System.out.println("Error in selection. Please only enter 1 or 2.");
+					//scan = new Scanner(System.in);
+				}
+				*/
+				
+				if (choice == 1 || choice == 2) {
+					break mainloop;
+				}
+			}
+
+		weightloop:
+			while (true) {
+				try {
+					if(choice==1){
+						System.out.println("Enter weight in kilos: ");
+						weightInKg = scan.nextInt();
+						break weightloop;
+					} else if(choice == 2){
+						System.out.println("Enter weight in pounds: ");
+						weightInKg = scan.nextInt()/POUNDS_PER_KILO;
+						break weightloop;
+					}
+				} catch (InputMismatchException e) {
+					System.out.println("Error entering weight. Please enter a whole number.");
+					scan = new Scanner(System.in);
+				}
+			}
+
 		if ( weightInKg < 67 || weightInKg > 120 ){
 			System.out.println("You are ineligible for the competition");
 		} else if (weightInKg < 71) {
@@ -43,14 +78,14 @@ public class CodeChallengeIf {
 		} else {
 			division = "Heavyweight";
 		}
-		
+
 		System.out.println("Your weight in kg is " + weightInKg);
 		if (division != "") {
 			System.out.println("Your division is " + division);
 		} else {
 			System.out.println("Sorry, better luck next time.");
 		}
-			
+
 		scan.close();
 	}
 
