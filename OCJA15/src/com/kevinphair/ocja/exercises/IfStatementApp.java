@@ -14,8 +14,9 @@ public class IfStatementApp {
 		
 		mainmenu:
 		while (true) {
+			System.out.println("\f");
 			if (userName != "") {
-				System.out.print("Hello, " + userName + ". ");
+				System.out.print("Hello, " + userName + (userAge > 0 ? (" (" + userAge + " years old). ") : ". " ));
 			}
 			System.out.println("Please type in the number matching the option you want to select below and press ENTER\n");
 			System.out.println("1:   Enter your name");
@@ -34,7 +35,7 @@ public class IfStatementApp {
 					System.out.println("Thank you " + (userName != "" ? userName + " " : "") 
 							+ "for using SkyNet by Cyberdyne systems.");
 					System.out.println("The machine war began " 
-									+ (userAge == 0 ? "in 1997." : (userAge - 18) + " years ago."));
+									+ ((userAge == 0) && (userAge > 17) ? "in 1997." : "When you were " + (userAge - 17)));
 					System.out.println();
 					break mainmenu;
 				}
@@ -42,5 +43,6 @@ public class IfStatementApp {
 				System.out.println("Invalid option selected. Please try again.");
 			}
 		}
+		scan.close();
 	}
 }
