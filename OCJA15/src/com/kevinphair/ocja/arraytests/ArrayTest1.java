@@ -23,6 +23,7 @@ public class ArrayTest1 {
 		/*
 		 * A simple bubble sort of the array
 		 */
+		/*
 		boolean intSwapped;
 		int tempInt = 0;
 		
@@ -37,6 +38,9 @@ public class ArrayTest1 {
 				}
 			}
 		} while (intSwapped);
+		*/
+
+		java.util.Arrays.sort(sequence);
 		
 		/*
 		 *  Do some processing on the array to display each value and
@@ -98,10 +102,6 @@ public class ArrayTest1 {
 				}
 			}
 		}
-	}
-	
-	public void sortArray(int[] myArray) {
-		
 	}
 
 }
