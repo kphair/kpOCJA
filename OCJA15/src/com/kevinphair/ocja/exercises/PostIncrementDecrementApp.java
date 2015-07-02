@@ -38,6 +38,9 @@ public class PostIncrementDecrementApp {
 		
 	}
 	
+	/*
+	 * This class will check that the age supplied is within the configured range
+	 */
 	public static boolean ageCheck(int age) {
 
 		return ((age >= MIN_AGE) && (age <= MAX_AGE));
