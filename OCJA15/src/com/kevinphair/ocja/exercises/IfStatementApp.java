@@ -11,38 +11,39 @@ public class IfStatementApp {
 		int menuOption = 0;
 		String userName = "";
 		int userAge = 0;
-		
-		mainmenu:
-		while (true) {
-			System.out.println("\f");
-			if (userName != "") {
-				System.out.print("Hello, " + userName + (userAge > 0 ? (" (" + userAge + " years old). ") : ". " ));
-			}
-			System.out.println("Please type in the number matching the option you want to select below and press ENTER\n");
-			System.out.println("1:   Enter your name");
-			System.out.println("2:   Enter your age");
-			System.out.println("3:   Quit");
 
-			try {
-				menuOption = scan.nextInt();
-				if (menuOption == 1) {
-					System.out.println("Please enter your name and press ENTER: ");
-					userName = scan.next();
-				} else if (menuOption == 2) {
-					System.out.println("Please enter your age and press ENTER: ");
-					userAge = scan.nextInt();
-				} else if (menuOption == 3) {
-					System.out.println("Thank you " + (userName != "" ? userName + " " : "") 
-							+ "for using SkyNet by Cyberdyne systems.");
-					System.out.println("The machine war began " 
-									+ ((userAge == 0) && (userAge > 17) ? "in 1997." : "When you were " + (userAge - 17)));
-					System.out.println();
-					break mainmenu;
+		mainmenu:
+			while (true) {
+				System.out.println("");
+				if (userName != "") {
+					System.out.print("Hello, " + userName + (userAge > 0 ? (" (" + userAge + " years old). ") : ". " ));
 				}
-			} catch (InputMismatchException e) {
-				System.out.println("Invalid option selected. Please try again.");
+				System.out.println("Please type in the number matching the option you want to select below and press ENTER\n");
+				System.out.println("1:   Enter your name");
+				System.out.println("2:   Enter your age");
+				System.out.println("3:   Quit");
+
+				try {
+					menuOption = scan.nextInt();
+					if (menuOption == 1) {
+						System.out.println("Please enter your name and press ENTER: ");
+						userName = scan.next();
+					} else if (menuOption == 2) {
+						System.out.println("Please enter your age and press ENTER: ");
+						userAge = scan.nextInt();
+					} else if (menuOption == 3) {
+						System.out.println("Thank you " + (userName != "" ? userName + " " : "") 
+								+ "for using SkyNet by Cyberdyne systems.");
+						System.out.println("The machine war began " 
+								+ ((userAge == 0) && (userAge > 17) ? "in 1997." : "When you were " + (userAge - 17)));
+						System.out.println();
+						break mainmenu;
+					}
+				} catch (InputMismatchException e) {
+					System.out.println("Invalid option selected. Please try again.");
+				}
 			}
-		}
+
 		scan.close();
 	}
 }
