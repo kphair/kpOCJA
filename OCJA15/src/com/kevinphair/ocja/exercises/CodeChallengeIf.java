@@ -7,9 +7,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * @version 1.0
+ * @version 2.0
  */
-
 public class CodeChallengeIf {
 
 	public static void main(String[] args) {
@@ -26,21 +25,14 @@ public class CodeChallengeIf {
 				System.out.println("Please select 1 or 2 from the options below");
 				System.out.println("1) Enter weight in kilos");
 				System.out.println("2) Enter weight in pounds");
-				
-				while (! scan.hasNextInt()) {
-					scan.next();
-					System.out.println("Please enter a valid option");
-				}
-				choice = scan.nextInt();
-/*
+
 				try {
 					choice = scan.nextInt();
 
 				} catch (InputMismatchException e) {
 					System.out.println("Error in selection. Please only enter 1 or 2.");
-					//scan = new Scanner(System.in);
+					scan.next();			// Empty the Scanner's buffer
 				}
-				*/
 				
 				if (choice == 1 || choice == 2) {
 					break mainloop;
@@ -61,7 +53,7 @@ public class CodeChallengeIf {
 					}
 				} catch (InputMismatchException e) {
 					System.out.println("Error entering weight. Please enter a whole number.");
-					scan = new Scanner(System.in);
+					scan.next();
 				}
 			}
 
