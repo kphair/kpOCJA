@@ -27,12 +27,10 @@ public class IfStatementApp {
 				if (menuOption == 1) {
 					System.out.println("Please enter your name and press ENTER: ");
 					userName = scan.next();
-				}
-				if (menuOption == 2) {
+				} else if (menuOption == 2) {
 					System.out.println("Please enter your age and press ENTER: ");
 					userAge = scan.nextInt();
-				}
-				if (menuOption == 3) {
+				} else if (menuOption == 3) {
 					System.out.println("Thank you " + (userName != "" ? userName + " " : "") 
 							+ "for using SkyNet by Cyberdyne systems.");
 					System.out.println("The machine war began " 
