@@ -1,7 +1,7 @@
 /**
- * This application implements the if and switch constructs
+ * GradeApp implements the if/else and switch() constructs
  * 
- * @author User1
+ * @author Kevin Phair
  *
  */
 package com.kevinphair.ocja.exercises;
@@ -18,10 +18,11 @@ public class GradeApp {
 
 		String grade = "";
 		String result = "";
-		int score = 0;
+		int score = 70;
 
-		score = 70;
-
+		/*
+		 * From the score, calculate the grade
+		 */
 		if (score > 100 || score < 0)	{	grade = "";	}
 		else if (score >= 85) 			{	grade = "A";	}
 		else if (score >= 70) 			{	grade = "B";	}
@@ -29,6 +30,9 @@ public class GradeApp {
 		else if (score >= 40) 			{	grade = "D";	}
 		else 							{	grade = "F";	}
 
+		/*
+		 * From the grade, work out the score range
+		 */
 		if (grade != "") {
 			switch(grade.toUpperCase()) {
 				case "A": result = "85-100"; break;
