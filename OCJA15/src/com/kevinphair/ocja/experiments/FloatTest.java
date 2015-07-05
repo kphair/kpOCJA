@@ -19,18 +19,23 @@ public class FloatTest {
 
 	public static void main(String[] args) {
 
+		int maxNum = (-1 >>> 1);
+		int lastGood = 0;
 		int i = 0;
 		float f = 0;
 		int lost = 0;
-		
-		for (int k = 0; k < (Math.pow(2, 31) - 1); k++) {
+
+		System.out.printf("Check int to float from 0 to %08x (%d)...\n", maxNum, maxNum);
+
+		for (int k = 0; k < maxNum; k++) {
 			f = k;
 			i = (int) f;
 			if (i != k) {
 				lost ++;
+				if (lastGood == 0) lastGood = i - 1;
 				//System.out.println("We lost " + k + " (it became " + i + ")");
-			}	
+			}
 		}
-		System.out.println("We lost " + lost + " integers");
+		System.out.printf("We lost %d integers. The last good one was %08x (%d)\n", lost, lastGood, lastGood);
 	}
 }
