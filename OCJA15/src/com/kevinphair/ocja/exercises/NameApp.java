@@ -28,16 +28,26 @@ public class NameApp {
 		System.out.println("Please enter your name:");
 		
 		while (userName == "") {
-			userName = scan.next();
-			System.out.println(userName);
+			userName = scan.nextLine();
 		}
+		System.out.println("\n");
 		
 		System.out.println("Print to console 100 times using for() loop:");
 		for (int i = 0; i < 100; ++i) {
 			System.out.print(i + ":" + userName + "  ");
 		}
-		System.out.println();
+		System.out.println("\n");
+
+		String emanResu = "";
+		for (int i = userName.length() - 1; i >= 0; --i) {
+			emanResu += userName.charAt(i);
+		}
 		
+		System.out.println("Print name backwards to console 100 times using for() loop:");
+		for (int i = 0; i < 100; ++i) {
+			System.out.print(i + ":" + emanResu + "  ");
+		}
+		System.out.println("\n");
 		
 	}
 }
