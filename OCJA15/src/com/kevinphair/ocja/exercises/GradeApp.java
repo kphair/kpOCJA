@@ -23,7 +23,7 @@ public class GradeApp {
 		/*
 		 * From the score, calculate the grade
 		 */
-		if (score > 100 || score < 0)	{	grade = "";	}
+		if (score > 100 || score < 0)	{	grade = "" ;	}
 		else if (score >= 85) 			{	grade = "A";	}
 		else if (score >= 70) 			{	grade = "B";	}
 		else if (score >= 55) 			{	grade = "C";	}
