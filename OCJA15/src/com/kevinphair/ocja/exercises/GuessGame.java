@@ -16,6 +16,8 @@ public class GuessGame {
 		int userGuess = 0;
 		int guessCount = 0;
 		String userInput = null;
+		int[] haveGuess = new int[20];
+		
 
 		mainLoop:
 			for(;;){
@@ -29,6 +31,19 @@ public class GuessGame {
 					if(userGuess < 1 || userGuess > 20){
 						System.out.println("This number is out of range");	
 					}else{
+						/*
+						 * IF the number already guessed
+						 *     increment element in guess count array for this number
+						 *     notify the user the number already guessed
+						 *     Go to next iteration of loop
+						 * END IF
+						 */
+						if(haveGuess [userGuess-1] != 0){
+							System.out.println("you already guessed that");
+							continue;
+						}
+						haveGuess [userGuess-1]++;
+						
 						guessCount++;
 						System.out.println("Your guess is " + userGuess);
 
