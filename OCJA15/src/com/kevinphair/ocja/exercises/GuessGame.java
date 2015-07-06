@@ -23,6 +23,7 @@ public class GuessGame {
 			for(;;){
 				randNumber = rand.nextInt(19) + 1;
 				System.out.println(randNumber);
+				
 				// Clear the array which keeps track of the number of times a number was guessed
 				for(int i = 0; i < haveGuess.length; ++i) {
 					haveGuess[i] = 0;
@@ -32,6 +33,17 @@ public class GuessGame {
 					//		System.out.println("Hello World");
 					// Get a number from the user
 					System.out.println("Please enter a number between 1 and 20 inclusive");
+					if (guessCount > 0) {
+						System.out.print("So far you have already guessed: ");
+						for (int i = 0; i < haveGuess.length; ++i) {
+							if (haveGuess[i] > 0) {
+								System.out.print(i + 1 + "  ");
+							}
+						}
+						System.out.println();
+					}
+					
+					// Wait for an integer to be entered
 					while (! scan.hasNextInt()) {
 						scan.next();
 						System.out.println("You entered something other than a number. Please try again.");
