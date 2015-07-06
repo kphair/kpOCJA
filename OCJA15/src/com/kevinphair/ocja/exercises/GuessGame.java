@@ -9,24 +9,21 @@ public class GuessGame {
 
 		Random rand = new Random();
 		Scanner scan = new Scanner(System.in);
-
-
-
 		int randNumber = 0;
 		int userGuess = 0;
-		int guessCount = 0;
-		String userInput = null;
-		int[] haveGuess = new int[20];
-		
+		int guessCount;
+		String userInput = "";
+		int[] haveGuessed = new int[20];
 
 		mainLoop:
 			for(;;){
 				randNumber = rand.nextInt(19) + 1;
 				System.out.println(randNumber);
+				guessCount = 0;
 				
 				// Clear the array which keeps track of the number of times a number was guessed
-				for(int i = 0; i < haveGuess.length; ++i) {
-					haveGuess[i] = 0;
+				for(int i = 0; i < haveGuessed.length; ++i) {
+					haveGuessed[i] = 0;
 				}
 				// Start of the main program loop
 				for(;;){
@@ -36,8 +33,8 @@ public class GuessGame {
 
 					// Show the numbers that haven't been guessed yet
 					System.out.print("Numbers you can pick from are: ");
-					for (int i = 0; i < haveGuess.length; ++i) {
-						if (haveGuess[i] == 0) {
+					for (int i = 0; i < haveGuessed.length; ++i) {
+						if (haveGuessed[i] == 0) {
 							System.out.print(i + 1 + "  ");
 						}
 					}
@@ -46,8 +43,8 @@ public class GuessGame {
 					// Show the numbers that have already been guessed
 					if (guessCount > 0) {
 						System.out.print("So far you have already guessed: ");
-						for (int i = 0; i < haveGuess.length; ++i) {
-							if (haveGuess[i] > 0) {
+						for (int i = 0; i < haveGuessed.length; ++i) {
+							if (haveGuessed[i] > 0) {
 								System.out.print(i + 1 + "  ");
 							}
 						}
@@ -62,9 +59,9 @@ public class GuessGame {
 					userGuess = scan.nextInt();
 					
 					// Check that the number is within the permissible range
-					if(userGuess < 1 || userGuess > 20){
+					if(userGuess < 1 || userGuess > 20) {
 						System.out.println("Your guess is out of range");	
-					}else{
+					} else {
 						/*
 						 * Pseudocode for client addition to spec
 						 * 
@@ -76,23 +73,23 @@ public class GuessGame {
 						 *     Go to next iteration of loop
 						 * END IF
 						 */
-						if(haveGuess [userGuess-1] != 0){
+						if(haveGuessed [userGuess-1] != 0) {
 							System.out.println("you already guessed that");
 							continue;
 						}
-						haveGuess [userGuess-1]++;
+						haveGuessed [userGuess-1]++;
 						
 						// Display the current guess and increment the number of guesses 
 						System.out.println("Your guess is " + userGuess);
 						guessCount++;
 
 						// Check to see if the user's matches the random number the computer picked
-						if(userGuess == randNumber){
-							System.out.println("Congratulations! Your number of guesses was " + guessCount
-									+ ". The right answer was " + randNumber);
+						if(userGuess == randNumber) {
+							System.out.println("Congratulations - The correct number was " + randNumber + ". "
+												+ "It took you " + guessCount + " guesses");
 							break;
 							
-						}else{
+						} else {
 							System.out.println("Please guess again");
 						}
 					}
@@ -102,19 +99,22 @@ public class GuessGame {
 				//			System.out.println(userInput);
 
 				// Loop to ask if they want to play again
+				System.out.println("Would you like to play again? Y/N");
 				for(;;){
-					System.out.println("Would you like to play again? Y/N");
-					userInput = scan.next();
-					userInput = userInput.toUpperCase();
-					if(userInput.equals ("Y")){
+					userInput = scan.next().toUpperCase();
+					if(userInput.equals ("Y")) {
 						break;
-					}else if(userInput.equals("N")){
+					} else if(userInput.equals("N")) {
 						System.out.println("Goodbye");
 						break mainLoop;
-					}else{
-						System.out.println("Invalid choice");
+					} else {
+						System.out.println("Invalid choice - Expecting Y or N...");
 					}
 				}
+
 			}// Top Loop - end of mainLoop
+
+		scan.close();
+		
 	}
 }
