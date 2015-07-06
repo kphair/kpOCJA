@@ -22,18 +22,18 @@ public class GuessGame {
 		Scanner scan = new Scanner(System.in);
 
 		mainLoop:
-			for(;;){
+			for (;;){
 				randNumber = rand.nextInt(19) + 1;
 				if (debug) System.out.println(randNumber);
 				guessCount = 0;
 				
 				// Clear the array which keeps track of the number of times a number was guessed
-				for(int i = 0; i < haveGuessed.length; ++i) {
+				for (int i = 0; i < haveGuessed.length; ++i) {
 					haveGuessed[i] = 0;
 				}
 
 				// Start of the main program loop
-				for(;;){
+				for (;;){
 					// Get a number from the user
 					System.out.println("Please enter a number between 1 and 20 inclusive");
 
@@ -65,7 +65,7 @@ public class GuessGame {
 					userGuess = scan.nextInt();
 					
 					// Check that the number is within the permissible range
-					if(userGuess < 1 || userGuess > 20) {
+					if (userGuess < 1 || userGuess > 20) {
 						System.out.println("Your guess is out of range");	
 					} else {
 						/*
@@ -79,7 +79,7 @@ public class GuessGame {
 						 *     Go to next iteration of loop
 						 * END IF
 						 */
-						if(haveGuessed [userGuess-1] != 0) {
+						if (haveGuessed [userGuess-1] != 0) {
 							System.out.println("you already guessed that");
 							continue;
 						}
@@ -90,7 +90,7 @@ public class GuessGame {
 						guessCount++;
 
 						// Check to see if the user's matches the random number the computer picked
-						if(userGuess == randNumber) {
+						if (userGuess == randNumber) {
 							System.out.println("Congratulations - The correct number was " + randNumber + ".");
 							System.out.println("It took you " + guessCount + " guess" + (guessCount > 0 ? "es." : "."));
 							break;			// Break out of the 'asking for a guess' loop
@@ -102,12 +102,12 @@ public class GuessGame {
 
 				// Loop to ask if they want to play again
 				System.out.println("Would you like to play again? Y/N");
-				for(;;){
+				for (;;){
 					userInput = scan.next().toUpperCase();
 					if (debug) System.out.println("You entered " + userInput);
-					if(userInput.equals ("Y")) {
+					if (userInput.equals ("Y")) {
 						break;
-					} else if(userInput.equals("N")) {
+					} else if (userInput.equals("N")) {
 						System.out.println("Thank you for playing. Goodbye!");
 						break mainLoop;
 					} else {
