@@ -27,6 +27,10 @@ public class GuessGame {
 				for(;;){
 					//		System.out.println("Hello World");
 					System.out.println("Please enter a number between 1 and 20 inclusive");
+					while (! scan.hasNextInt()) {
+						scan.next();
+						System.out.println("You entered something other than a number. Please try again.");
+					}
 					userGuess = scan.nextInt();
 					if(userGuess < 1 || userGuess > 20){
 						System.out.println("This number is out of range");	
@@ -34,11 +38,11 @@ public class GuessGame {
 						/*
 						 * Pseudocode for client addition to spec
 						 * 
-						 * declare an array for keeping track of how many times a specific number has been guessed
+						 * Declare an array for keeping track of how many times a specific number has been guessed
 						 * 
 						 * IF the number already guessed
-						 *     increment element in guess count array for this number
-						 *     notify the user the number already guessed
+						 *     Increment element in guess count array for this number
+						 *     Notify the user the number already guessed
 						 *     Go to next iteration of loop
 						 * END IF
 						 */
