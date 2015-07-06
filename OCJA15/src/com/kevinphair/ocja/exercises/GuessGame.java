@@ -32,6 +32,10 @@ public class GuessGame {
 						System.out.println("This number is out of range");	
 					}else{
 						/*
+						 * Pseudocode for client addition to spec
+						 * 
+						 * declare an array for keeping track of how many times a specific number has been guessed
+						 * 
 						 * IF the number already guessed
 						 *     increment element in guess count array for this number
 						 *     notify the user the number already guessed
