@@ -38,10 +38,12 @@ public class NameApp {
 		}
 		System.out.println("\n");
 
-		String emanResu = "";
-		for (int i = userName.length() - 1; i >= 0; --i) {
-			emanResu += userName.charAt(i);
-		}
+//		String emanResu = "";
+//		for (int i = userName.length() - 1; i >= 0; --i) {
+//			emanResu += userName.charAt(i);
+//		}
+		
+		String emanResu = new StringBuilder(userName).reverse().toString();
 		
 		System.out.println("Print name backwards to console 100 times using for() loop:");
 		for (int i = 0; i < 100; ++i) {
