@@ -33,6 +33,17 @@ public class GuessGame {
 					//		System.out.println("Hello World");
 					// Get a number from the user
 					System.out.println("Please enter a number between 1 and 20 inclusive");
+
+					// Show the numbers that haven't been guessed yet
+					System.out.print("Numbers you can pick from are: ");
+					for (int i = 0; i < haveGuess.length; ++i) {
+						if (haveGuess[i] == 0) {
+							System.out.print(i + 1 + "  ");
+						}
+					}
+					System.out.println();
+
+					// Show the numbers that have already been guessed
 					if (guessCount > 0) {
 						System.out.print("So far you have already guessed: ");
 						for (int i = 0; i < haveGuess.length; ++i) {
