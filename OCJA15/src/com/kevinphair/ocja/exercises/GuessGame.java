@@ -23,7 +23,9 @@ public class GuessGame {
 			for(;;){
 				randNumber = rand.nextInt(19) + 1;
 				System.out.println(randNumber);
-
+				for(int i = 0; i < haveGuess.length; ++i) {
+					haveGuess[i] = 0;
+				}
 				for(;;){
 					//		System.out.println("Hello World");
 					System.out.println("Please enter a number between 1 and 20 inclusive");
@@ -33,7 +35,7 @@ public class GuessGame {
 					}
 					userGuess = scan.nextInt();
 					if(userGuess < 1 || userGuess > 20){
-						System.out.println("This number is out of range");	
+						System.out.println("Your guess is out of range");	
 					}else{
 						/*
 						 * Pseudocode for client addition to spec
