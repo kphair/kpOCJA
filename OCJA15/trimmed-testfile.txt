@@ -1,0 +1,602 @@
+output_bin "test.p",p_hdr,ends-p_hdr
+export_sym "test.sym",0
+
+; ZX81 ROM routines
+_KEYBOARD equ $02bb
+_DECODE equ $07bd
+_PRINT_AT equ $08f5
+
+; Pointers
+move_list equ 16454
+attack_reg equ 16512
+
+org $4009
+
+p_hdr:	db $00		;VERSN
+dw $0004        ;E_PPC
+dw dfile        ;D_FILE
+dw $43a5        ;DF_CC
+dw vars        	;VARS
+dw $437f        ;DEST
+dw $43b6        ;E_LINE
+dw $43c3        ;CH_ADD
+dw $0000        ;X_PTR
+dw $43c4        ;STKBOT
+dw $43c4        ;STKEND
+db $48          ;BREG
+dw $405d        ;MEM
+db $00          ;not used
+db $02          ;DF_SZ
+dw $0000        ;S_TOP
+db $bf,$fd	;LAST_K
+db $ff		;DB_ST
+db $37          ;MARGIN
+dw line1	;NXTLIN
+dw $fffE        ;OLDPPC
+db $02          ;FLAGX
+dw $fa7d        ;STRLEN
+dw $0c87        ;T_ADDR
+dw $e595        ;SEED
+dw $ddad        ;FRAMES
+db $00,$00      ;COORDS
+db $bc          ;PR_CC
+db $1c,$0a      ;S_POSN
+db $00          ;CDFLAG
+ds $20		;Print buffer
+db $76          ;N/L
+ds $1e		;Calculator memory area
+dw 0 		;not used
+
+line1:	db 0,1   	;line number
+dw (line2-line1)-4 ;line length
+db $EA   	; "REM"
+
+; Scan the keyboard waiting for an appropriate key to be pressed
+; The alphanumeric entry is then translated to a board address
+tkp	proc
+push hl
+test:	push bc		; Prepare to call ROM routine
+poll:	call _KEYBOARD	; Call ROM to poll keyboard
+ld b,h    	; keyboard matrix column mask
+ld c,l    	; keyboard row in matrix ($FF if no key)
+ld d,l
+inc d
+jr z,poll	; Try again if no key pressed
+call _DECODE	; Decode the scan code (returns key value in E and position in key table in HL)
+ld a,(hl)	; Get the decoded key from HL
+pop bc
+push bc
+chk:	cp c
+jr z,done
+inc c
+djnz chk
+pop bc
+jr test
+done:	pop bc
+pop hl
+ld (hl),a
+retp
+
+; Wait for key codes 29-36 and 38-45 (0-7)
+kybd:	ld bc,$081d
+call tkp
+dec hl
+ld c,38
+call tkp
+inc hl
+ld a,(hl)
+sub 28
+ld b,a
+ld c,11
+xor a
+kybd0:	add a,c
+djnz kybd0
+add a,97
+dec hl
+sub (hl)
+
+; Take the board address and determine whether the contents are different
+; from the current player's colour; empty; the board surround
+; or the same colour as the player
+str:	ld c,a
+ld l,c
+ld h,HIGH t_board
+str2:	ld a,(hl)
+ld b,1
+and 127
+cp 0
+jr z,str5
+inc b
+cp 118		; N/L
+jr z,str5
+cp 39
+jr c,str5
+ld a,(hl)	; '0' diff
+inc b
+ld l,55		; '1' empty
+add a,(hl)
+bit 7,a		; '2' wall
+jr z,str5
+ld b,0		; '3' same
+str5:	ld a,b
+ld l,c
+ret
+
+; Movement tables.
+; Each line of the playing area in the display file is 11 bytes wide
+; The number is added to the pointer to get the new position
+; e.g. '1' moves right, '-11' moves up, '-10' moves up and right, etc.
+
+t_king:
+db 1			; Right
+db 11			; Down
+db -1			; Left
+db -11			; Up
+t_bishop:
+db -10			; Up + right
+t_wpawn:
+db -12			; Up + left
+db 12			; Down + right
+db 10			; Down + left
+t_knight:
+db 13			; Down 1 + right 2
+db -13			; Up 1 + left 2
+db 21			; Down 2 + left 1
+db -21			; Up 2 + right 1
+db 23			; Down 2 + right 1
+db -23			; Up 2 + left 1
+db -9			; Up 1 + left 2
+db 9			; Down 1 + Left 2
+
+db 11			; Down
+db 10			; Down + left
+t_bpawn:
+db 12			; Down + right
+
+t_piececodes:
+db 54,55,39,51,53
+
+
+; Evaluate a piece's options.
+; Reset the move list. Check the piece on the current square and run
+; though all its possible moves, adding valid ones to the move list
+piece:
+xor a
+ld (move_list),a
+ld a,(hl)
+and 127
+cp 53		; 'P' Pawn
+jr z,pawn
+
+ld c,1		; Maximum number of squares a piece can move
+ld b,8		; Number of move types for piece
+
+ld hl,t_knight
+cp 51     	; 'N' Knight
+jr z,move
+
+ld l,LOW t_king		; King/Queen/Bishop
+cp 48		; 'K' King
+jr z,move
+
+ld c,b  	; Queen can move across the whole board
+cp 54		; 'Q' Queen
+jr z,move
+
+ld b,4		; Only the first four move types (up, down, left, right)
+cp 55		; 'R' Rook
+jr z,move
+
+ld l,LOW t_bishop	; 16611
+cp 39	; 'B' Bishop
+ret nz
+
+; Produce a list of all legal moves for the piece under consideration
+move:	ld a,e
+move0:	add a,(hl)
+push af
+push hl
+push bc
+cp 63
+jr c,move5
+cp 148
+jr nc,move5
+call str
+cp 2
+jr nc,move5
+push af
+call addlist
+pop af
+cp 0
+jr z,move5
+pop bc
+pop hl
+ld a,c
+cp 1
+jr z,move6
+pop af
+jr move0
+move5:	pop bc
+pop hl
+move6:	pop af
+inc hl
+djnz move
+ret
+
+; Produces a list of all possible legal moves including initial double moves
+pawn:
+ld a,(hl)	; Get piece code
+and 128		; see if it's inverted (white on black)
+ld hl,t_wpawn	; point to white pawn's moves table
+jr nz,wpawn
+ld l,LOW t_bpawn ; point to black pawn's moves table
+wpawn:	ld d,3		; 3 possible moves for pawn
+pawn1:	ld a,e
+pawn2:	add a,(hl)
+push hl
+push af
+cp 63
+jr c,pawn5
+cp 148
+jr nc,pawn5
+call str
+cp 0
+jr z,pawn6
+cp 1
+jr nz,pawn5
+ld a,d
+cp 1
+jr nz,pawn5
+call addlist
+ld a,e
+cp 82
+jr c,pawn7
+cp 126
+jr nc,pawn7
+
+pawn5:	pop af
+pop hl
+dec hl     	; move back along the movement table and check again
+dec d
+jr nz,pawn1
+ret
+
+pawn6:	ld a,d
+cp 1
+call nz,addlist
+jr pawn5
+
+pawn7:	pop af
+pop hl
+ld e,a
+jr pawn2
+
+
+; Provides a move score based on the following:
+; * the move would take a piece
+; * the move would take the piece out of danger
+; * the move would put the piece in danger
+; * the move would result in the computer checking
+; * the current square would not be left open to attack
+; The current move score is then compared with the current best
+; and if better, the move is saved as the new current best
+score:	push hl
+push bc
+push de
+push hl
+push bc
+ld d,l
+ld hl,16448
+call $0724	; LD (HL-4),BC,DE
+call psc
+ld a,b
+add a,h
+ld c,a
+pop af
+call psc
+pop hl
+call isattack
+jr nc,score0
+add a,b
+score0:	ld c,a
+pop hl
+pop de
+ld e,(hl)
+ld (hl),d
+push hl
+push de
+call isattack
+jr nc,score1
+sub b
+score1:	push af
+call chgmv
+call chk
+pop bc
+jr nc,score2
+inc b
+inc b
+score2:	pop de
+pop hl
+ld (hl),e
+pop hl
+call chg
+call isattack
+jr nc,score3
+dec b
+score3:	call chg
+call chgmv
+ld a,b
+ld hl,16444
+ld (hl),a
+ex de,hl
+ld hl,16449
+cp (hl)
+ret c
+ld bc,5
+jr shift0
+
+; Move the current move list to a safe location
+; while check is being evaluated. Call with carry
+; set to move the list back
+; Also used to shift the best move so far up into the move list
+shift:	ld hl,16483
+ld de,move_list
+ld bc,28
+jr c,shift1
+shift0:	ex de,hl
+shift1:	ldir
+ret
+
+; Locates the current mover's King and stores the position in the attack register
+chk:	ld a,(17207)
+add a,48
+ld hl,t_firstsq
+ld b,a
+cpir
+dec hl
+ld (attack_reg),hl
+
+; Determine whether the oppostition can attack the square in the attack register
+sqattack proc
+ld b,86
+ld hl,t_firstsq		; Start at the top left square (border)
+exsq:	inc hl     		; next square along
+push hl
+push bc
+ld e,l
+call str2
+cp 0			; Is the current piece's colour different to current player
+jr nz,nxtsq
+call chgmv
+ld l,e
+call piece
+call chgmv
+tstsq:	call test_list
+jr z,nxtsq
+ld hl,(attack_reg)
+cp l
+jr nz,tstsq
+pop bc
+pop hl
+scf
+ret
+nxtsq:	pop bc
+pop hl
+djnz exsq
+and a
+retp
+
+
+;Main control logic
+driver:	ld b,5
+ld a,8
+ld hl,t_lastsq
+cinp:	inc hl     		; Clear the input area
+ld (hl),a
+djnz cinp
+call kybd    		; Get a key
+cp 3
+jr nz,driver
+ld (16391),hl
+ld e,l
+call piece
+ld hl,t_lastsq+2	; 17313
+call kybd
+cp 2
+ex de,hl
+jr nc,driver
+driver1:
+call test_list		; is it a valid move
+jr z,driver
+cp c
+jr nz,driver1
+call pmove
+exx
+call chk   		; test for check
+exx
+jr c,driver5
+call chgsq
+call mpscan
+driver3:
+jr driver
+driver5:
+ld (hl),b
+ld a,c
+ld (de),a
+jr driver3
+
+; Tests move list to see if there are any moves
+test_list proc
+ld hl,move_list
+dec (hl)
+ld a,(hl)
+inc a
+ret z
+add a,l
+ld l,a
+ld a,(hl)
+retp
+
+; Adds current move to the current legal move list
+addlist proc
+ld hl,move_list
+inc (hl)
+ld a,(hl)
+add a,l
+ld l,a
+ld (hl),c
+retp
+
+; Scan the board for computer piece and using move and score, determine all legal moves and save the best
+mpscan:
+xor a
+ld (16449),a
+ld b,86
+ld hl,t_firstsq
+mpscan0:
+inc hl
+push hl
+push bc
+ld e,l
+call str2
+cp 3
+jr nz,mpscan3
+ld l,e
+ld (16391),hl
+call piece
+mpscan1:
+call test_list
+jr z,mpscan3
+ld e,a
+ld d,67
+call pmove
+exx
+and a
+call shift
+call chk
+exx
+ld (hl),b
+ld a,c
+ld (de),a
+jr c,mpscan2
+call score
+mpscan2:
+scf
+call shift
+jr mpscan1
+mpscan3:
+pop bc
+pop hl
+djnz mpscan0
+ld a,(16449)
+cp 0
+stop:	jr z,stop	; Game end
+ld hl,16453
+ld a,(hl)
+dec hl
+dec hl
+ld e,(hl)
+ld d,67
+ld (de),a
+dec hl
+ld l,(hl)
+ld h,d
+
+chgsq:	bit 0,l
+ld (hl),128
+jr z,chgsq0
+ld (hl),0
+chgsq0:	call chgmv
+ret
+
+; Invert a square
+chgmv:	ld hl,t_board
+chg:	ld a,(hl)
+add a,128
+ld (hl),a
+ret
+
+pmove proc
+ld hl,(16391)
+ld a,(de)
+ld c,a
+ld a,(hl)
+ld (hl),0
+ld (de),a
+ld b,a
+retp
+
+; Returns a score for a chess piece
+; Queen=5, Rook=4, Bishop=3, kNight=2, Pawn=1
+psc	proc
+and 127
+ld hl,t_piececodes
+ld b,5
+cmp:	cp (hl)
+ret z
+inc hl
+djnz cmp
+ld a,b
+retp
+
+; Determines whether the current square is being attacked
+isattack proc
+ld a,l
+exx
+ld (attack_reg),a
+call sqattack
+exx
+ld a,c
+retp
+
+db $76			; N/L for REM statement
+
+line2:
+
+_17188:	db $00,$02		; Line number (2)
+db $02,$00		; Line length
+db $e4,$76		; "SLOW"
+
+_17194:	db $00,$03		; Line number (3)
+db $04,$00		; Line length
+db $f9,$d4,$3d,$76	; "RAND USR X"
+
+dfile:
+
+_17202: db $76
+db $76
+db $76
+db $76
+db $76
+t_board:
+_17207:	db $80,$08,$a9,$b7,$ad,$76				; /DRH
+t_firstsq equ .+1
+_17213:	db $1d,$08,$37,$33,$27,$30,$36,$27,$33,$37,$76	;1/RNBKQBNR
+_17224:	db $1e,$08,$35,$35,$35,$35,$80,$35,$35,$35,$76	;2/PPPPPPPP
+_17235:	db $1f,$08,$00,$80,$00,$80,$35,$80,$00,$80,$76	;3/
+_17246:	db $20,$08,$80,$00,$80,$00,$80,$00,$80,$00,$76	;4/
+_17257:	db $21,$08,$00,$80,$00,$80,$00,$80,$00,$80,$76	;5/
+_17268:	db $22,$08,$80,$00,$80,$00,$80,$00,$80,$00,$76	;6/
+_17279:	db $23,$08,$b5,$b5,$b5,$b5,$b5,$b5,$b5,$b5,$76	;7/PPPPPPPP
+_17290:	db $24,$08,$b7,$b3,$a7,$b0,$b6,$a7,$b3,$b7,$76	;8/RNBKQBNR
+_17301:	db $08,$08,$2d,$2c,$2b,$2a,$29,$28,$27,$26,$76	;//HGFEDCBA
+t_lastsq equ .-1
+_17312:	db $08,$08,$08,$08,$08,$76				;/////
+_17318:	db $76
+db $76
+db $76
+db $76
+db $76
+db $76
+db $76
+db $76
+db $76
+
+;- BASIC-Variables ----------------------------------------
+vars:
+_17327: db $7d,$8f,$04,$7e,$00,$00
+db $80
+
+;- End of program area ----------------------------
+
+ends:
