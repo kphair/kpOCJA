@@ -16,8 +16,10 @@ public class ReturnApp {
 		}
 		numForTesting = scan.nextInt();
 		System.out.println("Is the number even? " + isEven(numForTesting));
-		if (isEven(numForTesting) == false) {
+		if (! isEven(numForTesting)) {
 			System.out.println("Is the number prime? " + isPrime(numForTesting));
+		} else {
+			System.out.println("Not a prime number");
 		}
 
 	}
@@ -30,7 +32,7 @@ public class ReturnApp {
 	private static boolean isPrime(int testNum) {
 
 		if (Math.abs(testNum) > 3) {
-			for (int i = 3; i < testNum; i+= 2) {
+			for (int i = 3; i < (testNum / 2); i+= 2) {
 				if ((float)testNum / (float)i == testNum / i)
 					return false;
 			}
