@@ -5,15 +5,26 @@ import java.util.Scanner;
 
 public class WhileLoopGameApp {
 
-	static String[] attackTypes = { "viciously attacked", "crushed", "mauled", "eaten" };
+	static String[] senseTypes = {	"sense something moving just outside your vision",
+								   	"hear a rustling noise behind you",
+									"feel something brush against your ankle",
+	};
+	static String[] attackTypes = {	"viciously attacked",
+									"crushed",
+									"mauled",
+									"eaten",
+									"disemboweled",
+	};
 	static String[] monsterTypes = { "large snake", 
 									"wild boar", 
 									"hippopotamus", 
+									"rabid Mario", 
+									"Spice-crazed sandworm", 
 									"sabre-toothed tiger", 
 									"carnivorous plant",
 									"And & Dec",
+									"indescribable, pulpous mass",
 	};
-
 	
 	public static void main(String[] args) {
 
@@ -23,7 +34,8 @@ public class WhileLoopGameApp {
 		
 		Scanner scan = new Scanner(System.in);
 		
-		System.out.println("How many lives do you want in this game? (valid options are from 1 to 10)");
+		System.out.println("Welcome to The Jungle!");
+		System.out.println("How many lives do you want? (valid options are from 1 to 10)");
 		
 		do {
 			while (! scan.hasNextInt()) {
@@ -32,31 +44,20 @@ public class WhileLoopGameApp {
 			numGames = scan.nextInt();
 			if ((numGames < 1) || (numGames > MAX_GAMES)) {
 				System.out.println(numGames + " is an invalid number. Please try again...");
-			} else {
-				break;
+				numGames = 0;
 			}
-		} while (true);
+		} while (numGames == 0);
 
+		System.out.println("Thank you. You will have " + numGames + " chances to survive among the beasts.");
+		System.out.println();
+		
 		currentGame = 1;
-		System.out.println("Welcome to The Jungle!");
 		while (numGames > 0) {
-			System.out.println("This is turn number " + currentGame);
-			switch (new Random().nextInt(3)) {
-				case 0:
-					System.out.print("  You sense something moving just outside your vision");
-					break;
-
-				case 1:
-					System.out.print("  You hear a rustling noise behind you");
-					break;
-					
-				case 2:
-					System.out.print("  You feel something brush against your ankle");
-					break;
-			}
+			System.out.print("Turn number " + currentGame + " - ");
+			System.out.print("You " + senseTypes[new Random().nextInt(senseTypes.length)]);
 			try {
 				for (int i = 0; i < 3; ++i) {
-					System.out.print(".");
+					System.out.print(" .");
 					Thread.sleep(2000);
 				}
 			} catch (Exception e) {
@@ -65,13 +66,13 @@ public class WhileLoopGameApp {
 				System.out.println();
 			}
 			System.out.print("  * You were " + attackTypes[new Random().nextInt(attackTypes.length)]);
-			System.out.println(" by a " + monsterTypes[new Random().nextInt(5)] + "!!!");
+			System.out.print(" by a " + monsterTypes[new Random().nextInt(monsterTypes.length)] + "!");
 			System.out.println("  You are now dead.");
 			System.out.println();
 			numGames--;
 			currentGame++;
 		}
-		System.out.println("You have been evicted from The Jungle. GAME OVER");
+		System.out.println("GAME OVER");
 		
 		scan.close();
 	}
