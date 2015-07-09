@@ -9,10 +9,11 @@ public class BreakApp {
 		float targetNumber = 0.0f;
 		final float MAX_NUM = 100.0f;
 		
-		Scanner scan = new Scanner(System.in);
 		
 		System.out.println("This program will count from 1 to 100 in steps of 0.1.");
 		System.out.println("Please enter a number you would like to stop at (e.g. 4, 7.2, 42.9, etc.)");
+
+		Scanner scan = new Scanner(System.in);
 		do {
 			while (! scan.hasNextFloat()) {
 				scan.next();
