@@ -10,6 +10,9 @@ import javax.swing.Timer;
  * 
  * There are also some image functions to load an image from disk
  * and extract tiles from it
+ * 
+ * This is a development from the moving balls demo with a lot of
+ * lessons learned and a lot of tidying up of code done too
  */
 public class Testapp {
 	
