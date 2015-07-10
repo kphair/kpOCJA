@@ -33,8 +33,7 @@ public class ReturnApp {
 
 		if (Math.abs(testNum) > 3) {
 			for (int i = 3; i < (testNum / 2); i+= 2) {
-				if ((float)testNum / (float)i == testNum / i)
-					return false;
+				if (testNum % i == 0) return false;
 			}
 		} else if (testNum == 3) {
 			return true;
