@@ -1,4 +1,4 @@
-package com.kevinphair.graphics.spritetest;
+package com.kevinphair.graphics.sprites;
 
 import javax.swing.Timer;
 
@@ -14,7 +14,7 @@ import javax.swing.Timer;
  * This is a development from the moving balls demo with a lot of
  * lessons learned and a lot of tidying up of code done too
  */
-public class Testapp {
+public class SpriteDemoApp {
 	
 	private static GWindow window;
 
@@ -26,7 +26,7 @@ public class Testapp {
 
 		window.loadSprites();
 		
-		// Set up a timer registered to the ActionListener the window
+		// Set up a timer registered to the window
 		Timer t = new Timer(1000 / 60, window);			// 60 fps
 		t.setActionCommand("update");
 		t.start();

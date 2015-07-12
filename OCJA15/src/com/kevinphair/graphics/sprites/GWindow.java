@@ -1,4 +1,4 @@
-package com.kevinphair.graphics.spritetest;
+package com.kevinphair.graphics.sprites;
 
 import java.awt.Color;
 import java.awt.Dimension;
