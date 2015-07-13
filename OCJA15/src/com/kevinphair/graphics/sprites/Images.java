@@ -14,8 +14,8 @@ public class Images {
 
 	/**
 	 * Loads an image and returns that image
-	 * @param path
-	 * @return
+	 * @param path to image
+	 * @return reference to image object in memory
 	 */
 	public BufferedImage loadImage(String path) {
 		BufferedImage b = null;
