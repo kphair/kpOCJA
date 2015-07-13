@@ -1,3 +1,6 @@
+/**
+ * Experiment to check precedence and order of operation of post-increment operator
+ */
 package com.kevinphair.ocja.experiments;
 
 public class PostIncTest {
@@ -6,7 +9,7 @@ public class PostIncTest {
 
 		int age = 0;
 		
-		System.out.println("Age is " + age++ + " then " + age++);
+		System.out.println("Age++ is " + age++ + age++);
 		System.out.println("Age is now " + age);
 	}
 
