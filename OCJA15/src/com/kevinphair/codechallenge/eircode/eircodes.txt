@@ -14,3 +14,82 @@ Note: There may be changes to requirements.
 12:00pm - demo time
 
 Valid characters are 0-9,A,C,D,E,F,H,K,N,P,R,T,V,W,X,Y
+
+Updated Requirements:
+
+1)
+	/**
+	 *
+	 * Include Javadoc style comments at the top of each class you have created.
+	 *
+	 */
+
+2) Modify your program to include the following Eircodes and addresses:
+D02 XE81	HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2
+D02 P656	CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2
+
+3) Update your program to allow the user to enter an address, or partial address, and respond with the corresponding Eircode, or an error message as appropriate.
+
+4) Give the user an option to find all addresses in a given Dublin postcode e.g. D01-D24
+
+5) Provide a facility for a user to enter up to 3 custom Eircode & Address combinations
+
+
+Ensure your code is pushed regularly to github
+Keep your truck number high
+
+3:00 demo time
+
+
+
+PSEUDOCODE FOR UPDATED REQUIREMENTS:
+accept user choice and depending on it perform actions:
+	1) search for address using eircode as user input
+		
+	2) search for eircode using user input as address search
+		Declare a string named addressInput.
+		Prompt user for address or partial address.
+		Accept user input and store it in addressInput.
+		
+		DECLARE index as integer
+		FOR index = 0 to end of address array
+			IF address array[index] matches addressInput
+				break;
+			increment index
+		END FOR
+		
+		IF index passed address array size
+			display "Not found" error
+		ELSE
+			display matching element from eircodes array[index]
+		END IF
+			
+	3) search for all addresses by first 3 characters of eircode
+		DECLARE areaInput as string
+		DO
+			prompt user for area search string (3 characters)
+			get user input into areaInput
+		UNTIL areaInput is valid
+		
+		DECLARE index as integer
+		FOR index = 0 to end of eircode array
+			IF first 3 characters of eircode array element 'index' matches areaInput
+				display eircode array[index} and matching address array[index]
+			END IF
+			increment index
+		END FOR
+		
+	4) add up to 3 new combinations of eircode and addresses (more than 3?)
+		DECLARE newEircode as string
+		DECLARE newAddress as string
+		DECLARE index as integer
+		DO
+			DO
+				prompt for new eircode
+				get user input into newEircode
+			UNTIL eircode is a valid
+			FOR index = 0 to end of eircode array
+				if eircode array[index] matches newEircode
+		
+		
+		
