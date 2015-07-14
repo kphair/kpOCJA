@@ -6,6 +6,9 @@ import java.util.Scanner;
  */
 public class EircodeApp {
 
+	/* 
+	 * Set up some globals for reuse between all methods
+	 */
 	static String userInput;
 	static String addressInput;
 	static Scanner scan;
@@ -13,7 +16,6 @@ public class EircodeApp {
 	/**
 	 * Set up the eircode and address database
 	 */
-	
 	static String [] eircodes = {"D02 Y006",
 								"D04 C932",
 								"D15 XR2R",
@@ -31,8 +33,8 @@ public class EircodeApp {
 									"CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2"
 								};
 
-	/** Start of program
-	 * 
+	/** 
+	 * Start of program
 	 */
 	public static void main(String[] args) {
 		
@@ -40,7 +42,6 @@ public class EircodeApp {
 		
 		mainloop:
 		while (true) {
-
 			System.out.println();
 			System.out.println("Please select from the following options ");
 			System.out.println("1: Search database by eircode");
@@ -49,7 +50,6 @@ public class EircodeApp {
 			System.out.println("4: Add new eircode and address");
 			System.out.println("5: Dump database to console");
 			System.out.println("6: Quit");
-
 			System.out.print("Please enter an option: ");
 
 			while(true) {
@@ -148,34 +148,12 @@ public class EircodeApp {
 				System.out.println("Found " + eircodes[i] + " - " + addresses[i]);
 			}
 		}
-		
 	}
-
-	private static void findByAddress() {
-		System.out.print("Please enter part of the address: ");
-		while(true){
-			while (!scan.hasNextLine());
-			userInput = scan.nextLine();
-			if(userInput.length() > 0) break;
-			}
-		
-		int i;
-		boolean foundMatch = false;
-		for(i = 0; i < addresses.length; i++){
-			if(addresses[i].toLowerCase().contains(userInput.toLowerCase())){
-				System.out.println("Eircode for " + addresses[i] + " is " + eircodes[i]);
-				foundMatch = true;
-			}
-		}
-		
-		if(foundMatch == false){
-			System.out.println("Address was not found ");
-		}
-	}
-
+	
 	private static void findByEircode() {
+		
 		/**
-		 *  create a new Scanner object to get user input
+		 * Create a new Scanner object to get user input
 		 * prompt user for input and get input to string
 		 */
 		System.out.print("Please enter eircode: ");
@@ -207,6 +185,27 @@ public class EircodeApp {
 			System.out.println("The address matching to '" + userInput + "' is '" + addresses[i] + "'");
 		}
 		
+	}
+
+	private static void findByAddress() {
+		System.out.print("Please enter part of the address: ");
+		while(true){
+			while (!scan.hasNextLine());
+			userInput = scan.nextLine();
+			if(userInput.length() > 0) break;
+		}
+		
+		boolean foundMatch = false;
+		for(int i = 0; i < addresses.length; i++){
+			if(addresses[i].toLowerCase().contains(userInput.toLowerCase())){
+				System.out.println("Eircode for " + addresses[i] + " is " + eircodes[i]);
+				foundMatch = true;
+			}
+		}
+		
+		if(foundMatch == false){
+			System.out.println("Address was not found ");
+		}
 	}
 
 	/**
