@@ -54,7 +54,7 @@ accept user choice and depending on it perform actions:
 		DECLARE index as integer
 		FOR index = 0 to end of address array
 			IF address array[index] matches addressInput
-				break;
+				BREAK
 			increment index
 		END FOR
 		
@@ -89,7 +89,30 @@ accept user choice and depending on it perform actions:
 				get user input into newEircode
 			UNTIL eircode is a valid
 			FOR index = 0 to end of eircode array
-				if eircode array[index] matches newEircode
+				IF eircode array[index] matches newEircode
+					display a message to say eircode already in database
+					BREAK					
+				END IF
+			END FOR
+		UNTIL index > eircode array size
+		
+		DO
+			prompt for new address
+			get user input into newAddress
+		UNTIL address is valid
+		
+		extend eircodes array 
+		set last element of eircode array with newEircode
+		extend addresses array
+		set last element of address array with newAddress
 		
 		
-		
+		NEW METHOD extendArray(oldArray) RETURNS newArray
+			String[] newArray = String[oldArray.length + 1]
+			FOR index = 0 to oldArray.length
+				newArray[index] = oldArray[index]
+			END FOR
+			oldArray = newArray
+		END METHOD
+
+			 
