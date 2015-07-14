@@ -19,89 +19,97 @@ public class EircodeApp {
 			"10 Burlington Road, Dublin 4",
 			"Dunsink Observatory, Dunsink Lane, Dublin 15",
 			"26 KINCORA ROAD, Clontarf, Dublin 3.",
-	"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24",
+			"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24",
 			"HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2",
 			"CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2"};
+
+	/** Start of program
+	 * 
+	 */
 	public static void main(String[] args) {
 		
+		scan = new Scanner(System.in);
 		
+		mainloop:
+		while (true) {
 
-// 		display "1: Search database by eircode"
-// 		display "2: Search database by address"
-// 		display "3: Search database by area"
-// 		display "4: Add new eircode and address"
-// 		display "5: Dump database to console"
-// 		display "6: Quit"
-		
-		System.out.println("Please select from the following options ");
-		System.out.println("1: Search database by eircode");
-		System.out.println("2: Search database by address");
-		System.out.println("3: Search database by area");
-		System.out.println("4: Add new eircode and address");
-		System.out.println("5: Dump database to console");
-		System.out.println("6: Quit");
-		
-		 scan = new Scanner(System.in);
-		 System.out.print("Please enter an option: ");
-		 
-		 while(true) {
-			 userInput = scan.nextLine();
-			 
-			 if(userInput.length() == 1 && userInput.charAt(0) >= '1' && userInput.charAt(0) <= '6'){
-				break;	 
-			 }
-			 else{
-				 System.out.println("Invalid option entered, please try again ");
-			 }
-					 
-		 }
-		 
-		 switch(userInput){
-			 case "1":findByEircode(); break;
-			 case "2":findByAddress(); break;
-			 case "3":findByArea(); break;
-			 case "4":addNewEntry(); break;
-			 case "5":dumpAll(); break;
-			 case "6":quit(); break;
-		 }
+			System.out.println();
+			System.out.println("Please select from the following options ");
+			System.out.println("1: Search database by eircode");
+			System.out.println("2: Search database by address");
+			System.out.println("3: Search database by area");
+			System.out.println("4: Add new eircode and address");
+			System.out.println("5: Dump database to console");
+			System.out.println("6: Quit");
+
+			System.out.print("Please enter an option: ");
+
+			while(true) {
+				while (!scan.hasNextLine());
+				userInput = scan.nextLine();
+				System.out.println("*" + userInput);
+
+				if(userInput.length() == 1 && userInput.charAt(0) >= '1' && userInput.charAt(0) <= '6'){
+					break;	 
+				}
+				else{
+					System.out.println("Invalid option entered, please try again ");
+				}
+			}
+
+			switch(userInput){
+				case "1":findByEircode(); break;
+				case "2":findByAddress(); break;
+				case "3":findByArea(); break;
+				case "4":addNewEntry(); break;
+				case "5":dumpAll(); break;
+				case "6":quit(); break mainloop;
+				
+			}
+			
+		}
+	scan.close();
+
 	}
 	
 	private static void dumpAll() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Dump of eircode database");
+		System.out.println("------------------------");
+		for(int i = 0; i < eircodes.length; i++) {
+			System.out.println(eircodes[i] + " - " + addresses[i]);
+		}
 	}
 
 	private static void quit() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Thank you and goodbye.");
 	}
 
 	private static void addNewEntry() {
 		// TODO Auto-generated method stub
 		String newEircode;
 		String newAddress;
-		int i;
+		//int i;
 		
 		scan = new Scanner(System.in);
 		System.out.print("Please enter a new eircode : ");
 		while(true){
+			while (!scan.hasNextLine());
 			userInput = scan.nextLine();
 			if(userInput.length() == 8) break;
 			
 			System.out.println("'" + userInput + "' is not a valid eircode, please try again" );
 		}
-		scan.close();
 		newEircode = userInput;
 		
-		scan = new Scanner(System.in);
 		System.out.print("Please enter a new address : ");
 		while(true){
+			while (!scan.hasNextLine());
 			userInput = scan.nextLine();
 			if(userInput.length() > 0) break;
 			
 			System.out.println("'" + userInput + "' is not a valid address, please try again" );
 		}
-		scan.close();
+
 		newAddress = userInput;
 		eircodes = extendArray(eircodes);
 		addresses = extendArray(addresses);
@@ -119,20 +127,17 @@ public class EircodeApp {
 	}
 
 	private static void findByArea() {
-		// TODO Auto-generated method stub
-		scan = new Scanner(System.in);
+
 		System.out.print("Please enter the first three digits of the eircode: ");
 		while(true){
+			while (!scan.hasNextLine());
 			userInput = scan.nextLine();
 			if(userInput.length() == 3) break;
 			
 			System.out.println("'" + userInput + "' is not a valid area code, please try again" );
 		}
-		scan.close();
 		
-		int i;
-		
-		for(i = 0; i < eircodes.length; i++){
+		for(int i = 0; i < eircodes.length; i++){
 //			if(addresses[i].contains(userInput.i)
 			if(eircodes[i].substring(0, 3).toLowerCase().contains(userInput.toLowerCase())){
 				System.out.println("Found " + eircodes[i] + " - " + addresses[i]);
@@ -142,21 +147,18 @@ public class EircodeApp {
 	}
 
 	private static void findByAddress() {
-		// TODO Auto-generated method stub
-		scan = new Scanner(System.in);
 		System.out.print("Please enter part of the address: ");
 		while(true){
+			while (!scan.hasNextLine());
 			userInput = scan.nextLine();
 			if(userInput.length() > 0) break;
 			}
-		scan.close();
 		
 		int i;
-		
+
 		for(i = 0; i < addresses.length; i++){
-//			if(addresses[i].contains(userInput.i)
 			if(addresses[i].toLowerCase().contains(userInput.toLowerCase())){
-				break;
+				System.out.println("Eircode for " + addresses[i] + " is " + eircodes[i]);
 			}
 		}
 		
@@ -171,20 +173,18 @@ public class EircodeApp {
 	}
 
 	private static void findByEircode() {
-		// TODO Auto-generated method stub
 		/**
 		 *  create a new Scanner object to get user input
 		 * prompt user for input and get input to string
 		 */
-		scan = new Scanner(System.in);
 		System.out.print("Please enter eircode: ");
 		while(true) {
+			while (!scan.hasNextLine());
 			userInput = scan.nextLine().toUpperCase();
 			if (userInput.length() == 8 ) break;
 			System.out.println("Code needs to be 8 characters in length, you entered '" + userInput + "'");
 			System.out.println("Please try again.");
 		}
-		scan.close();							// Scanner no longer needed
 		
 		/**
 		 * Scan the eircode array for a matching code using an index
