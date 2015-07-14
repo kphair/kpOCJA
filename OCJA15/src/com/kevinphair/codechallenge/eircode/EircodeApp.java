@@ -6,20 +6,22 @@ import java.util.Scanner;
  */
 public class EircodeApp {
 
+	static String userInput;
+	static String addressInput;
+	static Scanner scan;
+	
+	/**
+	 * Set up the eircode and address database
+	 */
+	
+	static String [] eircodes = {"D02 Y006", "D04 C932", "D15 XR2R", "D03 RR27", "D24 H510"};
+	static String [] addresses = {"5 Merrion Square North, Dublin 2", 
+			"10 Burlington Road, Dublin 4",
+			"Dunsink Observatory, Dunsink Lane, Dublin 15",
+			"26 KINCORA ROAD, Clontarf, Dublin 3.",
+	"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24"};
 	public static void main(String[] args) {
-		String userInput;
-		String addressInput;
-		Scanner scan;
 		
-		/**
-		 * Set up the eircode and address database
-		 */
-		String [] eircodes = {"D02 Y006", "D04 C932", "D15 XR2R", "D03 RR27", "D24 H510"};
-		String [] addresses = {"5 Merrion Square North, Dublin 2", 
-								"10 Burlington Road, Dublin 4",
-								"Dunsink Observatory, Dunsink Lane, Dublin 15",
-								"26 KINCORA ROAD, Clontarf, Dublin 3.",
-								"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24"};
 		
 
 // 		display "1: Search database by eircode"
@@ -43,12 +45,81 @@ public class EircodeApp {
 		 while(true) {
 			 userInput = scan.nextLine();
 			 
+			 if(userInput.length() == 1 && userInput.charAt(0) >= '1' && userInput.charAt(0) <= '6'){
+				break;	 
+			 }
+			 else{
+				 System.out.println("Invalid option entered, please try again ");
+			 }
+					 
 		 }
+		 
+		 switch(userInput){
+			 case "1":findByEircode(); break;
+			 case "2":findByAddress(); break;
+			 case "3":findByArea(); break;
+			 case "4":addNewEntry(); break;
+			 case "5":dumpAll(); break;
+			 case "6":quit(); break;
+		 }
+	}
+	
+	private static void dumpAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void quit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void addNewEntry() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void findByArea() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void findByAddress() {
+		// TODO Auto-generated method stub
+		scan = new Scanner(System.in);
+		System.out.print("Please enter part of the address: ");
+		while(true){
+			userInput = scan.nextLine();
+			if(userInput.length() > 0) break;
+			}
+		scan.close();
+		
+		int i;
+		
+		for(i = 0; i < addresses.length; i++){
+//			if(addresses[i].contains(userInput.i)
+			if(addresses[i].toLowerCase().contains(userInput.toLowerCase())){
+				break;
+			}
+		}
+		
+		if(i == addresses.length){
+			System.out.println("Address was not found ");
+		}
+		else{
+			System.out.println("Eircode for " + addresses[i] + " is " + eircodes[i]);
+		}
+		
+		
+	}
+
+	private static void findByEircode() {
+		// TODO Auto-generated method stub
 		/**
 		 *  create a new Scanner object to get user input
 		 * prompt user for input and get input to string
 		 */
-		 scan = new Scanner(System.in);
+		scan = new Scanner(System.in);
 		System.out.print("Please enter eircode: ");
 		while(true) {
 			userInput = scan.nextLine().toUpperCase();
@@ -77,8 +148,9 @@ public class EircodeApp {
 			System.out.println("Eircode found");
 			System.out.println("The address matching to '" + userInput + "' is '" + addresses[i] + "'");
 		}
+		
 	}
-	
+
 	/**
 	 * Validate the supplied string to see if it's an eircode
 	 * Assumptions:
