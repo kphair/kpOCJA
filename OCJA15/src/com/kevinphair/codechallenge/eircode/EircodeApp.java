@@ -14,12 +14,14 @@ public class EircodeApp {
 	 * Set up the eircode and address database
 	 */
 	
-	static String [] eircodes = {"D02 Y006", "D04 C932", "D15 XR2R", "D03 RR27", "D24 H510"};
+	static String [] eircodes = {"D02 Y006", "D04 C932", "D15 XR2R", "D03 RR27", "D24 H510", "D02 XE81", "D02 P656"};
 	static String [] addresses = {"5 Merrion Square North, Dublin 2", 
 			"10 Burlington Road, Dublin 4",
 			"Dunsink Observatory, Dunsink Lane, Dublin 15",
 			"26 KINCORA ROAD, Clontarf, Dublin 3.",
-	"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24"};
+	"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24",
+			"HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2",
+			"CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2"};
 	public static void main(String[] args) {
 		
 		
@@ -76,6 +78,43 @@ public class EircodeApp {
 
 	private static void addNewEntry() {
 		// TODO Auto-generated method stub
+		String newEircode;
+		String newAddress;
+		int i;
+		
+		scan = new Scanner(System.in);
+		System.out.print("Please enter a new eircode : ");
+		while(true){
+			userInput = scan.nextLine();
+			if(userInput.length() == 8) break;
+			
+			System.out.println("'" + userInput + "' is not a valid eircode, please try again" );
+		}
+		scan.close();
+		newEircode = userInput;
+		
+		scan = new Scanner(System.in);
+		System.out.print("Please enter a new address : ");
+		while(true){
+			userInput = scan.nextLine();
+			if(userInput.length() > 0) break;
+			
+			System.out.println("'" + userInput + "' is not a valid address, please try again" );
+		}
+		scan.close();
+		newAddress = userInput;
+		eircodes = extendArray(eircodes);
+		addresses = extendArray(addresses);
+		eircodes[eircodes.length -1] = newEircode;
+		addresses[addresses.length -1] = newAddress;
+	}
+	
+	private static String [] extendArray(String [] oldArray){
+		String [] newArray = new String[oldArray.length +1];
+		for(int i = 0; i < oldArray.length; i++){
+			newArray[i] = oldArray[i];
+		}
+		return newArray;
 		
 	}
 
