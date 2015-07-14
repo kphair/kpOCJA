@@ -155,21 +155,17 @@ public class EircodeApp {
 			}
 		
 		int i;
-
+		boolean foundMatch = false;
 		for(i = 0; i < addresses.length; i++){
 			if(addresses[i].toLowerCase().contains(userInput.toLowerCase())){
 				System.out.println("Eircode for " + addresses[i] + " is " + eircodes[i]);
+				foundMatch = true;
 			}
 		}
 		
-		if(i == addresses.length){
+		if(foundMatch == false){
 			System.out.println("Address was not found ");
 		}
-		else{
-			System.out.println("Eircode for " + addresses[i] + " is " + eircodes[i]);
-		}
-		
-		
 	}
 
 	private static void findByEircode() {
@@ -192,7 +188,7 @@ public class EircodeApp {
 		 */
 		int i = 0;								// Use i as an index into the database
 		for(i = 0; i < eircodes.length; i++){
-			if(eircodes[i].equals(userInput)){
+			if(eircodes[i].toLowerCase().equals(userInput.toLowerCase())){
 				break;
 			}
 		}
