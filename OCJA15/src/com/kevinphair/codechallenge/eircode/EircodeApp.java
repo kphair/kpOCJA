@@ -27,7 +27,7 @@ public class EircodeApp {
 		System.out.print("Please enter eircode: ");
 		while(true) {
 			userInput = scan.nextLine().toUpperCase();
-			if (userInput.length() == 8) break;
+			if (userInput.length() == 8 ) break;
 			System.out.println("Code needs to be 8 characters in length, you entered '" + userInput + "'");
 			System.out.println("Please try again.");
 		}
@@ -52,6 +52,29 @@ public class EircodeApp {
 			System.out.println("Eircode found");
 			System.out.println("The address matching to '" + userInput + "' is '" + addresses[i] + "'");
 		}
+	}
+	
+	/*
+	 * Validate the supplied string to see if it's an eircode
+	 * Assumptions:
+	 * If the string is 8 characters, it should have a space as the 4th character
+	 * If the string is 7 characters, it should have no spaces in it
+	 * If the string is less than 7 or more than 8 it will considered invalid
+	 * If the string is 8 characters, it will be assumed that the space could be anywhere for a close match
+	 * 
+	 * @returns 0 for no match, 1 for a close match, 2 for a perfect match
+	 * 
+	 */
+	public int validateEircode(String eircode) {
+		
+		if (eircode.length() < 7 || eircode.length() > 8) {
+			return 0;											// No match
+		}
+		
+		if (eircode.length() == 8) || eircode.replace(" ", "" != 7) {
+			
+		}
+		
 	}
 
 }
