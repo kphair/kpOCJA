@@ -50,7 +50,7 @@ public class EircodeApp {
 		// We have a match. Get the address from the addresses array using the index 
 		else{
 			System.out.println("Eircode found");
-			System.out.println(addresses[i]);
+			System.out.println("The address matching to '" + userInput + "' is '" + addresses[i] + "'");
 		}
 	}
 
