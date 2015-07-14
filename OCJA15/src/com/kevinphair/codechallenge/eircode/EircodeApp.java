@@ -14,14 +14,22 @@ public class EircodeApp {
 	 * Set up the eircode and address database
 	 */
 	
-	static String [] eircodes = {"D02 Y006", "D04 C932", "D15 XR2R", "D03 RR27", "D24 H510", "D02 XE81", "D02 P656"};
+	static String [] eircodes = {"D02 Y006",
+								"D04 C932",
+								"D15 XR2R",
+								"D03 RR27", 
+								"D24 H510",
+								"D02 XE81",
+								"D02 P656"
+								};
 	static String [] addresses = {"5 Merrion Square North, Dublin 2", 
-			"10 Burlington Road, Dublin 4",
-			"Dunsink Observatory, Dunsink Lane, Dublin 15",
-			"26 KINCORA ROAD, Clontarf, Dublin 3.",
-			"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24",
-			"HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2",
-			"CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2"};
+									"10 Burlington Road, Dublin 4",
+									"Dunsink Observatory, Dunsink Lane, Dublin 15",
+									"26 KINCORA ROAD, Clontarf, Dublin 3.",
+									"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24",
+									"HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2",
+									"CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2"
+								};
 
 	/** Start of program
 	 * 
@@ -47,7 +55,6 @@ public class EircodeApp {
 			while(true) {
 				while (!scan.hasNextLine());
 				userInput = scan.nextLine();
-				System.out.println("*" + userInput);
 
 				if(userInput.length() == 1 && userInput.charAt(0) >= '1' && userInput.charAt(0) <= '6'){
 					break;	 
@@ -64,7 +71,6 @@ public class EircodeApp {
 				case "4":addNewEntry(); break;
 				case "5":dumpAll(); break;
 				case "6":quit(); break mainloop;
-				
 			}
 			
 		}
@@ -85,7 +91,6 @@ public class EircodeApp {
 	}
 
 	private static void addNewEntry() {
-		// TODO Auto-generated method stub
 		String newEircode;
 		String newAddress;
 		//int i;
@@ -227,5 +232,4 @@ public class EircodeApp {
 		}
 		return 0;
 	}
-
 }

@@ -44,8 +44,16 @@ Keep your truck number high
 
 PSEUDOCODE FOR UPDATED REQUIREMENTS:
 accept user choice and depending on it perform actions:
-	1) search for address using eircode as user input
-		
+
+ 	1) Add a user menu to the program
+ 	
+ 		display "1: Search database by eircode"
+ 		display "2: Search database by address"
+ 		display "3: Search database by area"
+ 		display "4: Add new eircode and address"
+ 		display "5: Dump database to console"
+ 		display "6: Quit"
+ 		
 	2) search for eircode using user input as address search
 		Declare a string named addressInput.
 		Prompt user for address or partial address.
