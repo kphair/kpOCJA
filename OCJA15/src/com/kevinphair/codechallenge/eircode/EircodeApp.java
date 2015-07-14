@@ -81,6 +81,24 @@ public class EircodeApp {
 
 	private static void findByArea() {
 		// TODO Auto-generated method stub
+		scan = new Scanner(System.in);
+		System.out.print("Please enter the first three digits of the eircode: ");
+		while(true){
+			userInput = scan.nextLine();
+			if(userInput.length() == 3) break;
+			
+			System.out.println("'" + userInput + "' is not a valid area code, please try again" );
+		}
+		scan.close();
+		
+		int i;
+		
+		for(i = 0; i < eircodes.length; i++){
+//			if(addresses[i].contains(userInput.i)
+			if(eircodes[i].substring(0, 3).toLowerCase().contains(userInput.toLowerCase())){
+				System.out.println("Found " + eircodes[i] + " - " + addresses[i]);
+			}
+		}
 		
 	}
 
