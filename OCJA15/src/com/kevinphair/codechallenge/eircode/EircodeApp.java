@@ -32,7 +32,7 @@ public class EircodeApp {
 		}
 		else{
 			System.out.println("Eircode found");
-			
+			System.out.println(addresses[i]);
 		}
 	}
 
