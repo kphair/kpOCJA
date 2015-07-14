@@ -12,3 +12,5 @@ The user will enter an Eircode and your program will respond with the correspond
 The program should be robust and recover from all reasonable exceptions and errors.
 Note: There may be changes to requirements.
 12:00pm - demo time
+
+Valid characters are 0-9,A,C,D,E,F,H,K,N,P,R,T,V,W,X,Y
