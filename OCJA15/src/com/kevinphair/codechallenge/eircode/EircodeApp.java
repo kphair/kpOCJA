@@ -1,5 +1,11 @@
 package com.kevinphair.codechallenge.eircode;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 /* See eircodes.txt for specification and sample database
@@ -15,7 +21,7 @@ public class EircodeApp {
 	 * Set up the eircode and address database
 	 */
 	static String[] eircodes = {
-								"D02 Y006",
+								new StringBuilder("D02 Y006"),
 								"D04 C932",
 								"D15 XR2R",
 								"D03 RR27", 
@@ -251,7 +257,55 @@ public class EircodeApp {
 		return true;
 	}
 	
+	private static void loadDataBase (String filename) {
+		BufferedReader inFile = null;
+		StringBuilder newEircode;
+		StringBuilder newAddress;
+		StringBuilder inLine = new StringBuilder();
+		
+		char inChar;
+		
+		// open file for input
+		try {
+			FileReader fr = new FileReader(filename);
+			inFile = new BufferedReader(fr);
+			//inString = inFileP.
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// start reading data from the file
+		if (inFile != null) {
+			try {
+				// read the file in character by character
+				while (true) {
+					// Read a character from the file
+					inChar = (char)inFile.read();
+					// Is it a printable character?
+					if (inChar >= ' ') { 
+						inLine.append(inChar);
+					// Is it a tab?
+					} else if (inChar == '\t') {
+						
+					// Is it a carriage return or line-feed?
+					} else if (inChar == 13 || inChar == 10) { 
+						
+					}
+					
+					if ((int)inChar < 0) break;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (inFile != null) {
+					inFile.close();
+				}
+			}
+		}
+	}
+
 	private static boolean containsIgnoreCase (StringBuilder searchSB, StringBuilder findSB) {
+
 		int i;
 		int searchLen = searchSB.length();
 		int findLen = findSB.length();
