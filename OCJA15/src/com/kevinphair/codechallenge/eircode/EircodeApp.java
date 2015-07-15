@@ -20,24 +20,8 @@ public class EircodeApp {
 	/**
 	 * Set up the eircode and address database
 	 */
-	static String[] eircodes = {
-								new StringBuilder("D02 Y006"),
-								"D04 C932",
-								"D15 XR2R",
-								"D03 RR27", 
-								"D24 H510",
-								"D02 XE81",
-								"D02 P656"
-								};
-	static String[] addresses = {
-								"5 Merrion Square North, Dublin 2", 
-								"10 Burlington Road, Dublin 4",
-								"Dunsink Observatory, Dunsink Lane, Dublin 15",
-								"26 KINCORA ROAD, Clontarf, Dublin 3.",
-								"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24",
-								"HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2",
-								"CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2"
-								};
+	static StringBuilder[] eircodes;
+	static StringBuilder[] addresses;
 
 	/** 
 	 * Start of program
@@ -45,6 +29,7 @@ public class EircodeApp {
 	public static void main(String[] args) {
 		StringBuilder userInput;
 
+		loadDataFile("EircodeData.txt");
 		scan = new Scanner(System.in);
 		
 		mainloop:
@@ -78,10 +63,8 @@ public class EircodeApp {
 				case '5':dumpAll(); break;
 				case '6':quit(); break mainloop;
 			}
-			
 		}
 	scan.close();
-
 	}
 	
 	private static void findByEircode() {
@@ -141,7 +124,7 @@ public class EircodeApp {
 	}
 
 	/**
-	 * Validate the supplied string to see if it's an eircode
+	 * TBD - Validate the supplied string to see if it's an eircode
 	 * Assumptions:
 	 * If the string is 8 characters, it should have a space as the 4th character
 	 * If the string is 7 characters, it should have no spaces in it
@@ -152,17 +135,15 @@ public class EircodeApp {
 	 * @returns 0 for no match, 1 for a close match, 2 for a perfect match
 	 * 
 	 */
-	public int validateEircode(String eircode) {
+	public static int validateEircode(StringBuilder eircode) {
 		/*
 		 * NOT COMPLETE
 		 */
-		if (eircode.length() < 7 || eircode.length() > 8) {
-			return 0;											// No match
+		
+		if (eircode.length() == 8) {
+			return 0;											
 		}
 		
-		if ((eircode.length() == 8) || (eircode.replace(" ", "").length() == 7)) {
-			
-		}
 		return 0;
 	}
 	
@@ -187,27 +168,35 @@ public class EircodeApp {
 	}
 
 	private static void addNewEntry() {
-		StringBuilder userInput;
-		StringBuilder newEircode;
-		StringBuilder newAddress;
+		StringBuilder userInput = null;
+		StringBuilder newEircode = null;
+		StringBuilder newAddress = null;
 		//int i;
 		
 		scan = new Scanner(System.in);
-		System.out.print("Please enter a new eircode : ");
+		System.out.print("Please enter a new eircode or leave blank to return to menu: ");
 		while (true){
 			while (!scan.hasNextLine());
 			userInput = new StringBuilder(scan.nextLine());
-			if (userInput.length() == 8) break;
+			if (userInput.length() == 0) {
+				return;
+			} else if (userInput.length() == 8) {
+				break;
+			}
 			
 			System.out.println("'" + userInput + "' is not a valid eircode, please try again" );
 		}
 		newEircode = userInput;
 		
-		System.out.print("Please enter a new address : ");
+		System.out.print("Please enter new address or nothing to cancel and return to main menu: ");
 		while (true){
 			while (!scan.hasNextLine());
 			userInput = new StringBuilder(scan.nextLine());
-			if (userInput.length() > 0) break;
+			if (userInput.length() == 0) {
+				return;
+			} else if (userInput.length() > 0) {
+				break;
+			}
 			
 			System.out.println("'" + userInput + "' is not a valid address, please try again" );
 		}
@@ -215,12 +204,12 @@ public class EircodeApp {
 		newAddress = userInput;
 		eircodes = extendArray(eircodes);
 		addresses = extendArray(addresses);
-		eircodes[eircodes.length -1] = new String(newEircode);
-		addresses[addresses.length -1] = new String(newAddress);
+		eircodes[eircodes.length -1] = new StringBuilder(newEircode);
+		addresses[addresses.length -1] = new StringBuilder(newAddress);
 	}
 	
-	private static String[] extendArray(String[] oldArray){
-		String[] newArray = new String[oldArray.length +1];
+	private static StringBuilder[] extendArray(StringBuilder[] oldArray){
+		StringBuilder[] newArray = new StringBuilder[oldArray.length +1];
 		for (int i = 0; i < oldArray.length; i++) {
 			newArray[i] = oldArray[i];
 		}
@@ -257,10 +246,10 @@ public class EircodeApp {
 		return true;
 	}
 	
-	private static void loadDataBase (String filename) {
+	private static boolean loadDataFile (String filename) {
 		BufferedReader inFile = null;
-		StringBuilder newEircode;
-		StringBuilder newAddress;
+		StringBuilder newEircode = null;
+		StringBuilder newAddress = null;
 		StringBuilder inLine = new StringBuilder();
 		
 		char inChar;
@@ -269,38 +258,59 @@ public class EircodeApp {
 		try {
 			FileReader fr = new FileReader(filename);
 			inFile = new BufferedReader(fr);
-			//inString = inFileP.
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-		// start reading data from the file
-		if (inFile != null) {
-			try {
-				// read the file in character by character
-				while (true) {
-					// Read a character from the file
+			// read the first character from the file
+			inChar = (char)inFile.read();
+
+			// Start the loop which goes through the whole file
+			while (true) {
+				
+				/* If a printable character, append it to the StringBuilder and get another one
+				 */
+				if (inChar >= ' ') {  
+					inLine.append(inChar);
 					inChar = (char)inFile.read();
-					// Is it a printable character?
-					if (inChar >= ' ') { 
-						inLine.append(inChar);
-					// Is it a tab?
-					} else if (inChar == '\t') {
-						
-					// Is it a carriage return or line-feed?
-					} else if (inChar == 13 || inChar == 10) { 
-						
+					
+					/* If it's a tab, assign the current StringBuilder to the newEircom StringBuilder
+					 * and create a new StringBuilder to hold the next bit of data from the file
+					 */
+				} else if (inChar == '\t') {		
+					newEircode = inLine;
+					inLine = new StringBuilder();	
+					inChar = (char)inFile.read();			
+					
+					/* If it's an end of line marker, assign the current StringBuilder to newAddress
+					 * and read more characters in until no more EOL characters are found as UNIX/Linux
+					 * uses LF to mark and end of line, DOS/Windows uses CR & LF and Mac can use CR or
+					 * LF & CR.
+					 * Then, extend the eircodes and addresses arrays by one and put the newEircome
+					 * and newAddress references into the empty slot at the ends
+					 */
+				} else if (inChar == 13 || inChar == 10) {		
+					newAddress = inLine;
+					inLine = new StringBuilder();
+					do {
+						inChar = (char)inFile.read();			
+					} while (inChar == 13 || inChar == 10);		
+					// Only add the new entry if the Eircode and adddress are valid
+					if (validateEircode(newEircode) > 0 && addresses.length > 0) {
+						eircodes = extendArray(eircodes);
+						eircodes[eircodes.length - 1] = newEircode;
+						addresses = extendArray(addresses);
+						addresses[addresses.length - 1] = newAddress;
 					}
 					
-					if ((int)inChar < 0) break;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				if (inFile != null) {
-					inFile.close();
+					/* Otherwise test for end of input file and break out of loop if true
+					 */
+				} else if ((int)inChar < 0) {
+					break;
 				}
 			}
+			inFile.close();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 

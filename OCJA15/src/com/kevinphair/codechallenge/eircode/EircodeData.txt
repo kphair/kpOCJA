@@ -1,0 +1,7 @@
+D02 Y006	5 Merrion Square North, Dublin 2 
+D04 C932	10 Burlington Road, Dublin 4
+D15 XR2R	Dunsink Observatory, Dunsink Lane, Dublin 15
+D03 RR27	26 KINCORA ROAD, Clontarf, Dublin 3.
+D24 H510	Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24
+D02 XE81	HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2
+D02 P656	CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2
