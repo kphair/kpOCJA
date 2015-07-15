@@ -29,7 +29,10 @@ public class EircodeApp {
 	public static void main(String[] args) {
 		StringBuilder userInput;
 
-		loadDataFile("EircodeData.txt");
+		if (! loadDataFile("src/com/kevinphair/codechallenge/eircode/EircodeData.txt")) {
+			System.out.println("Program terminated");
+			return;
+		};
 		scan = new Scanner(System.in);
 		
 		mainloop:
@@ -141,7 +144,7 @@ public class EircodeApp {
 		 */
 		
 		if (eircode.length() == 8) {
-			return 0;											
+			return 1;											
 		}
 		
 		return 0;
@@ -253,6 +256,7 @@ public class EircodeApp {
 		StringBuilder inLine = new StringBuilder();
 		
 		char inChar;
+		int readChar;
 		
 		// open file for input
 		try {
@@ -260,16 +264,20 @@ public class EircodeApp {
 			inFile = new BufferedReader(fr);
 
 			// read the first character from the file
-			inChar = (char)inFile.read();
+			readChar = (char)inFile.read();
+			inChar = (char)readChar;
 
 			// Start the loop which goes through the whole file
 			while (true) {
 				
+				if (readChar < 0) break;
+
 				/* If a printable character, append it to the StringBuilder and get another one
 				 */
 				if (inChar >= ' ') {  
 					inLine.append(inChar);
-					inChar = (char)inFile.read();
+					readChar = (char)inFile.read();
+					inChar = (char)readChar;
 					
 					/* If it's a tab, assign the current StringBuilder to the newEircom StringBuilder
 					 * and create a new StringBuilder to hold the next bit of data from the file
@@ -277,7 +285,8 @@ public class EircodeApp {
 				} else if (inChar == '\t') {		
 					newEircode = inLine;
 					inLine = new StringBuilder();	
-					inChar = (char)inFile.read();			
+					readChar = (char)inFile.read();
+					inChar = (char)readChar;
 					
 					/* If it's an end of line marker, assign the current StringBuilder to newAddress
 					 * and read more characters in until no more EOL characters are found as UNIX/Linux
@@ -287,10 +296,12 @@ public class EircodeApp {
 					 * and newAddress references into the empty slot at the ends
 					 */
 				} else if (inChar == 13 || inChar == 10) {		
+					System.out.print("Added record: ");
 					newAddress = inLine;
 					inLine = new StringBuilder();
 					do {
-						inChar = (char)inFile.read();			
+						readChar = (char)inFile.read();
+						inChar = (char)readChar;
 					} while (inChar == 13 || inChar == 10);		
 					// Only add the new entry if the Eircode and adddress are valid
 					if (validateEircode(newEircode) > 0 && addresses.length > 0) {
@@ -299,17 +310,16 @@ public class EircodeApp {
 						addresses = extendArray(addresses);
 						addresses[addresses.length - 1] = newAddress;
 					}
-					
-					/* Otherwise test for end of input file and break out of loop if true
-					 */
-				} else if ((int)inChar < 0) {
-					break;
+					System.out.println(newEircode + " - " + newAddress);
+				} else {
+					readChar = (char)inFile.read();
+					inChar = (char)readChar;
 				}
 			}
 			inFile.close();
 			return true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Error opening data file '" + filename + "'");
 			return false;
 		}
 	}
