@@ -26,9 +26,11 @@ public class EircodeApp {
 	 * Application to query and maintain a database of Eircodes with matching addresses
 	 */
 	public static void main(String[] args) {
-		StringBuilder userInput;
 		String filename = "src/com/kevinphair/codechallenge/eircode/EircodeData.txt";
 
+		/* 
+		 * Attempt to read in the database and terminate if there was an error
+		 */
 		if (! loadDataFile(filename)) {
 			System.out.println("Error accessing data file '" + filename + "'");
 			System.out.println("Program terminated");
@@ -36,50 +38,69 @@ public class EircodeApp {
 		};
 		
 		System.out.println(eircodes.length + " records read from data file.");
+		
 		scan = new Scanner(System.in);
 		
 		mainloop:
 		while (true) {
-			System.out.println();
-			System.out.println("Please select from the following options ");
-			System.out.println("1: Search database by eircode");
-			System.out.println("2: Search database by address");
-			System.out.println("3: Search database by area");
-			System.out.println("4: Add new eircode and address");
-			System.out.println("5: Dump database to console");
-			if (dataModified) {
-				System.out.println("6: Write changes to disk and quit");
+			
+			displayMenu();
+
+			switch (getMenuChoice()){
+				case '1':	findByEircode(); break;
+				case '2':	findByAddress(); break;
+				case '3':	findByArea(); break;
+				case '4':	dataModified = addNewEntry(); break;
+				case '5':	dumpAll(); break;
+				case '6':	quit();
+							if (dataModified && (writeDataFile(filename) == false)) {
+								System.out.println("* There was an error writing the new database, '" + filename + "'");
+								break;
+							}
+							break mainloop;
+			} // end of menu choice switch block 
+		}
+		scan.close();
+	}
+
+	/**
+	 * Get input from the user and return the first character
+	 * 
+	 * @return a character from '1' to '6' entered by the user
+	 */
+	private static char getMenuChoice() {
+		StringBuilder userInput;
+
+		while (true) {
+			while (!scan.hasNextLine());
+			userInput = new StringBuilder(scan.nextLine());
+
+			if (userInput.length() == 1 && userInput.charAt(0) >= '1' && userInput.charAt(0) <= '6'){
+				break;	 
 			} else {
-				System.out.println("6: Quit");
-			}
-			System.out.print("Please enter an option: ");
-
-			while (true) {
-				while (!scan.hasNextLine());
-				userInput = new StringBuilder(scan.nextLine());
-
-				if (userInput.length() == 1 && userInput.charAt(0) >= '1' && userInput.charAt(0) <= '6'){
-					break;	 
-				} else {
-					System.out.println("Invalid option entered, please try again ");
-				}
-			}
-
-			switch (userInput.charAt(0)){
-				case '1':findByEircode(); break;
-				case '2':findByAddress(); break;
-				case '3':findByArea(); break;
-				case '4':dataModified = addNewEntry(); break;
-				case '5':dumpAll(); break;
-				case '6':quit();
-					if (dataModified && (writeDataFile(filename) == false)) {
-						System.out.println("There was an error writing the new database, '" + filename + "'");
-						break;
-					} 
-					break mainloop;
+				System.out.println("Invalid option entered, please try again ");
 			}
 		}
-	scan.close();
+		return userInput.charAt(0);
+	}
+
+	/**
+	 * Display the main menu
+	 */
+	private static void displayMenu() {
+		System.out.println();
+		System.out.println("Please select from the following options ");
+		System.out.println("1: Search database by eircode");
+		System.out.println("2: Search database by address");
+		System.out.println("3: Search database by area");
+		System.out.println("4: Add new eircode and address");
+		System.out.println("5: Dump database to console");
+		if (dataModified) {
+			System.out.println("6: Write changes to disk and quit");
+		} else {
+			System.out.println("6: Quit");
+		}
+		System.out.print("Please enter an option: ");
 	}
 	
 	/**
@@ -89,13 +110,13 @@ public class EircodeApp {
 		
 		StringBuilder userInput;
 
-		System.out.print("Please enter eircode: ");
+		System.out.print("> Please enter eircode: ");
 		while (true) {
 			while (!scan.hasNextLine());
 			userInput = new StringBuilder(scan.nextLine().toUpperCase());
 			if (userInput.length() == 8 ) break;
-			System.out.println("Code needs to be 8 characters in length, you entered '" + userInput + "'");
-			System.out.println("Please try again.");
+			System.out.println("  Code needs to be 8 characters in length, you entered '" + userInput + "'");
+			System.out.println("  Please try again.");
 		}
 		
 		/**
@@ -110,11 +131,11 @@ public class EircodeApp {
 		}
 		// If the index has gone past the end of the string, there was no match
 		if (i == eircodes.length){
-			System.out.println("Eircode not found");
+			System.out.println("  Eircode not found");
 		} else {
 		// We have a match. Get the address from the addresses array using the index 
-			System.out.println("Eircode found");
-			System.out.println("The address matching to '" + userInput + "' is '" + addresses[i] + "'");
+			System.out.println("* Eircode found");
+			System.out.println("  The address matching to '" + userInput + "' is '" + addresses[i] + "'");
 		}
 	}
 
@@ -124,7 +145,7 @@ public class EircodeApp {
 	private static void findByAddress() {
 		StringBuilder userInput;
 
-		System.out.print("Please enter part of the address: ");
+		System.out.print("> Please enter part of the address: ");
 		while (true){
 			while (!scan.hasNextLine());
 			userInput = new StringBuilder(scan.nextLine());
@@ -134,13 +155,13 @@ public class EircodeApp {
 		boolean foundMatch = false;
 		for (int i = 0; i < addresses.length; i++){
 			if (containsIgnoreCase(new StringBuilder(addresses[i]), userInput)){
-				System.out.println("Eircode for " + addresses[i] + " is " + eircodes[i]);
+				System.out.println("- Eircode for " + addresses[i] + " is " + eircodes[i]);
 				foundMatch = true;
 			}
 		}
 		
 		if (foundMatch == false){
-			System.out.println("Address was not found ");
+			System.out.println("  Address was not found ");
 		}
 	}
 
@@ -150,19 +171,19 @@ public class EircodeApp {
 	private static void findByArea() {
 		StringBuilder userInput;
 
-		System.out.print("Please enter the first three digits of the eircode: ");
+		System.out.print("> Please enter the first three digits of the eircode: ");
 		while(true){
 			while (!scan.hasNextLine());
 			userInput = new StringBuilder(scan.nextLine());
 			if (userInput.length() == 3) break;
 			
-			System.out.println("'" + userInput + "' is not a valid area code, please try again" );
+			System.out.println("* '" + userInput + "' is not a valid area code, please try again" );
 		}
 		
 		for (int i = 0; i < eircodes.length; i++){
 //			if(addresses[i].contains(userInput.i)
 			if (containsIgnoreCase(new StringBuilder(eircodes[i].substring(0, 3)), userInput)){
-				System.out.println("Found " + eircodes[i] + " - " + addresses[i]);
+				System.out.println("- Found " + eircodes[i] + " - " + addresses[i]);
 			}
 		}
 	}
@@ -176,7 +197,7 @@ public class EircodeApp {
 		StringBuilder newAddress = null;
 		
 		scan = new Scanner(System.in);
-		System.out.print("Please enter a new eircode or leave blank to return to menu: ");
+		System.out.print("> Please enter a new eircode or leave blank to return to menu: ");
 		while (true){
 			while (!scan.hasNextLine());
 			userInput = new StringBuilder(scan.nextLine());
@@ -186,11 +207,11 @@ public class EircodeApp {
 				break;
 			}
 			
-			System.out.println("'" + userInput + "' is not a valid eircode, please try again" );
+			System.out.println("* '" + userInput + "' is not a valid eircode, please try again" );
 		}
 		newEircode = userInput;
 		
-		System.out.print("Please enter new address or nothing to cancel and return to main menu: ");
+		System.out.print("> Please enter new address or nothing to cancel and return to main menu: ");
 		while (true){
 			while (!scan.hasNextLine());
 			userInput = new StringBuilder(scan.nextLine());
@@ -200,17 +221,27 @@ public class EircodeApp {
 				break;
 			}
 			
-			System.out.println("'" + userInput + "' is not a valid address, please try again" );
+			System.out.println("* '" + userInput + "' is not a valid address, please try again" );
 		}
 
 		newAddress = userInput;
+		addRecord(newEircode, newAddress);
+		
+		return true;
+	}
+
+	/**
+	 * Add a record to the data arrays and populate the new record with Eircode and address
+	 * 
+	 * @param newEircode
+	 * @param newAddress
+	 */
+	private static void addRecord(StringBuilder newEircode, StringBuilder newAddress) {
 		// Create new arrays with 1 extra element each
 		eircodes = Arrays.copyOf(eircodes, eircodes.length + 1);
 		addresses = Arrays.copyOf(addresses, addresses.length + 1);
 		eircodes[eircodes.length -1] = new StringBuilder(newEircode);
 		addresses[addresses.length -1] = new StringBuilder(newAddress);
-		
-		return true;
 	}
 	
 	/**
@@ -245,17 +276,22 @@ public class EircodeApp {
 	 */
 	public static int validateEircode(StringBuilder eircode) {
 		/*
-		 * NOT COMPLETE
-		 * 
-		 * The following character mappings occur where a non valid character appears
+		 * The following letter to number mappings should occur where a disallowed letter appears
 		 *	B	-> 8	|	G	-> 6	|	IJL	-> 1	|	M	-> N
 		 *	OQ	-> 0	|	S	-< 5	|	U	-> V	|	Z	-> 2
 		 */
 		final String validChars = "0123456789ACDEFHKNPRTVWXY";
 				
-		if (eircode.length() == 8 && eircode.charAt(3) == ' ') {
-			return 1;											
-		}
+		/* 
+		 * If string is 8 characters and has a space at position 3, it's OK
+		 */
+		if (eircode.length() == 8 && eircode.charAt(3) == ' ') return 1;											
+		
+		/*
+		 * If the string has 7 character and has NO spaces, it's OK
+		 */
+		if ((eircode.length() == 7) && (eircode.indexOf(" ") == -1)) return 0;
+		
 		return 0;
 	}
 
@@ -314,11 +350,7 @@ public class EircodeApp {
 					}
 					// Only add the new entry if the Eircode and adddress are valid
 					if (validateEircode(newEircode) > 0) {
-						// Create new arrays with 1 extra element each
-						eircodes = Arrays.copyOf(eircodes, eircodes.length + 1);
-						addresses = Arrays.copyOf(addresses, addresses.length + 1);
-						eircodes[eircodes.length - 1] = newEircode;
-						addresses[addresses.length - 1] = newAddress;
+						addRecord(newEircode, newAddress);
 					}
 					if (inChar == -1) {
 						break;
