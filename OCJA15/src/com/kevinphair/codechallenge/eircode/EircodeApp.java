@@ -97,7 +97,7 @@ public class EircodeApp {
 		 */
 		int i = 0;								// Use i as an index into the database
 		for (i = 0; i < eircodes.length; i++){
-			if(eircodes[i].equalsIgnoreCase(new String(userInput))){
+			if(equalsIgnoreCase(new StringBuilder(eircodes[i]), userInput)){
 				break;
 			}
 		}
@@ -233,4 +233,22 @@ public class EircodeApp {
 		System.out.println("Thank you and goodbye.");
 	}
 
+	private static boolean equalsIgnoreCase (StringBuilder sb1, StringBuilder sb2) {
+		int i;
+		char c1;
+		char c2;
+		
+		if (sb1 == sb2) return true;
+		if (sb1.length() != sb2.length()) return false;
+		if (sb1.length() == 0 && sb2.length() == 0) return true;
+		for (i = 0; i < sb1.length(); i++) {
+			c1 = sb1.charAt(i);
+			if (c1 >= 'a' && c1 <= 'z') c1 -= 32;
+			c2 = sb2.charAt(i);
+			if (c2 >= 'a' && c2 <= 'z') c2 -= 32;
+			if (c1 != c2) return false;
+		}
+		return true;
+	}
+	
 }
