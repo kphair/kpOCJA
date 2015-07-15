@@ -9,14 +9,13 @@ public class EircodeApp {
 	/* 
 	 * Set up some globals for reuse between all methods
 	 */
-	static String userInput;
-	static String addressInput;
 	static Scanner scan;
 	
 	/**
 	 * Set up the eircode and address database
 	 */
-	static String [] eircodes = {"D02 Y006",
+	static String[] eircodes = {
+								"D02 Y006",
 								"D04 C932",
 								"D15 XR2R",
 								"D03 RR27", 
@@ -24,13 +23,14 @@ public class EircodeApp {
 								"D02 XE81",
 								"D02 P656"
 								};
-	static String [] addresses = {"5 Merrion Square North, Dublin 2", 
-									"10 Burlington Road, Dublin 4",
-									"Dunsink Observatory, Dunsink Lane, Dublin 15",
-									"26 KINCORA ROAD, Clontarf, Dublin 3.",
-									"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24",
-									"HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2",
-									"CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2"
+	static String[] addresses = {
+								"5 Merrion Square North, Dublin 2", 
+								"10 Burlington Road, Dublin 4",
+								"Dunsink Observatory, Dunsink Lane, Dublin 15",
+								"26 KINCORA ROAD, Clontarf, Dublin 3.",
+								"Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24",
+								"HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2",
+								"CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2"
 								};
 
 	/** 
@@ -38,6 +38,9 @@ public class EircodeApp {
 	 */
 	public static void main(String[] args) {
 		
+		String userInput;
+		String addressInput;
+
 		scan = new Scanner(System.in);
 		
 		mainloop:
@@ -52,19 +55,18 @@ public class EircodeApp {
 			System.out.println("6: Quit");
 			System.out.print("Please enter an option: ");
 
-			while(true) {
+			while (true) {
 				while (!scan.hasNextLine());
 				userInput = scan.nextLine();
 
-				if(userInput.length() == 1 && userInput.charAt(0) >= '1' && userInput.charAt(0) <= '6'){
+				if (userInput.length() == 1 && userInput.charAt(0) >= '1' && userInput.charAt(0) <= '6'){
 					break;	 
-				}
-				else{
+				} else {
 					System.out.println("Invalid option entered, please try again ");
 				}
 			}
 
-			switch(userInput){
+			switch (userInput){
 				case "1":findByEircode(); break;
 				case "2":findByAddress(); break;
 				case "3":findByArea(); break;
@@ -78,86 +80,12 @@ public class EircodeApp {
 
 	}
 	
-	private static void dumpAll() {
-		System.out.println("Dump of eircode database");
-		System.out.println("------------------------");
-		for(int i = 0; i < eircodes.length; i++) {
-			System.out.println(eircodes[i] + " - " + addresses[i]);
-		}
-	}
-
-	private static void quit() {
-		System.out.println("Thank you and goodbye.");
-	}
-
-	private static void addNewEntry() {
-		String newEircode;
-		String newAddress;
-		//int i;
-		
-		scan = new Scanner(System.in);
-		System.out.print("Please enter a new eircode : ");
-		while(true){
-			while (!scan.hasNextLine());
-			userInput = scan.nextLine();
-			if(userInput.length() == 8) break;
-			
-			System.out.println("'" + userInput + "' is not a valid eircode, please try again" );
-		}
-		newEircode = userInput;
-		
-		System.out.print("Please enter a new address : ");
-		while(true){
-			while (!scan.hasNextLine());
-			userInput = scan.nextLine();
-			if(userInput.length() > 0) break;
-			
-			System.out.println("'" + userInput + "' is not a valid address, please try again" );
-		}
-
-		newAddress = userInput;
-		eircodes = extendArray(eircodes);
-		addresses = extendArray(addresses);
-		eircodes[eircodes.length -1] = newEircode;
-		addresses[addresses.length -1] = newAddress;
-	}
-	
-	private static String [] extendArray(String [] oldArray){
-		String [] newArray = new String[oldArray.length +1];
-		for(int i = 0; i < oldArray.length; i++){
-			newArray[i] = oldArray[i];
-		}
-		return newArray;
-		
-	}
-
-	private static void findByArea() {
-
-		System.out.print("Please enter the first three digits of the eircode: ");
-		while(true){
-			while (!scan.hasNextLine());
-			userInput = scan.nextLine();
-			if(userInput.length() == 3) break;
-			
-			System.out.println("'" + userInput + "' is not a valid area code, please try again" );
-		}
-		
-		for(int i = 0; i < eircodes.length; i++){
-//			if(addresses[i].contains(userInput.i)
-			if(eircodes[i].substring(0, 3).toLowerCase().contains(userInput.toLowerCase())){
-				System.out.println("Found " + eircodes[i] + " - " + addresses[i]);
-			}
-		}
-	}
-	
 	private static void findByEircode() {
 		
-		/**
-		 * Create a new Scanner object to get user input
-		 * prompt user for input and get input to string
-		 */
+		String userInput;
+
 		System.out.print("Please enter eircode: ");
-		while(true) {
+		while (true) {
 			while (!scan.hasNextLine());
 			userInput = scan.nextLine().toUpperCase();
 			if (userInput.length() == 8 ) break;
@@ -170,40 +98,40 @@ public class EircodeApp {
 		 * to iterate over the array
 		 */
 		int i = 0;								// Use i as an index into the database
-		for(i = 0; i < eircodes.length; i++){
+		for (i = 0; i < eircodes.length; i++){
 			if(eircodes[i].toLowerCase().equals(userInput.toLowerCase())){
 				break;
 			}
 		}
 		// If the index has gone past the end of the string, there was no match
-		if(i == eircodes.length){
+		if (i == eircodes.length){
 			System.out.println("Eircode not found");
-		}
+		} else {
 		// We have a match. Get the address from the addresses array using the index 
-		else{
 			System.out.println("Eircode found");
 			System.out.println("The address matching to '" + userInput + "' is '" + addresses[i] + "'");
 		}
-		
 	}
 
 	private static void findByAddress() {
+		String userInput;
+
 		System.out.print("Please enter part of the address: ");
-		while(true){
+		while (true){
 			while (!scan.hasNextLine());
 			userInput = scan.nextLine();
-			if(userInput.length() > 0) break;
+			if (userInput.length() > 0) break;
 		}
 		
 		boolean foundMatch = false;
-		for(int i = 0; i < addresses.length; i++){
-			if(addresses[i].toLowerCase().contains(userInput.toLowerCase())){
+		for (int i = 0; i < addresses.length; i++){
+			if (addresses[i].toLowerCase().contains(userInput.toLowerCase())){
 				System.out.println("Eircode for " + addresses[i] + " is " + eircodes[i]);
 				foundMatch = true;
 			}
 		}
 		
-		if(foundMatch == false){
+		if (foundMatch == false){
 			System.out.println("Address was not found ");
 		}
 	}
@@ -221,7 +149,9 @@ public class EircodeApp {
 	 * 
 	 */
 	public int validateEircode(String eircode) {
-		
+		/*
+		 * NOT COMPLETE
+		 */
 		if (eircode.length() < 7 || eircode.length() > 8) {
 			return 0;											// No match
 		}
@@ -231,4 +161,78 @@ public class EircodeApp {
 		}
 		return 0;
 	}
+	
+	private static void findByArea() {
+		String userInput;
+
+		System.out.print("Please enter the first three digits of the eircode: ");
+		while(true){
+			while (!scan.hasNextLine());
+			userInput = scan.nextLine();
+			if (userInput.length() == 3) break;
+			
+			System.out.println("'" + userInput + "' is not a valid area code, please try again" );
+		}
+		
+		for (int i = 0; i < eircodes.length; i++){
+//			if(addresses[i].contains(userInput.i)
+			if (eircodes[i].substring(0, 3).toLowerCase().contains(userInput.toLowerCase())){
+				System.out.println("Found " + eircodes[i] + " - " + addresses[i]);
+			}
+		}
+	}
+
+	private static void addNewEntry() {
+		String userInput;
+		String newEircode;
+		String newAddress;
+		//int i;
+		
+		scan = new Scanner(System.in);
+		System.out.print("Please enter a new eircode : ");
+		while (true){
+			while (!scan.hasNextLine());
+			userInput = scan.nextLine();
+			if (userInput.length() == 8) break;
+			
+			System.out.println("'" + userInput + "' is not a valid eircode, please try again" );
+		}
+		newEircode = userInput;
+		
+		System.out.print("Please enter a new address : ");
+		while (true){
+			while (!scan.hasNextLine());
+			userInput = scan.nextLine();
+			if (userInput.length() > 0) break;
+			
+			System.out.println("'" + userInput + "' is not a valid address, please try again" );
+		}
+
+		newAddress = userInput;
+		eircodes = extendArray(eircodes);
+		addresses = extendArray(addresses);
+		eircodes[eircodes.length -1] = newEircode;
+		addresses[addresses.length -1] = newAddress;
+	}
+	
+	private static String[] extendArray(String[] oldArray){
+		String[] newArray = new String[oldArray.length +1];
+		for (int i = 0; i < oldArray.length; i++) {
+			newArray[i] = oldArray[i];
+		}
+		return newArray;
+	}
+
+	private static void dumpAll() {
+		System.out.println("Dump of eircode database");
+		System.out.println("------------------------");
+		for (int i = 0; i < eircodes.length; i++) {
+			System.out.println(eircodes[i] + " - " + addresses[i]);
+		}
+	}
+
+	private static void quit() {
+		System.out.println("Thank you and goodbye.");
+	}
+
 }
