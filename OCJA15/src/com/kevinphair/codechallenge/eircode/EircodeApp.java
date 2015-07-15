@@ -174,7 +174,7 @@ public class EircodeApp {
 		
 		for (int i = 0; i < eircodes.length; i++){
 //			if(addresses[i].contains(userInput.i)
-			if (eircodes[i].substring(0, 3).toLowerCase().contains(new String(userInput).toLowerCase())){
+			if (containsIgnoreCase(new StringBuilder(eircodes[i].substring(0, 3)), userInput)){
 				System.out.println("Found " + eircodes[i] + " - " + addresses[i]);
 			}
 		}
@@ -258,9 +258,9 @@ public class EircodeApp {
 		
 		if (searchSB == findSB) return true;
 		if (findLen == 0 && searchLen == 0) return true;
-		if (findLen == 0 || searchLen == 0) return false;
+		if (findLen == 0 || searchLen == 0 || findLen > searchLen) return false;
 		
-		for (i = 0; i < searchLen - findLen; i++) {
+		for (i = 0; i <= searchLen - findLen; i++) {
 			if (equalsIgnoreCase(new StringBuilder(searchSB.subSequence(i, i + findLen)), findSB)) return true;
 		}
 		return false;
