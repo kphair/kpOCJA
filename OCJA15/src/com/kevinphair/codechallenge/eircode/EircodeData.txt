@@ -5,3 +5,6 @@ D03 RR27	26 KINCORA ROAD, Clontarf, Dublin 3.
 D24 H510	Partas, 4A BROOKFIELD ENTERPRISE CENTRE, Dublin 24
 D02 XE81	HODGES FIGGIS, 56-58 DAWSON STREET, Dublin 2
 D02 P656	CENTRAL BANK OF IRELAND, DAME STREET, Dublin 2
+D24 C001	1 Main Street, Tallaght, Dublin 24
+D01 800x	Eason & Son Ltd, O'Connell Street, Dublin 1
+d02 c001	Nowhere in particular
