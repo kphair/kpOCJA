@@ -123,7 +123,7 @@ public class EircodeApp {
 		
 		boolean foundMatch = false;
 		for (int i = 0; i < addresses.length; i++){
-			if (addresses[i].toLowerCase().contains(new String(userInput).toLowerCase())){
+			if (containsIgnoreCase(new StringBuilder(addresses[i]), userInput)){
 				System.out.println("Eircode for " + addresses[i] + " is " + eircodes[i]);
 				foundMatch = true;
 			}
@@ -251,4 +251,18 @@ public class EircodeApp {
 		return true;
 	}
 	
+	private static boolean containsIgnoreCase (StringBuilder searchSB, StringBuilder findSB) {
+		int i;
+		int searchLen = searchSB.length();
+		int findLen = findSB.length();
+		
+		if (searchSB == findSB) return true;
+		if (findLen == 0 && searchLen == 0) return true;
+		if (findLen == 0 || searchLen == 0) return false;
+		
+		for (i = 0; i < searchLen - findLen; i++) {
+			if (equalsIgnoreCase(new StringBuilder(searchSB.subSequence(i, i + findLen)), findSB)) return true;
+		}
+		return false;
+	}
 }
