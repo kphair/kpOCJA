@@ -12,19 +12,17 @@ import java.util.Scanner;
  */
 public class EircodeApp {
 
-	/* 
-	 * Set up some globals for reuse between all methods
+	/* Set up some globals for reuse between all methods
 	 */
 	static Scanner scan;
 	
-	/**
-	 * Set up the eircode and address database
+	/* Set up the eircode and address database
 	 */
-	static StringBuilder[] eircodes;
-	static StringBuilder[] addresses;
+	static StringBuilder[] eircodes = new StringBuilder[0];
+	static StringBuilder[] addresses = new StringBuilder[0];
 
 	/** 
-	 * Start of program
+	 * Application to query and maintain a database of Eircodes with matching addresses
 	 */
 	public static void main(String[] args) {
 		StringBuilder userInput;
@@ -70,6 +68,9 @@ public class EircodeApp {
 	scan.close();
 	}
 	
+	/**
+	 * Allows the user to do a search on the full Eircode
+	 */
 	private static void findByEircode() {
 		
 		StringBuilder userInput;
@@ -103,6 +104,9 @@ public class EircodeApp {
 		}
 	}
 
+	/**
+	 * Allows user to enter a search string for partial matches on addresses
+	 */
 	private static void findByAddress() {
 		StringBuilder userInput;
 
@@ -127,29 +131,8 @@ public class EircodeApp {
 	}
 
 	/**
-	 * TBD - Validate the supplied string to see if it's an eircode
-	 * Assumptions:
-	 * If the string is 8 characters, it should have a space as the 4th character
-	 * If the string is 7 characters, it should have no spaces in it
-	 * If the string is less than 7 or more than 8 it will considered invalid
-	 * If the string is 8 characters, it will be assumed that the space could be anywhere for a close match
-	 * 
-	 * @param string for checking
-	 * @returns 0 for no match, 1 for a close match, 2 for a perfect match
-	 * 
+	 * Allows the user to search by the area (first 3 characters of Eircode)
 	 */
-	public static int validateEircode(StringBuilder eircode) {
-		/*
-		 * NOT COMPLETE
-		 */
-		
-		if (eircode.length() == 8) {
-			return 1;											
-		}
-		
-		return 0;
-	}
-	
 	private static void findByArea() {
 		StringBuilder userInput;
 
@@ -170,6 +153,9 @@ public class EircodeApp {
 		}
 	}
 
+	/**
+	 * Allows the user to add a new entry to the eircode and address database
+	 */
 	private static void addNewEntry() {
 		StringBuilder userInput = null;
 		StringBuilder newEircode = null;
@@ -211,14 +197,9 @@ public class EircodeApp {
 		addresses[addresses.length -1] = new StringBuilder(newAddress);
 	}
 	
-	private static StringBuilder[] extendArray(StringBuilder[] oldArray){
-		StringBuilder[] newArray = new StringBuilder[oldArray.length +1];
-		for (int i = 0; i < oldArray.length; i++) {
-			newArray[i] = oldArray[i];
-		}
-		return newArray;
-	}
-
+	/**
+	 * Dump the current database to the console
+	 */
 	private static void dumpAll() {
 		System.out.println("Dump of eircode database");
 		System.out.println("------------------------");
@@ -227,10 +208,142 @@ public class EircodeApp {
 		}
 	}
 
+	/**
+	 * Do any housekeeping before the program terminates
+	 */
 	private static void quit() {
 		System.out.println("Thank you and goodbye.");
 	}
 
+	/**
+	 * TBD - Validate the supplied string to see if it's an eircode
+	 * Assumptions:
+	 * If the string is 8 characters, it should have a space as the 4th character
+	 * If the string is 7 characters, it should have no spaces in it
+	 * If the string is less than 7 or more than 8 it will considered invalid
+	 * If the string is 8 characters, it will be assumed that the space could be anywhere for a close match
+	 * 
+	 * @param string for checking
+	 * @returns 0 for no match, 1 for a close match, 2 for a perfect match
+	 * 
+	 */
+	public static int validateEircode(StringBuilder eircode) {
+		/*
+		 * NOT COMPLETE
+		 * 
+		 * The following character mappings occur where a non valid character appears
+		 *	B	-> 8	|	G	-> 6	|	IJL	-> 1	|	M	-> N
+		 *	OQ	-> 0	|	S	-< 5	|	U	-> V	|	Z	-> 2
+		 */
+		final String validChars = "0123456789ACDEFHKNPRTVWXY";
+				
+		if (eircode.length() == 8 && eircode.charAt(3) == ' ') {
+			return 1;											
+		}
+		return 0;
+	}
+		
+	/**
+	 * Provide a method to extend a StringBuilder array by one element
+	 * 
+	 * @param old array
+	 * @return new array with an empty element added to the end
+	 */
+	private static StringBuilder[] extendArray(StringBuilder[] oldArray){
+		StringBuilder[] newArray = new StringBuilder[oldArray.length +1];
+		for (int i = 0; i < oldArray.length; i++) {
+			newArray[i] = oldArray[i];
+		}
+		return newArray;
+	}
+
+	/**
+	 * Loads the database in from the specified file
+	 * 
+	 * @param filename of tab delimited text file with one record per line
+	 * @return true if successful, false otherwise
+	 */
+	private static boolean loadDataFile (String filename) {
+		BufferedReader inFile = null;
+		StringBuilder newEircode = null;
+		StringBuilder newAddress = null;
+		StringBuilder inLine = new StringBuilder();
+		
+		int inChar;
+		char c;
+		
+		// open file for input
+		try {
+			FileReader fr = new FileReader(filename);
+			inFile = new BufferedReader(fr);
+
+			// read the first character from the file
+			inChar = inFile.read();
+
+			// Start the loop which goes through the whole file
+			while (true) {
+				
+				/*
+				 * Check for end of file
+				 */
+				if (inChar == -1) break;
+
+				/* If a printable character, append it to the StringBuilder and get another one
+				 */
+				if (inChar >= 32) {  
+					c = (char)inChar;
+					System.out.print(c);
+					inLine.append(c);
+					inChar = inFile.read();
+					
+					/* If it's a tab, assign the current StringBuilder to the newEircom StringBuilder
+					 * and create a new StringBuilder to hold the next bit of data from the file
+					 */
+				} else if (inChar == '\t') {		
+					newEircode = inLine;
+					inLine = new StringBuilder();	
+					inChar = inFile.read();
+					
+					/* If it's an end of line marker, assign the current StringBuilder to newAddress
+					 * and read more characters in until no more EOL characters are found as UNIX/Linux
+					 * uses LF to mark and end of line, DOS/Windows uses CR & LF and Mac can use CR or
+					 * LF & CR.
+					 * Then, extend the eircodes and addresses arrays by one and put the newEircome
+					 * and newAddress references into the empty slot at the ends
+					 */
+				} else if (inChar == 13 || inChar == 10) {		
+					newAddress = inLine;
+					inLine = new StringBuilder();
+					do {
+						inChar = inFile.read();
+					} while (inChar == 13 || inChar == 10);		
+					// Only add the new entry if the Eircode and adddress are valid
+					if (validateEircode(newEircode) > 0) {
+						//if (addresses == null) 
+						eircodes = extendArray(eircodes);
+						addresses = extendArray(addresses);
+						eircodes[eircodes.length - 1] = newEircode;
+						addresses[addresses.length - 1] = newAddress;
+					}
+				} else {
+					inChar = inFile.read();
+				}
+			}
+			inFile.close();
+			return true;
+		} catch (IOException e) {
+			System.out.println("Error opening data file '" + filename + "'");
+			return false;
+		}
+	}
+
+	/**
+	 * Provide a method to compare the contents two StringBuilder objects
+	 * 
+	 * @param first StringBuilder
+	 * @param second StringBuilder
+	 * @return true if both are equal, false otherwise
+	 */
 	private static boolean equalsIgnoreCase (StringBuilder sb1, StringBuilder sb2) {
 		int i;
 		char c1;
@@ -249,81 +362,13 @@ public class EircodeApp {
 		return true;
 	}
 	
-	private static boolean loadDataFile (String filename) {
-		BufferedReader inFile = null;
-		StringBuilder newEircode = null;
-		StringBuilder newAddress = null;
-		StringBuilder inLine = new StringBuilder();
-		
-		char inChar;
-		int readChar;
-		
-		// open file for input
-		try {
-			FileReader fr = new FileReader(filename);
-			inFile = new BufferedReader(fr);
-
-			// read the first character from the file
-			readChar = (char)inFile.read();
-			inChar = (char)readChar;
-
-			// Start the loop which goes through the whole file
-			while (true) {
-				
-				if (readChar < 0) break;
-
-				/* If a printable character, append it to the StringBuilder and get another one
-				 */
-				if (inChar >= ' ') {  
-					inLine.append(inChar);
-					readChar = (char)inFile.read();
-					inChar = (char)readChar;
-					
-					/* If it's a tab, assign the current StringBuilder to the newEircom StringBuilder
-					 * and create a new StringBuilder to hold the next bit of data from the file
-					 */
-				} else if (inChar == '\t') {		
-					newEircode = inLine;
-					inLine = new StringBuilder();	
-					readChar = (char)inFile.read();
-					inChar = (char)readChar;
-					
-					/* If it's an end of line marker, assign the current StringBuilder to newAddress
-					 * and read more characters in until no more EOL characters are found as UNIX/Linux
-					 * uses LF to mark and end of line, DOS/Windows uses CR & LF and Mac can use CR or
-					 * LF & CR.
-					 * Then, extend the eircodes and addresses arrays by one and put the newEircome
-					 * and newAddress references into the empty slot at the ends
-					 */
-				} else if (inChar == 13 || inChar == 10) {		
-					System.out.print("Added record: ");
-					newAddress = inLine;
-					inLine = new StringBuilder();
-					do {
-						readChar = (char)inFile.read();
-						inChar = (char)readChar;
-					} while (inChar == 13 || inChar == 10);		
-					// Only add the new entry if the Eircode and adddress are valid
-					if (validateEircode(newEircode) > 0 && addresses.length > 0) {
-						eircodes = extendArray(eircodes);
-						eircodes[eircodes.length - 1] = newEircode;
-						addresses = extendArray(addresses);
-						addresses[addresses.length - 1] = newAddress;
-					}
-					System.out.println(newEircode + " - " + newAddress);
-				} else {
-					readChar = (char)inFile.read();
-					inChar = (char)readChar;
-				}
-			}
-			inFile.close();
-			return true;
-		} catch (IOException e) {
-			System.out.println("Error opening data file '" + filename + "'");
-			return false;
-		}
-	}
-
+	/**
+	 * Provides a method to see if a StrinBuilder string is contained in another StringBuilder
+	 * 
+	 * @param StringBuilder to check
+	 * @param string to search for
+	 * @return true if the searched for string is in the checked one, false otherwise
+	 */
 	private static boolean containsIgnoreCase (StringBuilder searchSB, StringBuilder findSB) {
 
 		int i;
