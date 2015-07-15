@@ -64,6 +64,25 @@ public class EircodeApp {
 	}
 
 	/**
+	 * Display the main menu
+	 */
+	private static void displayMenu() {
+		System.out.println();
+		System.out.println("Please select from the following options ");
+		System.out.println("1: Search database by eircode");
+		System.out.println("2: Search database by address");
+		System.out.println("3: Search database by area");
+		System.out.println("4: Add new eircode and address");
+		System.out.println("5: Dump database to console");
+		if (dataModified) {
+			System.out.println("6: Write changes to disk and quit");
+		} else {
+			System.out.println("6: Quit");
+		}
+		System.out.print("Please enter an option: ");
+	}
+	
+	/**
 	 * Get input from the user and return the first character
 	 * 
 	 * @return a character from '1' to '6' entered by the user
@@ -84,25 +103,6 @@ public class EircodeApp {
 		return userInput.charAt(0);
 	}
 
-	/**
-	 * Display the main menu
-	 */
-	private static void displayMenu() {
-		System.out.println();
-		System.out.println("Please select from the following options ");
-		System.out.println("1: Search database by eircode");
-		System.out.println("2: Search database by address");
-		System.out.println("3: Search database by area");
-		System.out.println("4: Add new eircode and address");
-		System.out.println("5: Dump database to console");
-		if (dataModified) {
-			System.out.println("6: Write changes to disk and quit");
-		} else {
-			System.out.println("6: Quit");
-		}
-		System.out.print("Please enter an option: ");
-	}
-	
 	/**
 	 * Allows the user to do a search on the full Eircode
 	 */
