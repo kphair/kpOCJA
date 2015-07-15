@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /* See eircodes.txt for specification and sample database
@@ -20,17 +20,22 @@ public class EircodeApp {
 	 */
 	static StringBuilder[] eircodes = new StringBuilder[0];
 	static StringBuilder[] addresses = new StringBuilder[0];
+	static boolean dataModified = false;
 
 	/** 
 	 * Application to query and maintain a database of Eircodes with matching addresses
 	 */
 	public static void main(String[] args) {
 		StringBuilder userInput;
+		String filename = "src/com/kevinphair/codechallenge/eircode/EircodeData.txt";
 
-		if (! loadDataFile("src/com/kevinphair/codechallenge/eircode/EircodeData.txt")) {
+		if (! loadDataFile(filename)) {
+			System.out.println("Error accessing data file '" + filename + "'");
 			System.out.println("Program terminated");
 			return;
 		};
+		
+		System.out.println(eircodes.length + " records read from data file.");
 		scan = new Scanner(System.in);
 		
 		mainloop:
@@ -42,7 +47,11 @@ public class EircodeApp {
 			System.out.println("3: Search database by area");
 			System.out.println("4: Add new eircode and address");
 			System.out.println("5: Dump database to console");
-			System.out.println("6: Quit");
+			if (dataModified) {
+				System.out.println("6: Write changes to disk and quit");
+			} else {
+				System.out.println("6: Quit");
+			}
 			System.out.print("Please enter an option: ");
 
 			while (true) {
@@ -60,9 +69,14 @@ public class EircodeApp {
 				case '1':findByEircode(); break;
 				case '2':findByAddress(); break;
 				case '3':findByArea(); break;
-				case '4':addNewEntry(); break;
+				case '4':dataModified = addNewEntry(); break;
 				case '5':dumpAll(); break;
-				case '6':quit(); break mainloop;
+				case '6':quit();
+					if (dataModified && (writeDataFile(filename) == false)) {
+						System.out.println("There was an error writing the new database, '" + filename + "'");
+						break;
+					} 
+					break mainloop;
 			}
 		}
 	scan.close();
@@ -156,11 +170,10 @@ public class EircodeApp {
 	/**
 	 * Allows the user to add a new entry to the eircode and address database
 	 */
-	private static void addNewEntry() {
+	private static boolean addNewEntry() {
 		StringBuilder userInput = null;
 		StringBuilder newEircode = null;
 		StringBuilder newAddress = null;
-		//int i;
 		
 		scan = new Scanner(System.in);
 		System.out.print("Please enter a new eircode or leave blank to return to menu: ");
@@ -168,7 +181,7 @@ public class EircodeApp {
 			while (!scan.hasNextLine());
 			userInput = new StringBuilder(scan.nextLine());
 			if (userInput.length() == 0) {
-				return;
+				return false;
 			} else if (userInput.length() == 8) {
 				break;
 			}
@@ -182,7 +195,7 @@ public class EircodeApp {
 			while (!scan.hasNextLine());
 			userInput = new StringBuilder(scan.nextLine());
 			if (userInput.length() == 0) {
-				return;
+				return false;
 			} else if (userInput.length() > 0) {
 				break;
 			}
@@ -191,10 +204,13 @@ public class EircodeApp {
 		}
 
 		newAddress = userInput;
-		eircodes = extendArray(eircodes);
-		addresses = extendArray(addresses);
+		// Create new arrays with 1 extra element each
+		eircodes = Arrays.copyOf(eircodes, eircodes.length + 1);
+		addresses = Arrays.copyOf(addresses, addresses.length + 1);
 		eircodes[eircodes.length -1] = new StringBuilder(newEircode);
 		addresses[addresses.length -1] = new StringBuilder(newAddress);
+		
+		return true;
 	}
 	
 	/**
@@ -242,20 +258,6 @@ public class EircodeApp {
 		}
 		return 0;
 	}
-		
-	/**
-	 * Provide a method to extend a StringBuilder array by one element
-	 * 
-	 * @param old array
-	 * @return new array with an empty element added to the end
-	 */
-	private static StringBuilder[] extendArray(StringBuilder[] oldArray){
-		StringBuilder[] newArray = new StringBuilder[oldArray.length +1];
-		for (int i = 0; i < oldArray.length; i++) {
-			newArray[i] = oldArray[i];
-		}
-		return newArray;
-	}
 
 	/**
 	 * Loads the database in from the specified file
@@ -270,7 +272,6 @@ public class EircodeApp {
 		StringBuilder inLine = new StringBuilder();
 		
 		int inChar;
-		char c;
 		
 		// open file for input
 		try {
@@ -283,48 +284,48 @@ public class EircodeApp {
 			// Start the loop which goes through the whole file
 			while (true) {
 				
-				/*
-				 * Check for end of file
-				 */
-				if (inChar == -1) break;
-
 				/* If a printable character, append it to the StringBuilder and get another one
 				 */
 				if (inChar >= 32) {  
-					c = (char)inChar;
-					System.out.print(c);
-					inLine.append(c);
+					inLine.append((char)inChar);
 					inChar = inFile.read();
 					
-					/* If it's a tab, assign the current StringBuilder to the newEircom StringBuilder
-					 * and create a new StringBuilder to hold the next bit of data from the file
-					 */
+				/* If it's a tab, assign the current StringBuilder to the newEircom StringBuilder
+				 * and create a new StringBuilder to hold the next bit of data from the file
+				 */
 				} else if (inChar == '\t') {		
 					newEircode = inLine;
 					inLine = new StringBuilder();	
 					inChar = inFile.read();
 					
-					/* If it's an end of line marker, assign the current StringBuilder to newAddress
-					 * and read more characters in until no more EOL characters are found as UNIX/Linux
-					 * uses LF to mark and end of line, DOS/Windows uses CR & LF and Mac can use CR or
-					 * LF & CR.
-					 * Then, extend the eircodes and addresses arrays by one and put the newEircome
-					 * and newAddress references into the empty slot at the ends
-					 */
-				} else if (inChar == 13 || inChar == 10) {		
+				/* If end of line marker or end of file, assign current StringBuilder to newAddress
+				 * and read more characters in until no more EOL characters are found as UNIX/Linux
+				 * uses LF to mark and end of line, DOS/Windows uses CR & LF and Mac can use CR or
+				 * LF & CR.
+				 * Then, extend the eircodes and addresses arrays by one and put the newEircome
+				 * and newAddress references into the empty slot at the ends
+				 */
+				} else if (inChar == 13 || inChar == 10 || inChar == -1) {		
 					newAddress = inLine;
 					inLine = new StringBuilder();
-					do {
+					// Skip over any additional line terminators
+					while (inChar == 13 || inChar == 10) {		
 						inChar = inFile.read();
-					} while (inChar == 13 || inChar == 10);		
+					}
 					// Only add the new entry if the Eircode and adddress are valid
 					if (validateEircode(newEircode) > 0) {
-						//if (addresses == null) 
-						eircodes = extendArray(eircodes);
-						addresses = extendArray(addresses);
+						// Create new arrays with 1 extra element each
+						eircodes = Arrays.copyOf(eircodes, eircodes.length + 1);
+						addresses = Arrays.copyOf(addresses, addresses.length + 1);
 						eircodes[eircodes.length - 1] = newEircode;
 						addresses[addresses.length - 1] = newAddress;
 					}
+					if (inChar == -1) {
+						break;
+					}
+				
+					/* Otherwise go and read another character from the file
+					 */
 				} else {
 					inChar = inFile.read();
 				}
@@ -332,11 +333,44 @@ public class EircodeApp {
 			inFile.close();
 			return true;
 		} catch (IOException e) {
-			System.out.println("Error opening data file '" + filename + "'");
 			return false;
 		}
 	}
 
+	/**
+	 * Loads the database in from the specified file
+	 * 
+	 * @param filename of tab delimited text file with one record per line
+	 * @return true if successful, false otherwise
+	 */
+	private static boolean writeDataFile (String filename) {
+		FileWriter outFile = null;
+		
+		// Rename the old data file so it exists as a backup
+		File oldFile = new File(filename);
+		File oldFileBackup = new File(filename + "$$$");
+		oldFileBackup.delete();
+		if (!oldFile.renameTo(oldFileBackup)) {
+			System.out.println("Error backing up current databse.");
+			return false;
+		}
+
+		// open file for input
+		try {
+			
+			File newFile = new File(filename);
+            outFile = new FileWriter(newFile, false);
+            
+            for (int i = 0; i < eircodes.length; ++i) {
+       	 		outFile.write(eircodes[i] + "\t" + addresses[i] + "\r\n");
+			}
+			outFile.close();
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+	
 	/**
 	 * Provide a method to compare the contents two StringBuilder objects
 	 * 
