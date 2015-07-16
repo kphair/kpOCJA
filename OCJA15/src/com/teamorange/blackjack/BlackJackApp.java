@@ -6,6 +6,7 @@
 package com.teamorange.blackjack;
 
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * @author Mubasher Mohammed, Kevin Phair, Jenn Quinn, Seamus O'Toole
@@ -81,37 +82,7 @@ public class BlackJackApp {
 		}
 	}
 	
-	public boolean playOneHand () {
-		initaliseDeck();
-		shuffleDeck();
-		int playerScore = 0;
-		int dealerScore = 0;
 		
-		this.drawCard(Card.Owner.PLAYER);
-		for(;;){
-			this.drawCard(Card.Owner.PLAYER);
-			playerScore = this.getScore(Card.Owner.PLAYER);
-			if (playerScore > 21){
-				return true;
-			}else if (playerScore == 21){
-				return false;
-			}else if (playerScore > 16){
-				break;
-			}
-		}
-		this.drawCard(Card.Owner.DEALER);
-		for(;;){
-			this.drawCard(Card.Owner.DEALER);
-			dealerScore = this.getScore(Card.Owner.DEALER);
-			if (dealerScore > 21){
-				return false;
-			} else if (dealerScore > playerScore){
-				return true;
-			}
-		}
-
-	}
-	
 	public void initaliseDeck() {
 	
 		for (int i = 0; i < 13; ++i) {
