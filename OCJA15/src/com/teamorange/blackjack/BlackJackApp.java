@@ -23,7 +23,7 @@ public class BlackJackApp {
 	public static void main(String[] args){
 		BlackJackApp ba = new BlackJackApp();
 		ba.runApp();
-	}//end main
+	} //end main
 	
 	public boolean playOneHand(){
 		initaliseDeck();
