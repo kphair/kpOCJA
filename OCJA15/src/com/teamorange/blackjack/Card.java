@@ -15,8 +15,16 @@ public class Card {
 	enum Suit { DIAMONDS, HEARTS, CLUBS, SPADES }
 	enum Owner { DECK, DEALER, PLAYER}
 	int faceValue;		// 1 -13
-	
-	public int getPlayerScore() {
+	Suit suit;
+	Owner owner;
+
+	public Card(Suit suit, int value) {
+		this.faceValue= value;
+		this.suit = suit;
+		this.owner = Owner.DECK;		
+	}
+
+	public int getCardScore(Owner owner) {
 		
 		if (this.faceValue > 10) {
 			return 10;
@@ -27,5 +35,11 @@ public class Card {
 		}
 	}
 	
-	
+	public void setOwner(Owner owner) {
+		if (this.owner == Owner.DECK) this.owner = owner;
+	}
+
+	public Owner getOwner() {
+		return this.owner;
+	}
 }
