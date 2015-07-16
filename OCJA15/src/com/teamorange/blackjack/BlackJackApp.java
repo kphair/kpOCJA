@@ -30,7 +30,14 @@ public class BlackJackApp {
 	}
 	
 	public void drawCard(Card.Owner owner) {
-
 		
 	}
+	
+	public int getScore(Card.Owner owner) {
+		int score = 0;
+		
+		return score;
+	}
+	
+	
 }
