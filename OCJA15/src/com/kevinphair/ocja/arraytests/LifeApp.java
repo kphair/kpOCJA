@@ -74,7 +74,7 @@ public class LifeApp {
 		for (int row = 0; row < a.length; ++row) {
 			// Step through the columns in each row of cells
 			for (int col = 0; col < a[row].length; ++col) {
-				if (Random.nextInt(10) < 3) {
+				if (new Random().nextInt(10) < 3) {
 					a[row][col] = 1;
 				} else {
 					a[row][col] = 0;
