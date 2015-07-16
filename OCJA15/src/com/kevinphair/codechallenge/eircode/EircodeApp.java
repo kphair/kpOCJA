@@ -8,7 +8,26 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/* See eircodes.txt for specification and sample database
+/**
+ * Application to read a data file of Eircodes and matching addresses which
+ * will let a user view, search and modify the contents before writing any
+ * changes back to the file upon exit.
+ * 
+ * See eircodes.txt for client specification and their initial database.
+ * 
+ * The data file is a tab-delimited database with one record per line.
+ * The Eircode is in the format 'AAA BBBB" where 'AAA' is the area specifier
+ * followed by a space character and then 'BBBB' which is the lookup code for
+ * that area. The entire address is stored in the second field
+ * 
+ * @author Artjom Porss, Marie Archbold, Kevin Phair
+ * @version 3 - Refactor to replace String objects in data arrays with StringBuilders
+ * 				Added ability to read and write data file
+ * 
+ * Revision history:
+ * V2 - Refactored to use StringBuilder instead of String where possible
+ * V1 - First completed version using String objects throughout
+ * 
  */
 public class EircodeApp {
 
@@ -282,14 +301,10 @@ public class EircodeApp {
 		 */
 		final String validChars = "0123456789ACDEFHKNPRTVWXY";
 				
-		/* 
-		 * If string is 8 characters and has a space at position 3, it's OK
-		 */
+		// If string is 8 characters and has a space at position 3, it's OK
 		if (eircode.length() == 8 && eircode.charAt(3) == ' ') return 1;											
 		
-		/*
-		 * If the string has 7 character and has NO spaces, it's OK
-		 */
+		// If the string has 7 character and has NO spaces, it's OK
 		if ((eircode.length() == 7) && (eircode.indexOf(" ") == -1)) return 0;
 		
 		return 0;
@@ -370,7 +385,12 @@ public class EircodeApp {
 	}
 
 	/**
-	 * Loads the database in from the specified file
+	 * Writes the database back to disk
+	 * 
+	 * Before writing back to disk, thie method will rename the old data file
+	 * by appending "$$$" to the end of the filename. If there is a previous
+	 * backup, it will be overwritten. The new database is then written to
+	 * the original filename.
 	 * 
 	 * @param filename of tab delimited text file with one record per line
 	 * @return true if successful, false otherwise
@@ -450,4 +470,4 @@ public class EircodeApp {
 		}
 		return false;
 	}
-}
+} // End of EircodeApp
