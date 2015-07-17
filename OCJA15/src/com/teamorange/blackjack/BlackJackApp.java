@@ -5,6 +5,7 @@
  */
 package com.teamorange.blackjack;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -35,7 +36,7 @@ public class BlackJackApp {
 		for(;;){
 			this.drawCard(Card.Owner.PLAYER);
 			playerScore = this.getScore(Card.Owner.PLAYER);
-			System.out.println(playerScore);
+			System.out.println("Player 1 score is " + playerScore);
 			if (playerScore > 21){
 				return true;
 			}else if (playerScore == 21){
@@ -48,6 +49,7 @@ public class BlackJackApp {
 		for(;;){
 			this.drawCard(Card.Owner.DEALER);
 			dealerScore = this.getScore(Card.Owner.DEALER);
+			System.out.println("Player 2 score is " + dealerScore);
 			if (dealerScore > 21){
 				return false;
 			} else if (dealerScore >= playerScore){
@@ -89,8 +91,14 @@ public class BlackJackApp {
 				System.out.println("That is the end of the tournament.");
 				break;
 			}
-			System.out.println("Enter 'n' to show next hand");
-			scan.next();
+			System.out.println("Press enter to show next hand");
+//			scan.next();
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -101,10 +109,10 @@ public class BlackJackApp {
 
 		for (int i = 0; i < 13; ++i) {
 			
-			deck[i] = new Card(Card.Suit.HEARTS, i);
-			deck[i + 13] = new Card(Card.Suit.DIAMONDS, i);
-			deck[i + 26] = new Card(Card.Suit.SPADES, i);
-			deck[i + 39] = new Card(Card.Suit.CLUBS, i);
+			deck[i] = new Card(Card.Suit.HEARTS, (i + 1));
+			deck[i + 13] = new Card(Card.Suit.DIAMONDS, (i + 1));
+			deck[i + 26] = new Card(Card.Suit.SPADES, (i + 1));
+			deck[i + 39] = new Card(Card.Suit.CLUBS, (i + 1));
 				
 		}
 	}
@@ -139,7 +147,11 @@ public class BlackJackApp {
 		int score = 0;
 		for (int i = 0; i < deck.length; ++i) {
 			if (deck[i].getOwner() == owner) {
-				score += deck[i].getCardScore(owner);
+				score += deck[i].getCardScore();
+				if(deck[i].getCardScore() == 11 && score > 21){
+					//System.out.println(deck[i].getOwner().name() + " decided to use the Ace as a 1");
+					score -= 10;
+				}
 			}
 		}
 		return score;
