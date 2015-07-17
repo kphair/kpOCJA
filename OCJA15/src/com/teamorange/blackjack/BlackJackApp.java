@@ -20,18 +20,19 @@ public class BlackJackApp {
 
 	Card[] deck = new Card[52];
 	Scanner scan = new Scanner(System.in);
-	
+
 	public static void main(String[] args){
 		BlackJackApp ba = new BlackJackApp();
 		ba.runApp();
 	} //end main
-	
+
 	public boolean playOneHand(){
 		initaliseDeck();
 		shuffleDeck();
 		int playerScore = 0;
 		int dealerScore = 0;
-		
+		this.drawCard(Card.Owner.DEALER);
+		System.out.println();
 		this.drawCard(Card.Owner.PLAYER);
 		for(int i=0;;++i){
 			this.drawCard(Card.Owner.PLAYER);
@@ -50,7 +51,7 @@ public class BlackJackApp {
 				break;
 			}
 		}
-		this.drawCard(Card.Owner.DEALER);
+		System.out.println();
 		for(;;){
 			this.drawCard(Card.Owner.DEALER);
 			dealerScore = this.getScore(Card.Owner.DEALER);
@@ -65,37 +66,30 @@ public class BlackJackApp {
 		}
 
 	}
-	
+
 	private void runApp(){
 		int numGames = 11;
 		int player1Wins = 0; 
 		int player2Wins = 0; 
-		
+
 
 		for (int i = 0; i < numGames; ++i){
 			if (i%2 == 0){
-				System.out.println("\nStart of new game. Adam is the dealer.");
+				System.out.println("\nStart of new game. Adam is the dealer.\n");
 				if (this.playOneHand()){
 					player1Wins++;
 				} else {
-				player2Wins++;
+					player2Wins++;
 				}
 			} else {
-				System.out.println("\nStart of new game. Bob is the dealer.");
+				System.out.println("\nStart of new game. Bob is the dealer.\n");
 				if (this.playOneHand()){
 					player2Wins++;
 				} else {
 					player1Wins++;
 				}
 			}
-			System.out.printf("Current scores \n Adam: %d \n Bob: %d\n", player1Wins, player2Wins);
-			System.out.println("Press enter to show next round");
-			try {
-				System.in.read();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			System.out.printf("\nCurrent scores \n Adam: %d \n Bob: %d\n", player1Wins, player2Wins);
 			if (i == numGames - 1) {
 				if (player1Wins > player2Wins) {
 					System.out.println("Adam was the winner out of " + numGames + " games.");
@@ -104,8 +98,16 @@ public class BlackJackApp {
 				}
 				System.out.println("That is the end of the tournament.");
 				break;
+			} else {
+				System.out.println("Press enter to show next round");
+				try {
+					System.in.read();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
-			System.out.println("Press enter to show next round");
 			try {
 				System.in.read();
 			} catch (IOException e) {
@@ -114,28 +116,28 @@ public class BlackJackApp {
 			}
 		}
 	}
-	
-		
+
+
 	public void initaliseDeck() {
-	
+
 		currentCard = 0;
 
 		for (int i = 0; i < 13; ++i) {
-			
+
 			deck[i] = new Card(Card.Suit.HEARTS, (i + 1));
 			deck[i + 13] = new Card(Card.Suit.DIAMONDS, (i + 1));
 			deck[i + 26] = new Card(Card.Suit.SPADES, (i + 1));
 			deck[i + 39] = new Card(Card.Suit.CLUBS, (i + 1));
-				
+
 		}
 	}
-	
+
 	public void shuffleDeck() {
 		Card firstCard = null;
 		Card secondCard = null;
 		int pick1;
 		int pick2;
-		
+
 		for (int i = 0; i < 100; ++i) {
 			pick1 = new Random().nextInt(52);
 			pick2 = new Random().nextInt(52);
@@ -147,15 +149,15 @@ public class BlackJackApp {
 
 		}
 	}
-	
+
 	public void drawCard(Card.Owner owner) {
 		deck[currentCard].setOwner(owner);
 		System.out.print(owner.name() + " draws ");
 		deck[currentCard].showCard();
 		currentCard++;
-		
+
 	}
-	
+
 	public int getScore(Card.Owner owner) {
 		int score = 0;
 		boolean isAce = false;
@@ -172,6 +174,6 @@ public class BlackJackApp {
 		}
 		return score;
 	}
-	
-	
+
+
 }
