@@ -74,21 +74,21 @@ public class BlackJackApp {
 
 		for (int i = 0; i < numGames; ++i){
 			if (i%2 == 0){
-				System.out.println("\nStart of new game. Player one is the dealer.");
+				System.out.println("\nStart of new game. Adam is the dealer.");
 				if (this.playOneHand()){
 					player1Wins++;
 				} else {
 				player2Wins++;
 				}
 			} else {
-				System.out.println("\nStart of new game. Player two is the dealer.");
+				System.out.println("\nStart of new game. Bob is the dealer.");
 				if (this.playOneHand()){
 					player2Wins++;
 				} else {
 					player1Wins++;
 				}
 			}
-			System.out.printf("Current scores \n player1: %d \n player2: %d\n", player1Wins, player2Wins);
+			System.out.printf("Current scores \n Adam: %d \n Bob: %d\n", player1Wins, player2Wins);
 			System.out.println("Press enter to show next round");
 			try {
 				System.in.read();
@@ -98,9 +98,9 @@ public class BlackJackApp {
 			}
 			if (i == numGames - 1) {
 				if (player1Wins > player2Wins) {
-					System.out.println("Player 1 was the winner out of " + numGames + " games.");
+					System.out.println("Adam was the winner out of " + numGames + " games.");
 				} else {
-					System.out.println("Player 2 was the winner out of " + numGames + " games.");
+					System.out.println("Bob was the winner out of " + numGames + " games.");
 				}
 				System.out.println("That is the end of the tournament.");
 				break;
