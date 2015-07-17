@@ -33,15 +33,20 @@ public class BlackJackApp {
 		int dealerScore = 0;
 		
 		this.drawCard(Card.Owner.PLAYER);
-		for(;;){
+		for(int i=0;;++i){
 			this.drawCard(Card.Owner.PLAYER);
 			playerScore = this.getScore(Card.Owner.PLAYER);
-			System.out.println("Player 1 score is " + playerScore);
+			System.out.println("Player's score is " + playerScore);
 			if (playerScore > 21){
+				System.out.println("Player is bust. Dealer wins!");
 				return true;
 			}else if (playerScore == 21){
+				System.out.println("Blackjack! Player wins.");
 				return false;
+			}else if (i == 3){
+				System.out.println("Five card Charlie! Player wins.");
 			}else if (playerScore > 16){
+				System.out.println("Player sticks at " + playerScore);
 				break;
 			}
 		}
@@ -49,10 +54,12 @@ public class BlackJackApp {
 		for(;;){
 			this.drawCard(Card.Owner.DEALER);
 			dealerScore = this.getScore(Card.Owner.DEALER);
-			System.out.println("Player 2 score is " + dealerScore);
+			System.out.println("Dealer's score is " + dealerScore);
 			if (dealerScore > 21){
+				System.out.println("Dealer is bust. Player wins!");
 				return false;
 			} else if (dealerScore >= playerScore){
+				System.out.println("Dealer Wins!");
 				return true;
 			}
 		}
@@ -67,14 +74,14 @@ public class BlackJackApp {
 
 		for (int i = 0; i < numGames; ++i){
 			if (i%2 == 0){
-				System.out.println("\nStart of new game. Player 1 is the dealer.");
+				System.out.println("\nStart of new game. Player one is the dealer.");
 				if (this.playOneHand()){
 					player1Wins++;
 				} else {
 				player2Wins++;
 				}
 			} else {
-				System.out.println("\nStart of new game. Player 2 is the dealer.");
+				System.out.println("\nStart of new game. Player two is the dealer.");
 				if (this.playOneHand()){
 					player2Wins++;
 				} else {
@@ -82,6 +89,13 @@ public class BlackJackApp {
 				}
 			}
 			System.out.printf("Current scores \n player1: %d \n player2: %d\n", player1Wins, player2Wins);
+			System.out.println("Press enter to show next round");
+			try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (i == numGames - 1) {
 				if (player1Wins > player2Wins) {
 					System.out.println("Player 1 was the winner out of " + numGames + " games.");
@@ -91,8 +105,7 @@ public class BlackJackApp {
 				System.out.println("That is the end of the tournament.");
 				break;
 			}
-			System.out.println("Press enter to show next hand");
-//			scan.next();
+			System.out.println("Press enter to show next round");
 			try {
 				System.in.read();
 			} catch (IOException e) {
@@ -145,14 +158,17 @@ public class BlackJackApp {
 	
 	public int getScore(Card.Owner owner) {
 		int score = 0;
+		boolean isAce = false;
 		for (int i = 0; i < deck.length; ++i) {
 			if (deck[i].getOwner() == owner) {
 				score += deck[i].getCardScore();
-				if(deck[i].getCardScore() == 11 && score > 21){
-					//System.out.println(deck[i].getOwner().name() + " decided to use the Ace as a 1");
-					score -= 10;
+				if(deck[i].getCardScore() == 11){
+					isAce = true;
 				}
 			}
+		}
+		if(isAce && score > 21){
+			score -= 10;
 		}
 		return score;
 	}

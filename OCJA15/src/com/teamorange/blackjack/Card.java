@@ -16,7 +16,7 @@ public class Card {
 	enum Owner { DECK, DEALER, PLAYER}
 	int rank;		// 1 -13
 	String[] rankNames = { 
-		"Ace", "Two", "Three", "Four", 
+		"", "Ace", "Two", "Three", "Four", 
 		"Five", "Six", "Seven", "Eight", 
 		"Nine", "Ten", "Jack", "Queen", "King"
 	};
@@ -37,7 +37,7 @@ public class Card {
 		return rankNames[r];
 	}
 	
-	public int getCardScore(Owner owner) {
+	public int getCardScore() {
 		
 		if (this.rank > 10) {
 			return 10;
