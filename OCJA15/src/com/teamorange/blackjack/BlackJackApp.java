@@ -35,6 +35,7 @@ public class BlackJackApp {
 		for(;;){
 			this.drawCard(Card.Owner.PLAYER);
 			playerScore = this.getScore(Card.Owner.PLAYER);
+			System.out.println(playerScore);
 			if (playerScore > 21){
 				return true;
 			}else if (playerScore == 21){
@@ -49,7 +50,7 @@ public class BlackJackApp {
 			dealerScore = this.getScore(Card.Owner.DEALER);
 			if (dealerScore > 21){
 				return false;
-			} else if (dealerScore > playerScore){
+			} else if (dealerScore >= playerScore){
 				return true;
 			}
 		}
@@ -64,20 +65,31 @@ public class BlackJackApp {
 
 		for (int i = 0; i < numGames; ++i){
 			if (i%2 == 0){
+				System.out.println("\nStart of new game. Player 1 is the dealer.");
 				if (this.playOneHand()){
 					player1Wins++;
 				} else {
 				player2Wins++;
 				}
 			} else {
+				System.out.println("\nStart of new game. Player 2 is the dealer.");
 				if (this.playOneHand()){
 					player2Wins++;
 				} else {
 					player1Wins++;
 				}
 			}
-			System.out.printf("Current scores \n player1: %d \n player2: %d", player1Wins, player2Wins);
-			System.out.println("press enter to show next hand");
+			System.out.printf("Current scores \n player1: %d \n player2: %d\n", player1Wins, player2Wins);
+			if (i == numGames - 1) {
+				if (player1Wins > player2Wins) {
+					System.out.println("Player 1 was the winner out of " + numGames + " games.");
+				} else {
+					System.out.println("Player 2 was the winner out of " + numGames + " games.");
+				}
+				System.out.println("That is the end of the tournament.");
+				break;
+			}
+			System.out.println("Enter 'n' to show next hand");
 			scan.next();
 		}
 	}
@@ -85,6 +97,8 @@ public class BlackJackApp {
 		
 	public void initaliseDeck() {
 	
+		currentCard = 0;
+
 		for (int i = 0; i < 13; ++i) {
 			
 			deck[i] = new Card(Card.Suit.HEARTS, i);
@@ -96,22 +110,29 @@ public class BlackJackApp {
 	}
 	
 	public void shuffleDeck() {
-		Card tempCard = null;
 		Card firstCard = null;
 		Card secondCard = null;
+		int pick1;
+		int pick2;
 		
 		for (int i = 0; i < 100; ++i) {
-			firstCard = deck[new Random().nextInt(52)];
-			secondCard = deck[new Random().nextInt(52)];
+			pick1 = new Random().nextInt(52);
+			pick2 = new Random().nextInt(52);
+			firstCard = deck[pick1];
+			secondCard = deck[pick2];
 
-			tempCard = firstCard;
-			firstCard = secondCard;
-			secondCard = tempCard;  
+			deck[pick2] = firstCard;
+			deck[pick1] = secondCard;
+
 		}
 	}
 	
 	public void drawCard(Card.Owner owner) {
-		deck[currentCard++].setOwner(owner);
+		deck[currentCard].setOwner(owner);
+		System.out.print(owner.name() + " draws ");
+		deck[currentCard].showCard();
+		currentCard++;
+		
 	}
 	
 	public int getScore(Card.Owner owner) {
