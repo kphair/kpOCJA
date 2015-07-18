@@ -3,7 +3,9 @@ package com.kevinphair.games.spaceinvaders;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+
+import com.kevinphair.graphics.sprites.Images;
 
 /**
  * Game function code
@@ -14,30 +16,70 @@ import java.awt.event.KeyEvent;
  * @date 15 Jul 2015
  */
 public class Game {
-	private static int x = 240, y = 580;
-	private static int direction = 0;
-	private static boolean keyStats[] = {
-			false,		// Left 
-			false, 		// Right
-			false, 		// Fire
-			false,		// Player 1 start
-			false		// Quit game
-			};
+	private static int baseX = 240;
+	private static int shotX, shotY;
+	private static int saucerX;
+	private static int playerShotCount;
 	
+	private static int direction = 0;
+	private static boolean changeDirection = false;
+	private static boolean moveDown = false;
 	private static Invader[] invaders = new Invader[55];
-	static boolean gameRunning = false;
-	static int currentRow = 4;
-	static int currentCol = 10;
+	private static boolean gameRunning = false;
+	private static int currentRow = 4;
+	private static int currentCol = 0;
 
+	private static BufferedImage spriteSheet;
+	
+	private static BufferedImage row4Sprite; 
+	private static BufferedImage row2Sprite; 
+	private static BufferedImage row1Sprite;
+	private static BufferedImage[] image;
+	
+	private static BufferedImage invExplode;
+	private static BufferedImage base;
+	private static BufferedImage baseShot;
+	private static BufferedImage shield;
+	private static BufferedImage missileHit;
+	
+	private static BufferedImage saucer;
+	private static BufferedImage saucerExplode;
+	private static BufferedImage[] missiles;
+	
 	/**
 	 * Start the game by resetting the score and initialising a new array of invaders
 	 * 
 	 */
 	public static void StartGame() {
 
+		spriteSheet = new Images().loadImage("/com/kevinphair/games/spaceinvaders/SpaceInvadersSpriteSheet.png");
+		if (spriteSheet == null) {
+			System.out.println("Sprite Sheet not available!");
+			return;
+		}
+
+		row4Sprite = spriteSheet.getSubimage(0, 0, 16, 16); 
+		row2Sprite = spriteSheet.getSubimage(16, 0, 16, 16); 
+		row1Sprite = spriteSheet.getSubimage(32, 0, 16, 16);
+		image = new BufferedImage[] { row1Sprite, row2Sprite, row2Sprite, row4Sprite, row4Sprite };
+		
+		invExplode = spriteSheet.getSubimage(0, 16, 16, 8);
+		base = spriteSheet.getSubimage(48, 0, 16, 24);
+		baseShot = spriteSheet.getSubimage(104, 0, 8, 8);
+		shield = spriteSheet.getSubimage(64, 0, 24, 16);
+		missileHit = spriteSheet.getSubimage(64, 16, 8, 8);
+		
+		saucer = spriteSheet.getSubimage(72, 16, 16, 8);
+		saucerExplode = spriteSheet.getSubimage(64, 24, 24, 8);
+		missiles = new BufferedImage[] { spriteSheet.getSubimage(88, 0, 8, 32),
+										spriteSheet.getSubimage(96, 0, 8, 32),
+										spriteSheet.getSubimage(104, 0, 8, 32)
+		};
+		
+		
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 11; ++j) {
-				invaders[i * 11 + j] = new Invader(40 + j * 32, 80 + i * 32, i + 1);
+				invaders[i * 11 + j] = new Invader(40 + j * 32, 128 + i * 32, i + 1, image[i]);
 			}
 		}
 		Game.setDirection(1);
@@ -53,53 +95,70 @@ public class Game {
 
 		
 		if (gameRunning) {
-			
-			g.setColor(Color.GREEN);
-			g.fillRect(x, y, 28, 16);
 
+			// Draw player base
+			g.drawImage(base.getSubimage(0, 0, 16, 8), baseX, 432, 32, 16, null);
+
+			// Draw the shields
+			g.drawImage(shield, 64, 384, 48, 32, null);
+			g.drawImage(shield, 154, 384, 48, 32, null);
+			g.drawImage(shield, 244, 384, 48, 32, null);
+			g.drawImage(shield, 334, 384, 48, 32, null);
+			
+			// Draw the line at the bottom
+			g.setColor(Color.GREEN);
+			g.fillRect(0, 478, 446, 2);
+			
+			Text.print(g, 16, 16, "SCORE<1> HI-SCORE SCORE<2>");
+			Text.print(g, 48, 48, "0000    0000");
+			Text.print(g, 16, 480, "3");
+			Text.print(g, 280, 480, "CREDIT 00");
+
+			for (Invader inv : invaders) {
+				inv.redraw(g);
+			}
+			
 			/*
-			 * Step left or right across the current row of invaders
+			 * Step from left to right across the current row of invaders
 			 * moving up one row if the end is reached
 			 */
-			do {
-				invaders[currentRow * 11 + currentCol].moveInvader();
-				if (direction < 0) {
-					currentCol++;
-					if (currentCol > 10) {
-						currentCol = 0;
-						currentRow--;
-					}
-				} else if (direction > 0) {
-					currentCol--;
-					if (currentCol < 0) {
-						currentCol = 10;
-						currentRow--;
-					}
-				}
-			} while ((currentRow >= 0) && (invaders[currentRow * 11 + currentCol].getType() == 0));
-			
-
-			/*
-			 * If all the invaders are done set the direction flag to 
-			 * purely horizontal movement if they were moving down
-			 */
-			if (currentRow < 0) {
-				currentRow = 4;
-				if (direction < 0) {
-					direction = -1;
+			while (true) {
+				Invader currentInv = invaders[currentRow * 11 + currentCol]; 
+				currentInv.moveAcross();
+				if (moveDown) currentInv.moveDown();
+				currentCol++;
+				if (currentCol > 10) {
 					currentCol = 0;
-				} else if (direction > 0) {
-					direction = 1;
-					currentCol = 10;
+					currentRow--;
+					/*
+					 * If all the invaders are done check to see if the changeDirection flag is set
+					 */
+					if (currentRow < 0) {
+						currentRow = 4;
+						/*
+						 * Check to see if the direction of the invaders needs to be changed
+						 * and if they need to be told they can move down 
+						 */
+						if (changeDirection) {
+							direction = -direction;
+							currentCol = 0;
+							changeDirection = false;
+							moveDown = true;
+						} else {
+							moveDown = false;
+						}
+					}
+				}
+				/*
+				 * If the invader just processed was active, let the game run for another cycle
+				 * This way, only one invader gets updated per cycle, but inactive slots are passed
+				 * over. This emulates the behaviour of the game speeding up as invaders get
+				 * destroyed.
+				 */
+				if (currentInv.getType() > 0) {
+					break;
 				}
 			}
-	
-			for (int i = 0; i < 5; ++i) {
-				for (int j = 0; j < 11; ++j) {
-					invaders[i * 11 + j].redraw(g);
-				}
-			}
-
 		}
 	}
 
@@ -110,46 +169,10 @@ public class Game {
 	 */
 	public static void movement(Container window) {
 
-		if (keyStats[0] && x > 0) x-= 2;							// LEFT
-		if (keyStats[1] && x < window.getWidth() - 16) x+= 2;		// RIGHT
+		if (Controls.getLeft() && baseX > 0) baseX-= 2;								// LEFT
+		if (Controls.getRight() && baseX < window.getWidth() - 32) baseX += 2;		// RIGHT
 	}
 
-	
-	/**
-	 * Set items in the controls matrix via key press events
-	 * 
-	 * @param keyPressed event
-	 */
-	public static void keyPressed(KeyEvent e) {
-		int key = e.getKeyCode();
-		System.out.println(key);
-		
-		switch(key) {
-			case KeyEvent.VK_LEFT: keyStats[0] = true; break;
-			case KeyEvent.VK_RIGHT: keyStats[1] = true; break;
-			case KeyEvent.VK_SPACE: keyStats[2] = true; break;
-			case KeyEvent.VK_1: keyStats[3] = true; break;
-			case KeyEvent.VK_ESCAPE: keyStats[4] = true; break;
-		}
-	}
-	
-	/**
-	 * Reset items in the controls matrix via key release events
-	 * 
-	 * @param keyReleased event
-	 */
-	public static void keyReleased(KeyEvent e) {
-		int key = e.getKeyCode();
-		System.out.println(key);
-		
-		switch(key) {
-			case KeyEvent.VK_LEFT: keyStats[0] = false; break;
-			case KeyEvent.VK_RIGHT: keyStats[1] = false; break;
-			case KeyEvent.VK_SPACE: keyStats[2] = false; break;
-			case KeyEvent.VK_1: keyStats[3] = false; break;
-			case KeyEvent.VK_ESCAPE: keyStats[4] = false; break;
-		}
-	}
 	
 	/**
 	 * Set the direction of the Invaders
@@ -162,6 +185,17 @@ public class Game {
 	 */
 	public static void setDirection(int newDirection) {
 		direction = newDirection;
+	}
+
+	public static void changeDirection() {
+		changeDirection = true;
+	}
+
+	public static boolean getChangeDirection() {
+		return changeDirection;
+	}
+	public static boolean getMoveDown() {
+		return moveDown;
 	}
 	
 	/**
