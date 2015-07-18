@@ -51,13 +51,11 @@ public class Invader {
 	 * The array starts from the top left invader and goes left to right then down
 	 */
 	public void moveInvader() {
-		if (x < 40 && Game.getDirection() == -1) {
-			Game.setDirection(2);
-		} else if (x > 400 && Game.getDirection() == 1) {
-			Game.setDirection(-2);
-		}
-		if (Game.getDirection() == -2 || Game.getDirection() == 2) {
-			y += 32;
+		int dir = Game.getDirection();
+	
+		if ((x < 40 && dir == -1) || (x > 400 && dir == 1) || (Game.getChangeDirection())) {
+			Game.changeDirection();
+			y += 16;
 		}
 		x += Math.signum(Game.getDirection()) * 4;
 	}
