@@ -37,7 +37,7 @@ public class Window extends JComponent implements ActionListener {
 		window.setSize(new Dimension (width,height));
 		window.setLocationRelativeTo(null);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setResizable(true);
+		window.setResizable(false);
 		window.setVisible(true);	
 
 		/* Attach the keyboard event handlers that are in Game.java
@@ -59,14 +59,23 @@ public class Window extends JComponent implements ActionListener {
 		
 	}
 
+	/**
+	 * Timer event handler
+	 * Updates object movement and repaints the game area
+	 * 
+	 * @param ActionEvent which called this handler
+	 */
 	public void actionPerformed(ActionEvent ae) {
 		Game.movement(window.getContentPane());
 		repaint();
 	}
 
-	/* Draw the component's graphics
+	/**
+	 * Draw the component's graphics
 	 * Generally this is the first step in updating the window and
-	 * means redrawing the background and any major layout and graphical elements 
+	 * means redrawing the background and any major layout and graphical elements
+	 * 
+	 * @param graphics context for the JComponent to draw into
 	 */
 	protected void paintComponent(Graphics g) {
 		
@@ -79,8 +88,11 @@ public class Window extends JComponent implements ActionListener {
 		g.fillRect(0, 0, width, height);
 	}
 
-	/* Drawn the components children
+	/**
+	 * Draw the components children
 	 * In this, the object under user control
+	 * 
+	 * @param graphics context for the JComponent that needs children repainted
 	 */
 	protected void paintChildren(Graphics g) {
 		Game.update(g);
