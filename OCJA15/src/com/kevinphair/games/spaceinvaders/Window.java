@@ -44,10 +44,10 @@ public class Window extends JComponent implements ActionListener {
 		 */
 		window.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				Game.keyPressed(e);
+				Controls.keyPressed(e);
 			}
 			public void keyReleased(KeyEvent e) {
-				Game.keyReleased(e);
+				Controls.keyReleased(e);
 			}
 		} );
 	
