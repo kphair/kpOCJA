@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 public class CaesarCipherApp {
 
-	public static int shiftValue;
+	public static int shiftValue = 1;
 	
 	public static Scanner scan = new Scanner(System.in);
 	
@@ -77,15 +77,7 @@ public class CaesarCipherApp {
 		if (inputString.length() > 0 && inputString.length() <= 140) {
 			StringBuffer newString = new StringBuffer(inputString);
 			System.out.println("Encrypting " + newString);
-			for (int i = 0; i < newString.length(); ++i) {
-				c = newString.charAt(i);
-				if (c >= 32 && c <= 126) {
-					c = (char)(c + 1);
-					if (c > 126) c -= 95;
-					newString.setCharAt(i, c);
-					// c = (char)(32 + ((c - 32) + 1) % 95);
-				}
-			}
+			crypt(newString, shiftValue);
 			System.out.println("The encrypted string is '" + newString + "'");
 		}
 		System.out.println();
@@ -104,20 +96,29 @@ public class CaesarCipherApp {
 		if (inputString.length() > 0 && inputString.length() <= 140) {
 			StringBuffer newString = new StringBuffer(inputString);
 			System.out.println("Decrypting " + newString);
-			for (int i = 0; i < newString.length(); ++i) {
-				c = newString.charAt(i);
-				if (c >= 32 && c <= 126) {
-					c = (char)(c - 1);
-					if (c < 32) c += 95;
-					newString.setCharAt(i, c);
-					// c = (char)(32 + ((c - 32) + 1) % 95);
-				}
-			}
+			crypt(newString, -shiftValue);
 			System.out.println("The decrypted string is '" + newString + "'");
 		}
 		System.out.println();
 		System.out.println();
 		
+	}
+
+	private static void crypt(StringBuffer newString, int shift) {
+		char c;
+		for (int i = 0; i < newString.length(); ++i) {
+			c = newString.charAt(i);
+			if (c >= 32 && c <= 126) {
+				c = (char)(c + shift);
+				if (c < 32){
+					c += 95;
+				}else if(c > 126){
+					c -= 95;
+				}
+				newString.setCharAt(i, c);
+				
+			}
+		}
 	}
 	
 	public static void setShiftValue() {
