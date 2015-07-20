@@ -64,18 +64,25 @@ public class CaesarCipherApp {
 		char c;
 		
 		System.out.println("Please enter some text to encrypt");
-		inputString = scan.nextLine();
+		inputString = scan.next();
 		
+		System.out.println("You entered " + inputString);
 		if (inputString.length() > 0) {
 			StringBuffer newString = new StringBuffer(inputString);
+			System.out.println("Enrcypting " + newString);
 			for (int i = 0; i < newString.length(); ++i) {
 				c = newString.charAt(i);
 				if (c >= 32 && c <= 126) {
-					c = (char)(((c - 32) + 1) % 95);
-					
+					c = (char)(c + 1);
+					if (c > 126) c -= 95;
+					newString.setCharAt(i, c);
+					// c = (char)(32 + ((c - 32) + 1) % 95);
 				}
 			}
+			System.out.println("The encrypted string is '" + newString + "'");
 		}
+		System.out.println();
+		System.out.println();
 	}
 	
 	public static void decryptString() {
