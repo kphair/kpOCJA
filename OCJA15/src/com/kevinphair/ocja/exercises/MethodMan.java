@@ -52,7 +52,7 @@ public class MethodMan {
 	 * @return String presenting MethodMan's data fields
 	 */
 	public String getDescription () {
-		return name + " is " + age + "years old.";
+		return name + " is " + age + " years old.";
 	}
 
 	/**
