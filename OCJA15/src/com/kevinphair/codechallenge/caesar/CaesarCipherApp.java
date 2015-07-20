@@ -8,6 +8,8 @@ import java.util.Scanner;
  */
 public class CaesarCipherApp {
 
+	public static int shiftValue;
+	
 	public static Scanner scan = new Scanner(System.in);
 	
 	public static void main(String[] args) {
@@ -22,7 +24,10 @@ public class CaesarCipherApp {
 					case 2: System.out.println("Decrypt selected");
 							decryptString();
 							break;
-					case 3: System.out.println("Program quitting. Thank you"); break mainloop;
+					case 3: System.out.println("Shift value selected");
+							setShiftValue();
+							break;
+					case 4: System.out.println("Program quitting. Thank you"); break mainloop;
 				};
 			}
 		
@@ -42,7 +47,8 @@ public class CaesarCipherApp {
 		System.out.println("Choose from one of the following options");
 		System.out.println("1: Encrypt a string");
 		System.out.println("2: Decrypt a string");
-		System.out.println("3: Quit");
+		System.out.println("3: Set the shift value (currentl " + shiftValue + ")");
+		System.out.println("4: Quit");
 		System.out.println();
 		System.out.println("Press the number you want to select and press ENTER");
 		
@@ -63,12 +69,12 @@ public class CaesarCipherApp {
 		String inputString;
 		char c;
 		
-		System.out.println("Please enter some text to encrypt");
+		System.out.println("Please enter some text to encrypt (140 characters max)");
 		inputString = scan.nextLine();
 		inputString = scan.nextLine();
 		
 		System.out.println("You entered " + inputString);
-		if (inputString.length() > 0) {
+		if (inputString.length() > 0 && inputString.length() <= 140) {
 			StringBuffer newString = new StringBuffer(inputString);
 			System.out.println("Encrypting " + newString);
 			for (int i = 0; i < newString.length(); ++i) {
@@ -90,12 +96,12 @@ public class CaesarCipherApp {
 		String inputString;
 		char c;
 		
-		System.out.println("Please enter some text to decrypt");
+		System.out.println("Please enter some text to decrypt (140 characters max)");
 		inputString = scan.nextLine();
 		inputString = scan.nextLine();
 		
 		System.out.println("You entered " + inputString);
-		if (inputString.length() > 0) {
+		if (inputString.length() > 0 && inputString.length() <= 140) {
 			StringBuffer newString = new StringBuffer(inputString);
 			System.out.println("Decrypting " + newString);
 			for (int i = 0; i < newString.length(); ++i) {
@@ -114,5 +120,19 @@ public class CaesarCipherApp {
 		
 	}
 	
+	public static void setShiftValue() {
+		int newShift = 0;
+		
+		System.out.println("Please enter the new shift value (from -94 to 94)");
+		newShift = scan.nextInt();
+		
+		System.out.println("You entered " + newShift);
+		if (newShift == 0 || newShift > 94 || newShift < -94) {
+			System.out.println("That is not a valid shift value");
+			
+		} else {
+			shiftValue = newShift;
+		}
+	}
 	
 }
