@@ -18,6 +18,6 @@ public class ByReferenceApp {
 	}
 
 	private void changeCar (Car car) {
-		car.setModel("Veryron");
+		car.setModel("Veyron");
 	}
 }
