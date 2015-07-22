@@ -1,4 +1,4 @@
-package com.kevinphair.ocja.exercises.passingparameters;
+package com.kevinphair.exercises.passingparameters;
 
 /**
  * Application to demonstrate passing by value

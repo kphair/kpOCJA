@@ -1,4 +1,4 @@
-package com.kevinphair.ocja.exercises.passingparameters;
+package com.kevinphair.exercises.passingparameters;
 
 /**
  * Person class to accompany PersonApp

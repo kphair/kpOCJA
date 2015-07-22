@@ -1,4 +1,4 @@
-package com.kevinphair.ocja.exercises.passingparameters;
+package com.kevinphair.exercises.passingparameters;
 
 /**
  * An application to show instance variables and getters and setters

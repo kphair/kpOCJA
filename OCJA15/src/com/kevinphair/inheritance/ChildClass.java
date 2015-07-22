@@ -2,7 +2,7 @@
  * @author Kevin Phair
  * Created 22 Jul 2015
  */
-package nu.xdi.inheritance;
+package com.kevinphair.inheritance;
 
 /**
  * A child class to extend ParentClass, demonstrating SuperClass constructor use
