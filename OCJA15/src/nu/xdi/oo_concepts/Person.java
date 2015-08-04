@@ -1,5 +1,7 @@
 package nu.xdi.oo_concepts;
 
+import java.util.Random;
+
 /**
  * A class to use in demonstrating object-oriented concepts such as
  * inheritance, polymorphism, abstraction
@@ -20,7 +22,7 @@ public class Person {
 	}
 	
 	/**
-	 * Constructor to inistialise a new object with specified name
+	 * Constructor to initialise a new object with specified name
 	 * @param name
 	 */
 	Person (String name) {
@@ -31,7 +33,8 @@ public class Person {
 	 * This object makes a noise
 	 */
 	public void makeNoise() {
-		System.out.println("Person object (" + this.name + ") makes a noise.");
+//		System.out.println("Person object (" + this.name + ") makes a noise.");
+		System.out.println(this.name + " goes \"" + new String[]{"Hello.", "Hi!"}[new Random().nextInt(2)] + "\"");
 	}
 	
 	/**
