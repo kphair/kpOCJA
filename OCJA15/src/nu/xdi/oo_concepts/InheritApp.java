@@ -20,6 +20,9 @@ public class InheritApp {
 	 * 
 	 */
 	private void runProgram () {
+		
+		System.out.println("Instance of " + this.toString().split("@", 0)[0] + " is now running...");
+		
 		Person person = new Person ("Kevin");
 		System.out.println(person + " is present.");
 		
@@ -29,9 +32,13 @@ public class InheritApp {
 		Dog dog = new Dog ("Rover");
 		System.out.println(dog + " is present.");
 		
+		Duck duck = new Duck ("Jemima");
+		System.out.println(duck + " is present.");
+		
 		this.talk(person);
 		this.talk(cat);
 		this.talk(dog);
+		this.talk(duck);
 		
 	}
 
