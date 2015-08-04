@@ -103,7 +103,6 @@ public class BlackJackApp {
 				try {
 					System.in.read();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -111,7 +110,6 @@ public class BlackJackApp {
 			try {
 				System.in.read();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
