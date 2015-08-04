@@ -27,25 +27,4 @@ public class Duck extends Animal {
 		super (name, Duck.SOUND);
 	}
 	
-//	Cat (String name) {
-//		this.name = name;
-//	}
-//	
-//	/**
-//	 * This object makes a noise
-//	 */
-//	public void makeNoise() {
-//		System.out.println(this.name + " goes \"" + new String[]{"Meow", "Meow!", "MEOW!", "Meeeoooow!"}[new Random().nextInt(4)] + "\"");
-//	}
-//	
-//	/**
-//	 * Override default toString()
-//	 */
-//	public String toString() {
-//		return this.name;
-//	}
-//	
-//	public String getName() {
-//		return this.name;
-//	}
 }
