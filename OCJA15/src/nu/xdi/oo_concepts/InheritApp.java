@@ -15,44 +15,37 @@ public class InheritApp {
 	}
 
 	/**
-	 * 
-	 * Perform the required tasks
-	 * 
+	 * Create various Animal-derived objects and make them perform.
 	 */
 	private void runProgram () {
 		
 		System.out.println("Instance of " + this.toString().split("@", 0)[0] + " is now running...");
 		
+		// Since the Animal.ArrayList was added there's no need to assign the objects to
+		// specific variables but the code has been kept for clarity.
 		Person person = new Person ("Kevin");
-		System.out.println(person + " is present.");
-		
-		Cat cat = new Cat ("Fluff");
-		System.out.println(cat + " is present.");
-		
+		Cat cat = new Cat ("Jones");
 		Dog dog = new Dog ("Bitzer");
-		System.out.println(dog + " is present.");
-		
 		Duck duck = new Duck ("Jemima");
-		System.out.println(duck + " is present.");
-
 		Snake snake = new Snake ("Sid");
-		System.out.println(snake + " is present.");
-		
-		this.talk(person);
-		this.talk(cat);
-		this.talk(dog);
-		this.talk(duck);
-		this.talk(snake);
-		
-		this.move(person);
-		this.move(cat);
-		this.move(dog);
-		this.move(duck);
-		this.move(snake);
-		
+
+		System.out.println("\n\u001b[33;1mRoll call!\u001b[0m");
+		for (Animal a : Animal.getArrayList()) {
+			System.out.println("\u001b[32;1m" + a.getName() + "\u001b[37;0m is present.");
+		}
+		System.out.println("\n\u001b[33;1mSing, my children!\u001b[0m");
+		for (Animal a : Animal.getArrayList()) {
+			talk(a);
+		}
+		System.out.println("\n\u001b[33;1mWe like to moveIt(), moveIt()!\u001b[0m");			// (use local method to call objects' methods)
+		for (Animal a : Animal.getArrayList()) {
+			moveIt(a);
+		}
+		System.out.println("\n\u001b[33;1mAll the children are tired now...\u001b[0m");		// (use objects' methods directly)
 		for (Animal a : Animal.getArrayList()) {
 			a.sleep();
 		}
+		System.out.println();
 	}
 
 	/**
@@ -64,12 +57,13 @@ public class InheritApp {
 	}
 	
 	/**
-	 * move method for all Animals - We like to move it, move it!
+	 * move method for all Animals
 	 * @param animal object
 	 */
-	private void move (Animal a) {
+	private void moveIt (Animal a) {
 		a.move();
 	}
+	
 //	/**
 //	 *  talk method for Person objects
 //	 * @param person object
