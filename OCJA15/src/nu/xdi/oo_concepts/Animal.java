@@ -8,7 +8,7 @@ package nu.xdi.oo_concepts;
  * Created 4 Aug 2015
  *
  */
-public class Animal {
+public abstract class Animal {
 
 	private String name;
 	private String sound;
