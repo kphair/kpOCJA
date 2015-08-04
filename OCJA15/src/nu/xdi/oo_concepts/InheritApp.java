@@ -29,25 +29,46 @@ public class InheritApp {
 		Cat cat = new Cat ("Fluff");
 		System.out.println(cat + " is present.");
 		
-		Dog dog = new Dog ("Rover");
+		Dog dog = new Dog ("Bitzer");
 		System.out.println(dog + " is present.");
 		
 		Duck duck = new Duck ("Jemima");
 		System.out.println(duck + " is present.");
+
+		Snake snake = new Snake ("Sid");
+		System.out.println(snake + " is present.");
 		
 		this.talk(person);
 		this.talk(cat);
 		this.talk(dog);
 		this.talk(duck);
+		this.talk(snake);
 		
+		this.move(person);
+		this.move(cat);
+		this.move(dog);
+		this.move(duck);
+		this.move(snake);
+		
+		for (Animal a : Animal.getArrayList()) {
+			a.sleep();
+		}
 	}
 
 	/**
-	 *  talk method for objects
-	 * @param person object
+	 * talk method for all Animal objects - Let's polymorph!
+	 * @param animal object
 	 */
 	private void talk (Animal a) {
 		a.makeNoise();
+	}
+	
+	/**
+	 * move method for all Animals - We like to move it, move it!
+	 * @param animal object
+	 */
+	private void move (Animal a) {
+		a.move();
 	}
 //	/**
 //	 *  talk method for Person objects
