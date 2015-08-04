@@ -38,7 +38,7 @@ public class Person extends Animal {
 	 * Person's sleep method
 	 */
 	public void sleep() {
-		System.out.println(super.getName() + " lies down and goes to sleep");
+		System.out.println(super.getName() + " finds a bed to lie in and goes to sleep");
 	}
 	
 //	Person (String name) {
