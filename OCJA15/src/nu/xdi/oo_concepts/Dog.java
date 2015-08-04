@@ -44,8 +44,4 @@ public class Dog extends Animal{
 //	public String toString() {
 //		return this.name;
 //	}
-//	
-//	public String getName() {
-//		return this.name;
-//	}
 }
