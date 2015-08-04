@@ -1,7 +1,5 @@
 package nu.xdi.oo_concepts;
 
-import java.util.Random;
-
 /**
  * A class to use in demonstrating object-oriented concepts such as
  * inheritance, polymorphism, abstraction

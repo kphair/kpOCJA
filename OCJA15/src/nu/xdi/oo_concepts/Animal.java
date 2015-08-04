@@ -1,7 +1,5 @@
 package nu.xdi.oo_concepts;
 
-import java.util.Random;
-
 /**
  * A class to use in demonstrating object-oriented concepts such as
  * inheritance, polymorphism, abstraction
@@ -35,7 +33,7 @@ public class Animal {
 	 * This object makes a noise
 	 */
 	public void makeNoise() {
-		System.out.println(this.name + " goes \"" + this.sound + "\"");
+		System.out.println(this.name + " says, \"" + this.sound + "\"");
 	}
 	
 	/**
