@@ -14,7 +14,11 @@ public class InheritApp {
 		new InheritApp().runProgram();
 	}
 
-	// Perform the required tasks
+	/**
+	 * 
+	 * Perform the required tasks
+	 * 
+	 */
 	private void runProgram () {
 		Person person = new Person ("Kevin");
 		System.out.println(person + " is present.");
@@ -22,8 +26,12 @@ public class InheritApp {
 		Cat cat = new Cat ("Fluff");
 		System.out.println(cat + " is present.");
 		
+		Dog dog = new Dog ("Rover");
+		System.out.println(dog + " is present.");
+		
 		this.talk(person);
 		this.talk(cat);
+		this.talk(dog);
 		
 	}
 
@@ -35,6 +43,11 @@ public class InheritApp {
 	// talk method for Cat objects
 	private void talk (Cat c) {
 		c.makeNoise();
+	}
+	
+	// talk method for Cat objects
+	private void talk (Dog d) {
+		d.makeNoise();
 	}
 	
 }
