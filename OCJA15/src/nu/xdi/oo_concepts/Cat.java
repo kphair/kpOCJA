@@ -10,9 +10,9 @@ import java.util.Random;
  * Created 4 Aug 2015
  *
  */
-public class Cat {
+public class Cat extends Animal {
 
-	private String name;
+	private static final String SOUND = "Meow!";
 	
 	/**
 	 * Default constructor initialises blank name
@@ -26,25 +26,28 @@ public class Cat {
 	 * @param name
 	 */
 	Cat (String name) {
-		this.name = name;
+		super (name, Cat.SOUND);
 	}
 	
-	/**
-	 * This object makes a noise
-	 */
-	public void makeNoise() {
-//		System.out.println("Cat object (" + this.name + ") makes a noise.");
-		System.out.println(this.name + " goes \"" + new String[]{"Meow", "Meow!", "MEOW!", "Meeeoooow!"}[new Random().nextInt(4)] + "\"");
-	}
-	
-	/**
-	 * Override default toString()
-	 */
-	public String toString() {
-		return this.name;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
+//	Cat (String name) {
+//		this.name = name;
+//	}
+//	
+//	/**
+//	 * This object makes a noise
+//	 */
+//	public void makeNoise() {
+//		System.out.println(this.name + " goes \"" + new String[]{"Meow", "Meow!", "MEOW!", "Meeeoooow!"}[new Random().nextInt(4)] + "\"");
+//	}
+//	
+//	/**
+//	 * Override default toString()
+//	 */
+//	public String toString() {
+//		return this.name;
+//	}
+//	
+//	public String getName() {
+//		return this.name;
+//	}
 }

@@ -1,7 +1,7 @@
 package nu.xdi.oo_concepts;
 
 /**
- * Program to demonstrate how inheritance works with the Person object
+ * Program to demonstrate how inheritance works with similar but separate objects
  * 
  * @author Kevin Phair
  * Created 4 Aug 2015
@@ -35,19 +35,35 @@ public class InheritApp {
 		
 	}
 
-	// talk method for Person objects
-	private void talk (Person p) {
-		p.makeNoise();
+	/**
+	 *  talk method for objects
+	 * @param person object
+	 */
+	private void talk (Animal a) {
+		a.makeNoise();
 	}
-	
-	// talk method for Cat objects
-	private void talk (Cat c) {
-		c.makeNoise();
-	}
-	
-	// talk method for Cat objects
-	private void talk (Dog d) {
-		d.makeNoise();
-	}
+//	/**
+//	 *  talk method for Person objects
+//	 * @param person object
+//	 */
+//	private void talk (Person p) {
+//		p.makeNoise();
+//	}
+//	
+//	/**
+//	 *  talk method for Cat objects
+//	 * @param cat object
+//	 */
+//	private void talk (Cat c) {
+//		c.makeNoise();
+//	}
+//	
+//	/**
+//	 *  talk method for Dog objects
+//	 * @param dog
+//	 */
+//	private void talk (Dog d) {
+//		d.makeNoise();
+//	}
 	
 }
