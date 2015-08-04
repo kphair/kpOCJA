@@ -27,6 +27,13 @@ public class Cat extends Animal {
 		super (name, Cat.SOUND);
 	}
 	
+	/**
+	 * Cat's sleep method
+	 */
+	public void sleep() {
+		System.out.println(super.getName() + " curls up and goes to sleep");
+	}
+	
 //	Cat (String name) {
 //		this.name = name;
 //	}

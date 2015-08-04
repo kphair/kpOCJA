@@ -27,6 +27,20 @@ public class Person extends Animal {
 		super (name, Person.SOUND);
 	}
 	
+	/**
+	 * Person-specific moving method
+	 */
+	public void move () {
+		System.out.println(super.getName() + " is walking...");
+	}
+
+	/**
+	 * Person's sleep method
+	 */
+	public void sleep() {
+		System.out.println(super.getName() + " lies down and goes to sleep");
+	}
+	
 //	Person (String name) {
 //		this.name = name;
 //	}

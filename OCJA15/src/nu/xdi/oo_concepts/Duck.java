@@ -26,5 +26,19 @@ public class Duck extends Animal {
 	Duck (String name) {
 		super (name, Duck.SOUND);
 	}
+
+	/**
+	 * Duck-specfic move method
+	 */
+	public void move () {
+		System.out.println(super.getName() + " is waddling...");
+	}
+
+	/**
+	 * Duck's sleep method
+	 */
+	public void sleep() {
+		System.out.println(super.getName() + " settles down and goes to sleep");
+	}
 	
 }

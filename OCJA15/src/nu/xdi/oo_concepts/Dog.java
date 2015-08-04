@@ -27,6 +27,13 @@ public class Dog extends Animal{
 		super (name, Dog.SOUND);
 	}
 
+	/**
+	 * Dog's sleep method
+	 */
+	public void sleep() {
+		System.out.println(super.getName() + " lies down and goes to sleep");
+	}
+	
 //	Dog (String name) {
 //		this.name = name;
 //	}
