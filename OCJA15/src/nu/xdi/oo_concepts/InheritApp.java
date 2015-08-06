@@ -1,5 +1,7 @@
 package nu.xdi.oo_concepts;
 
+import java.util.ArrayList;
+
 /**
  * Program to demonstrate how inheritance works with similar but separate objects
  * 
@@ -18,31 +20,37 @@ public class InheritApp {
 	 * Create various Animal-derived objects and make them perform.
 	 */
 	private void runProgram () {
-		
+
+		ArrayList<Animal> animals = new ArrayList<Animal>();
+
 		System.out.println("Instance of " + this.toString().split("@", 0)[0] + " is now running...");
 		
 		// Since the Animal.ArrayList was added there's no need to assign the objects to
 		// specific variables but the code has been kept for clarity.
-		Person person = new Person ("Kevin");
-		Cat cat = new Cat ("Jones");
-		Dog dog = new Dog ("Bitzer");
-		Duck duck = new Duck ("Jemima");
-		Snake snake = new Snake ("Sid");
+		animals.add(new Person ("The human"));
+		animals.add(new Cat ("The cat"));
+		animals.add(new Dog ("The dog"));
+		animals.add(new Duck ("The duck"));
+		animals.add(new Snake ("The snake"));
 
 		System.out.println("\n\u001b[33;1mRoll call!\u001b[0m");
-		for (Animal a : Animal.getArrayList()) {
+		for (Animal a : animals) {
 			System.out.println("\u001b[32;1m" + a.getName() + "\u001b[37;0m is present.");
 		}
 		System.out.println("\n\u001b[33;1mSing, my children!\u001b[0m");
-		for (Animal a : Animal.getArrayList()) {
+		for (Animal a : animals) {
 			talk(a);
 		}
 		System.out.println("\n\u001b[33;1mWe like to moveIt(), moveIt()!\u001b[0m");			// (use local method to call objects' methods)
-		for (Animal a : Animal.getArrayList()) {
+		for (Animal a : animals) {
 			moveIt(a);
 		}
-		System.out.println("\n\u001b[33;1mAll the children are tired now...\u001b[0m");		// (use objects' methods directly)
-		for (Animal a : Animal.getArrayList()) {
+		System.out.println("\n\u001b[33;1mWe need more animals...\u001b[0m");		// (use objects' methods directly)
+		for (Spawnable s : animals) {
+			s.spawn();
+		}
+		System.out.println("\n\u001b[33;1mEveryone's tired now...\u001b[0m");		// (use objects' methods directly)
+		for (Animal a : animals) {
 			a.sleep();
 		}
 		System.out.println();

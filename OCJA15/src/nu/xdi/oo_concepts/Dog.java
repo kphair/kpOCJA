@@ -34,6 +34,14 @@ public class Dog extends Animal{
 		System.out.println(super.getName() + " lies down and goes to sleep");
 	}
 	
+	/**
+	 * This class's implementation of spawn()
+	 */
+	public void spawn () {
+		System.out.println(super.getName() + " gives birth.");
+	}
+
+	
 //	Dog (String name) {
 //		this.name = name;
 //	}

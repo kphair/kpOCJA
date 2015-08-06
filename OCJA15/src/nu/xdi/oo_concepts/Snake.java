@@ -41,4 +41,11 @@ public class Snake extends Animal {
 		System.out.println(super.getName() + " coils up and goes to sleep");
 	}
 	
+	/**
+	 * This class's implementation of spawn()
+	 */
+	public void spawn () {
+		System.out.println(super.getName() + " lays an egg.");
+	}
+
 }

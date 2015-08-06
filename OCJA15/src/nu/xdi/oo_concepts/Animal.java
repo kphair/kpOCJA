@@ -1,7 +1,5 @@
 package nu.xdi.oo_concepts;
 
-import java.util.ArrayList;
-
 /**
  * A class to use in demonstrating object-oriented concepts such as
  * inheritance, polymorphism, abstraction
@@ -12,11 +10,10 @@ import java.util.ArrayList;
  * Created 4 Aug 2015
  *
  */
-public abstract class Animal {
+public abstract class Animal implements Spawnable {
 
 	private String name;
 	private String sound;
-	private static ArrayList<Animal> animals;
 	
 	// Default constructor initialises blank name
 	Animal() {
@@ -27,8 +24,6 @@ public abstract class Animal {
 	Animal (String name, String sound) {
 		this.name = name;
 		this.sound = sound;
-		if (Animal.animals == null) Animal.animals = new ArrayList<Animal>();
-		Animal.animals.add(this);
 	}
 	
 	/**
@@ -58,8 +53,4 @@ public abstract class Animal {
 		return this.name;
 	}
 	
-	// Get the ArrayList of all Animal objects
-	public static ArrayList<Animal> getArrayList () {
-		return Animal.animals;
-	}
 }

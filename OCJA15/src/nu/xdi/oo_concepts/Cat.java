@@ -15,7 +15,7 @@ public class Cat extends Animal {
 	/**
 	 * Default constructor initialises blank name
 	 */
-	Cat() {
+	Cat () {
 		this("");
 	}
 	
@@ -30,10 +30,16 @@ public class Cat extends Animal {
 	/**
 	 * Cat's sleep method
 	 */
-	public void sleep() {
+	public void sleep () {
 		System.out.println(super.getName() + " curls up and goes to sleep");
 	}
 	
+	/**
+	 * This class's implementation of spawn()
+	 */
+	public void spawn () {
+		System.out.println(super.getName() + " gives birth.");
+	}
 //	Cat (String name) {
 //		this.name = name;
 //	}

@@ -40,5 +40,12 @@ public class Duck extends Animal {
 	public void sleep() {
 		System.out.println(super.getName() + " settles down and goes to sleep");
 	}
-	
+
+	/**
+	 * This class's implementation of spawn()
+	 */
+	public void spawn () {
+		System.out.println(super.getName() + " lays an egg.");
+	}
+
 }

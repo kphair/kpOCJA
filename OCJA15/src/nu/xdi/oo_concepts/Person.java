@@ -40,7 +40,14 @@ public class Person extends Animal {
 	public void sleep() {
 		System.out.println(super.getName() + " finds a bed to lie in and goes to sleep");
 	}
-	
+
+	/**
+	 * This class's implementation of spawn()
+	 */
+	public void spawn () {
+		System.out.println(super.getName() + " gives birth.");
+	}
+
 //	Person (String name) {
 //		this.name = name;
 //	}
