@@ -46,7 +46,6 @@ public class SmartApp {
 		for(SmartDevice d : devices){
 			System.out.println("\u001b[37m" + d);
 		}
-
 	
 	}
 }
