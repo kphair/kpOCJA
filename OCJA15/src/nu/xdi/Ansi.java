@@ -10,48 +10,48 @@ package nu.xdi;
 public class Ansi {
 	
 	// Persistent storage for foreground, background, brightness, x and y
-	static int fg, bg, br, x, y;
+	static int fg = 7, bg = 0, br = 0, x = 0, y = 0;
 
-	public void clrscr () {
+	public static void clrscr () {
 		
 		System.out.print ("\u001b[2J");
 	}
 	
-	public void locate (int x, int y) {
+	public static void locate (int x, int y) {
 		Ansi.x = x;
 		Ansi.y = y;
 		
 		System.out.print ("\u001b[" + y + "," + x + "H");
 	}
 	
-	public void locate (int x) {
+	public static void locate (int x) {
 		Ansi.x = x;
 		
 		System.out.print ("\u001b[" + y + "," + x + "H");
 	}
 
-	public void setBr (int br) {
-		Ansi.br = br;
+	public static void setBr (int br) {
+		Ansi.br = br % 2;
 		
-		System.out.println("\u001b[" + br + "m");
+		System.out.print ("\u001b[" + br + "m");
 	}
-	public void setColor (int fg, int bg) {
-		Ansi.fg = fg;
-		Ansi.bg = bg;
+	public static void setColor (int fg, int bg) {
+		Ansi.fg = fg % 8;
+		Ansi.bg = bg % 8;
 		
-		System.out.print ("\u001b[" + br + ";" + 30 + fg * 8 + ";" + 40 + bg % 8 + "m");
+		System.out.print ("\u001b[" + br + ";" + (30 + fg) + ";" + (40 + bg) + "m");
 	}
 	
-	public void setFg (int fg) {
-		Ansi.fg = fg;
+	public static void setFg (int fg) {
+		Ansi.fg = fg % 8;
 		
-		System.out.print ("\u001b[" + br + ";" + 30 + fg % 8 + "m");
+		System.out.print ("\u001b[" + br + ";" + (30 + fg) + "m");
 	}
 
-	public void setBg (int bg) {
-		Ansi.bg = bg;
+	public static void setBg (int bg) {
+		Ansi.bg = bg % 8;
 		
-		System.out.print ("\u001b[" + br + ";" + 40 + bg % 8 + "m");
+		System.out.print ("\u001b[" + br + ";" + (40 + bg) + "m");
 	}
 
 }
