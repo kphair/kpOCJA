@@ -7,6 +7,7 @@ package com.kevinphair.arraytests;
 
 import java.util.Random;
 import java.util.Scanner;
+import nu.xdi.Ansi;
 
 /**
  * An implementation of John Conway's "Life" algorithm using a
@@ -58,6 +59,8 @@ public class LifeApp {
 				System.out.println("Population is now static. Simulation over.");
 				break;
 			}
+			Ansi.clrscr();
+			Ansi.setFg(2);
 			showPopulation(cells);
 		}
 		
@@ -142,6 +145,7 @@ public class LifeApp {
 		// Step through the rows of cells
 		for (int row = 0; row < a.length; ++row) {
 			// Step through the columns in each row of cells
+			Ansi.locate(0, row);
 			for (int c : a[row]) {
 				if (c > 0) {
 					System.out.print("()");
