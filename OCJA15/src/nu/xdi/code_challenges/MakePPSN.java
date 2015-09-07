@@ -1,3 +1,5 @@
+package nu.xdi.code_challenges;
+
 import java.util.Random;
 
 public class MakePPSN {
